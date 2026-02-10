@@ -1,0 +1,2 @@
+# Archive directories shouldn't affect language stats
+docs/archive/** linguist-documentation
