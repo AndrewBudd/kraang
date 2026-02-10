@@ -8,7 +8,8 @@ import os
 # Add src directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from kraang import main
+from kraang import KraangCLI
 
 if __name__ == '__main__':
-    main()
+    cli = KraangCLI()
+    cli.run(sys.argv[1:])
