@@ -1,5 +1,9 @@
 # Kraang - Constraint Rationalization Engine
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![GitHub Pages](https://img.shields.io/badge/demo-online-brightgreen)](https://andrewbudd.github.io/kraang/fact-browser.html)
+
 **"The core activity of building software is rationalizing conflicting constraints."**
 
 Kraang extracts facts and constraints from your codebase, identifies conflicts automatically, and helps you rationalize them. Built on the thesis that software development is fundamentally about managing contradictions.
