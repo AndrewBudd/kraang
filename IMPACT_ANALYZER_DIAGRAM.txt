@@ -1,0 +1,370 @@
+================================================================================
+IMPACT ANALYZER - SYSTEM ARCHITECTURE
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        KRAANG KNOWLEDGE BASE                                 │
+│                                                                              │
+│  ┌──────────┐      ┌──────────────┐      ┌──────────────┐                  │
+│  │ Facts    │      │ Relationships│      │ Artifacts    │                  │
+│  │ (3,234)  │◄────►│ (95)         │◄────►│ (46)         │                  │
+│  └──────────┘      └──────────────┘      └──────────────┘                  │
+│       │                   │                      │                          │
+│       │                   │                      │                          │
+└───────┼───────────────────┼──────────────────────┼──────────────────────────┘
+        │                   │                      │
+        ▼                   ▼                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         IMPACT ANALYZER                                      │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 1: CONFLICT DETECTION                                │            │
+│  │  ────────────────────────────                                │            │
+│  │  • Scan relationships for contradictions                    │            │
+│  │  • Extract conflict reasoning                               │            │
+│  │  • Calculate confidence scores                              │            │
+│  │                                                              │            │
+│  │  Output: 5 conflicts found                                  │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                              ▼                                               │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 2: DEPENDENCY GRAPH CONSTRUCTION                     │            │
+│  │  ───────────────────────────────────────                    │            │
+│  │  • Build forward graph (fact → dependents)                  │            │
+│  │  • Build reverse graph (fact → supporters)                  │            │
+│  │  • Map relationship types (supports, extends, contradicts)  │            │
+│  │                                                              │            │
+│  │  Output: 100 dependencies mapped                            │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                              ▼                                               │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 3: RESOLUTION GENERATION                             │            │
+│  │  ──────────────────────────                                 │            │
+│  │  For each conflict, generate 5 standard resolutions:        │            │
+│  │                                                              │            │
+│  │  1. CHANGE_A    - Modify fact A to align with B            │            │
+│  │  2. CHANGE_B    - Modify fact B to align with A            │            │
+│  │  3. CHANGE_BOTH - Refactor both to unified constraint      │            │
+│  │  4. ADD_CONSTRAINT - Add scoping/context constraint        │            │
+│  │  5. ACCEPT_BOTH - Document as valid contradiction          │            │
+│  │                                                              │            │
+│  │  Output: 15 resolution options (5 per conflict × 3)         │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                              ▼                                               │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 4: IMPACT ANALYSIS                                   │            │
+│  │  ────────────────────────                                   │            │
+│  │  For each resolution option:                                │            │
+│  │                                                              │            │
+│  │  A. Dependency Tracing (BFS Traversal)                      │            │
+│  │     ┌────────────────────────────────────────────┐          │            │
+│  │     │ Start: target_fact                         │          │            │
+│  │     │   ↓                                         │          │            │
+│  │     │ Find: all dependent facts                  │          │            │
+│  │     │   ↓                                         │          │            │
+│  │     │ Recurse: up to 10 levels deep              │          │            │
+│  │     │   ↓                                         │          │            │
+│  │     │ Result: Set of affected facts              │          │            │
+│  │     └────────────────────────────────────────────┘          │            │
+│  │                                                              │            │
+│  │  B. File Impact Assessment                                  │            │
+│  │     ┌────────────────────────────────────────────┐          │            │
+│  │     │ For each affected fact:                    │          │            │
+│  │     │   • Extract artifact references            │          │            │
+│  │     │   • Map to file paths                      │          │            │
+│  │     │   • Collect locations                      │          │            │
+│  │     │   • Estimate LOC changes                   │          │            │
+│  │     │   • Assess complexity                      │          │            │
+│  │     │   • Identify risk factors                  │          │            │
+│  │     └────────────────────────────────────────────┘          │            │
+│  │                                                              │            │
+│  │  C. Constraint Validation                                   │            │
+│  │     ┌────────────────────────────────────────────┐          │            │
+│  │     │ Check all affected facts:                  │          │            │
+│  │     │   • Identify type = "constraint"           │          │            │
+│  │     │   • Flag if not in target list             │          │            │
+│  │     │   • Count broken constraints               │          │            │
+│  │     └────────────────────────────────────────────┘          │            │
+│  │                                                              │            │
+│  │  D. Risk Calculation                                        │            │
+│  │     ┌────────────────────────────────────────────┐          │            │
+│  │     │ Factors:                                   │          │            │
+│  │     │   • Dependent count (>10 = CRITICAL)       │          │            │
+│  │     │   • File complexity                        │          │            │
+│  │     │   • Broken constraint count                │          │            │
+│  │     │   • Core file detection                    │          │            │
+│  │     │                                             │          │            │
+│  │     │ Output: LOW/MEDIUM/HIGH/CRITICAL           │          │            │
+│  │     └────────────────────────────────────────────┘          │            │
+│  │                                                              │            │
+│  │  E. Effort Estimation                                       │            │
+│  │     ┌────────────────────────────────────────────┐          │            │
+│  │     │ LOC Range → Base Effort:                   │          │            │
+│  │     │   <20     → 1-2 hours                      │          │            │
+│  │     │   20-50   → half day                       │          │            │
+│  │     │   50-100  → 1 day                          │          │            │
+│  │     │   100-300 → 2-3 days                       │          │            │
+│  │     │   300+    → 1 week+                        │          │            │
+│  │     │                                             │          │            │
+│  │     │ Adjust for risk level                      │          │            │
+│  │     └────────────────────────────────────────────┘          │            │
+│  │                                                              │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                              ▼                                               │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 5: RECOMMENDATION SCORING                            │            │
+│  │  ───────────────────────────────                            │            │
+│  │                                                              │            │
+│  │  Score = 10.0                                               │            │
+│  │         - risk_penalty                                      │            │
+│  │         - (file_count × 0.2)                                │            │
+│  │         - (broken_constraints × 0.5)                        │            │
+│  │         + resolution_type_bonus                             │            │
+│  │                                                              │            │
+│  │  Risk Penalties:                                            │            │
+│  │    LOW:      0.0                                            │            │
+│  │    MEDIUM:  -1.5                                            │            │
+│  │    HIGH:    -3.0                                            │            │
+│  │    CRITICAL:-5.0                                            │            │
+│  │                                                              │            │
+│  │  Resolution Bonuses:                                        │            │
+│  │    ADD_CONSTRAINT: +1.0                                     │            │
+│  │    ACCEPT_BOTH:    +0.5                                     │            │
+│  │                                                              │            │
+│  │  Output: Score 0.0-10.0 (higher = better)                  │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                              ▼                                               │
+│  ┌─────────────────────────────────────────────────────────────┐            │
+│  │  Phase 6: COMPARISON & RECOMMENDATION                       │            │
+│  │  ────────────────────────────────────                       │            │
+│  │  • Sort resolutions by score                               │            │
+│  │  • Identify best option                                    │            │
+│  │  • Generate comparison summary                             │            │
+│  │  • Output detailed reports                                 │            │
+│  └─────────────────────────────────────────────────────────────┘            │
+│                                                                              │
+└──────────────────────────────────────────┬───────────────────────────────────┘
+                                           ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              OUTPUTS                                         │
+│                                                                              │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────┐  │
+│  │  Console Summary     │  │  JSON Reports        │  │  Markdown Docs   │  │
+│  │  ────────────────    │  │  ────────────────    │  │  ──────────────  │  │
+│  │  • Conflict details  │  │  • Full analysis     │  │  • Examples      │  │
+│  │  • Recommendations   │  │  • All options       │  │  • Lessons       │  │
+│  │  • Scores & risks    │  │  • Detailed metrics  │  │  • Framework     │  │
+│  │  • Quick summary     │  │  • Machine-readable  │  │  • Usage guide   │  │
+│  └──────────────────────┘  └──────────────────────┘  └──────────────────┘  │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+EXAMPLE: CONFLICT #1 FLOW
+================================================================================
+
+Input: Conflict between fact_16 and fact_19
+───────────────────────────────────────────
+
+fact_16: "DO NOT create new header files"
+fact_19: "types.h contains 5830 lines with ALL types"
+
+                    ▼
+
+Phase 1: Detection
+──────────────────
+✓ Contradiction detected
+✓ Confidence: 0.85
+✓ Reasoning: Monolithic structure violates "well-established" principle
+
+                    ▼
+
+Phase 2: Dependency Graph
+──────────────────────────
+fact_16 dependencies:
+  ├─► fact_17 (mud.h structure)
+  ├─► fact_18 (header guards)
+  ├─► fact_19 (types.h - CONFLICT!)
+  ├─► fact_20 (struct placement)
+  ├─► fact_21 (functions.h)
+  ├─► ... (21 more facts)
+  └─► Total: 26 dependent facts
+
+                    ▼
+
+Phase 3: Resolution Options
+────────────────────────────
+1. CHANGE_A    - Drop the "no new headers" constraint
+2. CHANGE_B    - Refactor types.h into multiple files
+3. CHANGE_BOTH - Create new header policy + refactor
+4. ADD_CONSTRAINT - Add "legacy exception" constraint
+5. ACCEPT_BOTH - Document as pragmatic legacy choice
+
+                    ▼
+
+Phase 4: Impact Analysis (for each option)
+───────────────────────────────────────────
+
+Option 1 (CHANGE_A):
+  Affected facts: 26
+  Files: 2 (/home/budda/Code/LotJ/CLAUDE.md, act_comm.c)
+  LOC: ~400
+  Broken constraints: 12
+  Risk: CRITICAL
+  Effort: 1 week+
+
+Option 5 (ACCEPT_BOTH):
+  Affected facts: 0
+  Files: 0
+  LOC: 0
+  Broken constraints: 0
+  Risk: LOW
+  Effort: 1-2 hours
+
+                    ▼
+
+Phase 5: Scoring
+────────────────
+
+Option 1 (CHANGE_A):
+  Base: 10.0
+  - CRITICAL risk: -5.0
+  - 2 files: -0.4
+  - 12 broken: -2.0
+  ─────────────────────
+  Score: 2.6/10
+
+Option 5 (ACCEPT_BOTH):
+  Base: 10.0
+  - LOW risk: -0.0
+  - 0 files: -0.0
+  - 0 broken: -0.0
+  + accept_both: +0.5
+  ─────────────────────
+  Score: 10.0/10 ★ RECOMMENDED
+
+                    ▼
+
+Phase 6: Output
+───────────────
+
+RECOMMENDED: accept_both
+  Score: 10.0/10
+  Risk: low
+  Effort: 1-2 hours
+  Files: 0
+  LOC: ~0
+
+Alternatives considered: 4
+  1. add_constraint (score: 3.6, risk: critical)
+  2. change_a (score: 2.6, risk: critical)
+  3. change_b (score: 2.6, risk: critical)
+  4. change_both (score: 2.6, risk: critical)
+
+Action Items:
+  1. Document historical context
+  2. Clarify "well-established" means "existing"
+  3. Create tech debt ticket for future refactoring
+  4. No code changes required
+
+Impact Avoided:
+  ✓ 400 LOC of risky changes
+  ✓ 1 week+ of refactoring effort
+  ✓ 12 broken constraints
+  ✓ CRITICAL risk to core infrastructure
+
+================================================================================
+KEY ALGORITHMS
+================================================================================
+
+BFS Dependency Traversal:
+─────────────────────────
+```
+function get_dependent_facts(fact_id, max_depth=10):
+    visited = set()
+    queue = [(fact_id, 0)]
+    
+    while queue:
+        current, depth = queue.pop(0)
+        if current in visited or depth > max_depth:
+            continue
+            
+        visited.add(current)
+        
+        for dependent in dependency_graph[current]:
+            if dependent not in visited:
+                queue.append((dependent, depth + 1))
+    
+    return visited - {fact_id}
+```
+
+LOC Estimation:
+───────────────
+```
+function estimate_loc(artifact_type, fact_count, locations):
+    base = {
+        'code': 10,
+        'doc': 5,
+        'config': 3
+    }[artifact_type]
+    
+    complexity = calculate_complexity(fact_count, locations)
+    multiplier = {
+        'trivial': 1.0,
+        'simple': 1.5,
+        'moderate': 2.0,
+        'complex': 3.0
+    }[complexity]
+    
+    return base * fact_count * multiplier
+```
+
+Risk Assessment:
+────────────────
+```
+function assess_risk(dependent_count, file_impacts, broken_count):
+    if any(impact.risk == CRITICAL for impact in file_impacts):
+        return CRITICAL
+    if dependent_count > 10:
+        return CRITICAL
+    if broken_count > 3:
+        return HIGH
+    if dependent_count > 5:
+        return HIGH
+    if broken_count > 1:
+        return MEDIUM
+    return LOW
+```
+
+================================================================================
+REAL WORLD METRICS (LotJ Analysis)
+================================================================================
+
+Knowledge Base:
+  Facts: 3,234
+  Relationships: 95
+  Artifacts: 46
+  Conflicts: 5
+
+Analysis Results:
+  Conflicts Analyzed: 3
+  Resolution Options Generated: 15
+  Recommendations Made: 3
+  Average Recommendation Score: 10.0/10
+  Average Alternative Score: 3.1/10
+  Score Gap (Confidence): 6.9 points
+
+Impact Avoided:
+  Files: 6
+  LOC: 1,200+
+  Broken Constraints: 36+
+  Effort: 3+ weeks
+  Risk: CRITICAL
+
+Execution Time:
+  Load Knowledge Base: <1 second
+  Build Dependency Graph: <1 second
+  Analyze Conflict: ~2 seconds
+  Total Analysis (3 conflicts): ~8 seconds
+
+================================================================================

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kraang Fact & Conflict Browser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #252526;
+            border-bottom: 1px solid #3e3e42;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            color: #4ec9b0;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: #858585;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            color: #4fc1ff;
+            font-weight: 600;
+        }
+
+        .tabs {
+            background: #252526;
+            border-bottom: 1px solid #3e3e42;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #858585;
+            cursor: pointer;
+            font-size: 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: #d4d4d4;
+        }
+
+        .tab.active {
+            color: #4ec9b0;
+            border-bottom-color: #4ec9b0;
+        }
+
+        .controls {
+            background: #252526;
+            border-bottom: 1px solid #3e3e42;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 72px;
+            z-index: 99;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.75rem;
+            background: #3c3c3c;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            color: #d4d4d4;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #4ec9b0;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            color: #858585;
+        }
+
+        select {
+            padding: 0.5rem;
+            background: #3c3c3c;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            color: #d4d4d4;
+            font-size: 0.9rem;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4ec9b0;
+        }
+
+        .content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .fact-card {
+            background: #252526;
+            border: 1px solid #3e3e42;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .fact-card:hover {
+            border-color: #4ec9b0;
+        }
+
+        .fact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .fact-id {
+            color: #4fc1ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .fact-id:hover {
+            text-decoration: underline;
+        }
+
+        .fact-type {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .type-implementation { background: #1e4d2b; color: #4ec9b0; }
+        .type-constraint { background: #5a1e1e; color: #f48771; }
+        .type-requirement { background: #1e3a5a; color: #4fc1ff; }
+        .type-design { background: #5a4a1e; color: #dcdcaa; }
+        .type-threat_vector { background: #5a1e5a; color: #c586c0; }
+
+        .fact-statement {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .fact-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #858585;
+            border-top: 1px solid #3e3e42;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-label {
+            color: #858585;
+        }
+
+        .meta-value {
+            color: #d4d4d4;
+        }
+
+        .sources {
+            margin-top: 0.5rem;
+        }
+
+        .source-item {
+            background: #1e1e1e;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .source-path {
+            color: #4fc1ff;
+        }
+
+        .source-location {
+            color: #858585;
+            margin-left: 0.5rem;
+        }
+
+        /* Conflict Styles */
+        .conflict-card {
+            background: #252526;
+            border: 1px solid #3e3e42;
+            border-left: 4px solid;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .conflict-card.severity-CRITICAL {
+            border-left-color: #f48771;
+        }
+
+        .conflict-card.severity-HIGH {
+            border-left-color: #ce9178;
+        }
+
+        .conflict-card.severity-MEDIUM {
+            border-left-color: #dcdcaa;
+        }
+
+        .conflict-card.severity-LOW {
+            border-left-color: #4fc1ff;
+        }
+
+        .conflict-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .conflict-title {
+            color: #d4d4d4;
+            font-size: 1.1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .severity-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .severity-CRITICAL {
+            background: #5a1e1e;
+            color: #f48771;
+        }
+
+        .severity-HIGH {
+            background: #5a3e1e;
+            color: #ce9178;
+        }
+
+        .severity-MEDIUM {
+            background: #5a4e1e;
+            color: #dcdcaa;
+        }
+
+        .severity-LOW {
+            background: #1e3a5a;
+            color: #4fc1ff;
+        }
+
+        .conflict-description {
+            margin: 1rem 0;
+            color: #d4d4d4;
+            line-height: 1.6;
+        }
+
+        .conflict-facts {
+            margin: 1.5rem 0;
+        }
+
+        .conflict-fact-label {
+            color: #858585;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .conflict-fact-box {
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .conflict-fact-statement {
+            color: #d4d4d4;
+            margin-bottom: 0.5rem;
+        }
+
+        .conflict-fact-meta {
+            font-size: 0.85rem;
+            color: #858585;
+        }
+
+        .resolutions {
+            margin-top: 1.5rem;
+            border-top: 1px solid #3e3e42;
+            padding-top: 1.5rem;
+        }
+
+        .resolutions-title {
+            color: #4ec9b0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .resolution-option {
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .resolution-name {
+            color: #4fc1ff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resolution-description {
+            color: #d4d4d4;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #858585;
+        }
+
+        .error {
+            background: #5a1e1e;
+            color: #f48771;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 2rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem;
+            color: #858585;
+        }
+
+        .confidence-bar {
+            height: 4px;
+            background: #3e3e42;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f48771, #4ec9b0);
+            transition: width 0.3s;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            background: #3c3c3c;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            color: #d4d4d4;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .view-btn.active {
+            background: #4ec9b0;
+            color: #1e1e1e;
+            border-color: #4ec9b0;
+        }
+
+        .compact .fact-card {
+            padding: 1rem;
+        }
+
+        .compact .fact-statement {
+            font-size: 0.9rem;
+        }
+
+        .compact .fact-meta {
+            display: none;
+        }
+
+        .evidence {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .evidence-item {
+            background: #1e1e1e;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            color: #858585;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧠 Kraang Browser</h1>
+        <div class="stats">
+            <div class="stat">
+                <span>Facts:</span>
+                <span class="stat-value" id="total-facts">0</span>
+            </div>
+            <div class="stat">
+                <span>Showing:</span>
+                <span class="stat-value" id="showing-count">0</span>
+            </div>
+            <div class="stat">
+                <span>Conflicts:</span>
+                <span class="stat-value" id="total-conflicts">0</span>
+            </div>
+            <div class="stat">
+                <span>Artifacts:</span>
+                <span class="stat-value" id="total-artifacts">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('facts')">📚 Facts</button>
+        <button class="tab" onclick="switchTab('conflicts')">⚠️ Conflicts</button>
+    </div>
+
+    <div class="controls" id="facts-controls">
+        <input type="text" class="search-box" id="search" placeholder="Search facts by keyword...">
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Type:</label>
+                <select id="type-filter">
+                    <option value="">All Types</option>
+                    <option value="implementation">Implementation</option>
+                    <option value="constraint">Constraint</option>
+                    <option value="requirement">Requirement</option>
+                    <option value="design">Design</option>
+                    <option value="threat_vector">Threat Vector</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Artifact:</label>
+                <select id="artifact-filter">
+                    <option value="">All Artifacts</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Confidence:</label>
+                <select id="confidence-filter">
+                    <option value="">Any</option>
+                    <option value="high">High (≥0.8)</option>
+                    <option value="medium">Medium (≥0.6)</option>
+                    <option value="low">Low (<0.6)</option>
+                </select>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="setView('detailed')">Detailed</button>
+                <button class="view-btn" onclick="setView('compact')">Compact</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls" id="conflicts-controls" style="display: none;">
+        <div class="filters">
+            <div class="filter-group">
+                <label>Severity:</label>
+                <select id="severity-filter">
+                    <option value="">All Severities</option>
+                    <option value="CRITICAL">Critical</option>
+                    <option value="HIGH">High</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LOW">Low</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="tab-content active" id="facts-content">
+            <div class="loading">Loading facts...</div>
+        </div>
+
+        <div class="tab-content" id="conflicts-content">
+            <div class="loading">Loading conflicts...</div>
+        </div>
+    </div>
+
+    <script>
+        let allFacts = [];
+        let allArtifacts = {};
+        let allConflicts = [];
+        let currentView = 'detailed';
+        let currentTab = 'facts';
+
+        async function loadData() {
+            try {
+                // Load facts
+                const factsResponse = await fetch('.kraang/facts.json');
+                allFacts = await factsResponse.json();
+
+                // Load artifacts
+                const artifactsResponse = await fetch('.kraang/artifacts.json');
+                const artifactsArray = await artifactsResponse.json();
+
+                // Convert artifacts array to lookup object
+                artifactsArray.forEach(art => {
+                    allArtifacts[art.id] = art;
+                });
+
+                // Load conflicts
+                try {
+                    const conflictsResponse = await fetch('.kraang/conflicts.json');
+                    allConflicts = await conflictsResponse.json();
+                } catch (e) {
+                    console.warn('No conflicts file found');
+                    allConflicts = [];
+                }
+
+                // Update stats
+                document.getElementById('total-facts').textContent = allFacts.length;
+                document.getElementById('total-artifacts').textContent = artifactsArray.length;
+                document.getElementById('total-conflicts').textContent = allConflicts.length;
+
+                // Populate artifact filter
+                const artifactFilter = document.getElementById('artifact-filter');
+                const uniqueArtifacts = new Set();
+                allFacts.forEach(fact => {
+                    fact.extracted_from?.forEach(source => {
+                        if (source.artifact_id) {
+                            uniqueArtifacts.add(source.artifact_id);
+                        }
+                    });
+                });
+
+                Array.from(uniqueArtifacts).sort().forEach(artId => {
+                    const artifact = allArtifacts[artId];
+                    if (artifact) {
+                        const option = document.createElement('option');
+                        option.value = artId;
+                        const path = artifact.path.split('/').pop();
+                        option.textContent = path;
+                        artifactFilter.appendChild(option);
+                    }
+                });
+
+                // Initial render
+                renderFacts(allFacts);
+                renderConflicts(allConflicts);
+
+                // Setup event listeners
+                document.getElementById('search').addEventListener('input', filterFacts);
+                document.getElementById('type-filter').addEventListener('change', filterFacts);
+                document.getElementById('artifact-filter').addEventListener('change', filterFacts);
+                document.getElementById('confidence-filter').addEventListener('change', filterFacts);
+                document.getElementById('severity-filter').addEventListener('change', filterConflicts);
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('facts-content').innerHTML = `
+                    <div class="error">
+                        <h2>Error Loading Data</h2>
+                        <p>${error.message}</p>
+                        <p>Make sure the server is running and .kraang/ files exist.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab}-content`).classList.add('active');
+
+            // Update controls
+            document.getElementById('facts-controls').style.display = tab === 'facts' ? 'block' : 'none';
+            document.getElementById('conflicts-controls').style.display = tab === 'conflicts' ? 'block' : 'none';
+        }
+
+        function filterFacts() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const typeFilter = document.getElementById('type-filter').value;
+            const artifactFilter = document.getElementById('artifact-filter').value;
+            const confidenceFilter = document.getElementById('confidence-filter').value;
+
+            let filtered = allFacts.filter(fact => {
+                if (searchTerm && !fact.statement.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+
+                if (typeFilter && fact.type !== typeFilter) {
+                    return false;
+                }
+
+                if (artifactFilter) {
+                    const hasArtifact = fact.extracted_from?.some(
+                        source => source.artifact_id === artifactFilter
+                    );
+                    if (!hasArtifact) return false;
+                }
+
+                if (confidenceFilter) {
+                    const conf = fact.confidence || 0;
+                    if (confidenceFilter === 'high' && conf < 0.8) return false;
+                    if (confidenceFilter === 'medium' && conf < 0.6) return false;
+                    if (confidenceFilter === 'low' && conf >= 0.6) return false;
+                }
+
+                return true;
+            });
+
+            renderFacts(filtered);
+        }
+
+        function filterConflicts() {
+            const severityFilter = document.getElementById('severity-filter').value;
+
+            let filtered = allConflicts.filter(conflict => {
+                if (severityFilter && conflict.severity !== severityFilter) {
+                    return false;
+                }
+                return true;
+            });
+
+            renderConflicts(filtered);
+        }
+
+        function renderFacts(facts) {
+            const content = document.getElementById('facts-content');
+            document.getElementById('showing-count').textContent = facts.length;
+
+            if (facts.length === 0) {
+                content.innerHTML = '<div class="no-results">No facts match your filters.</div>';
+                return;
+            }
+
+            content.innerHTML = facts.map(fact => createFactCard(fact)).join('');
+        }
+
+        function renderConflicts(conflicts) {
+            const content = document.getElementById('conflicts-content');
+
+            if (conflicts.length === 0) {
+                content.innerHTML = '<div class="no-results">No conflicts found.</div>';
+                return;
+            }
+
+            content.innerHTML = conflicts.map(conflict => createConflictCard(conflict)).join('');
+        }
+
+        function createFactCard(fact) {
+            const confidence = Math.round((fact.confidence || 0) * 100);
+            const sources = fact.extracted_from || [];
+
+            return `
+                <div class="fact-card">
+                    <div class="fact-header">
+                        <span class="fact-id" onclick="showFactDetail('${fact.id}')">${fact.id}</span>
+                        <span class="fact-type type-${fact.type}">${fact.type}</span>
+                    </div>
+
+                    <div class="fact-statement">${escapeHtml(fact.statement)}</div>
+
+                    <div class="fact-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Confidence:</span>
+                            <span class="meta-value">${confidence}%</span>
+                        </div>
+
+                        ${sources.length > 0 ? `
+                            <div class="sources">
+                                <span class="meta-label">Sources:</span>
+                                ${sources.map(source => {
+                                    const artifact = allArtifacts[source.artifact_id];
+                                    const path = artifact ? artifact.path.split('/').pop() : source.artifact_id;
+                                    return `
+                                        <div class="source-item">
+                                            <span class="source-path">${path}</span>
+                                            ${source.location ? `<span class="source-location">${source.location}</span>` : ''}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${confidence}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createConflictCard(conflict) {
+            const fact1 = allFacts.find(f => f.id === conflict.fact_id_1);
+            const fact2 = allFacts.find(f => f.id === conflict.fact_id_2);
+
+            return `
+                <div class="conflict-card severity-${conflict.severity}">
+                    <div class="conflict-header">
+                        <div class="conflict-title">${escapeHtml(conflict.description || 'Conflict')}</div>
+                        <span class="severity-badge severity-${conflict.severity}">${conflict.severity}</span>
+                    </div>
+
+                    ${conflict.reasoning ? `
+                        <div class="conflict-description">${escapeHtml(conflict.reasoning)}</div>
+                    ` : ''}
+
+                    <div class="conflict-facts">
+                        <div class="conflict-fact-label">⚠️ Conflicting Facts:</div>
+
+                        ${fact1 ? `
+                            <div class="conflict-fact-box">
+                                <div class="conflict-fact-statement"><strong>${fact1.id}:</strong> ${escapeHtml(fact1.statement)}</div>
+                                <div class="conflict-fact-meta">Type: ${fact1.type} | Confidence: ${Math.round((fact1.confidence || 0) * 100)}%</div>
+                            </div>
+                        ` : ''}
+
+                        ${fact2 ? `
+                            <div class="conflict-fact-box">
+                                <div class="conflict-fact-statement"><strong>${fact2.id}:</strong> ${escapeHtml(fact2.statement)}</div>
+                                <div class="conflict-fact-meta">Type: ${fact2.type} | Confidence: ${Math.round((fact2.confidence || 0) * 100)}%</div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    ${conflict.evidence && conflict.evidence.length > 0 ? `
+                        <div class="evidence">
+                            <div class="conflict-fact-label">📝 Evidence:</div>
+                            ${conflict.evidence.map(e => `
+                                <div class="evidence-item">${escapeHtml(e)}</div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${conflict.resolution_options && conflict.resolution_options.length > 0 ? `
+                        <div class="resolutions">
+                            <div class="resolutions-title">💡 Resolution Options:</div>
+                            ${conflict.resolution_options.map(option => `
+                                <div class="resolution-option">
+                                    <div class="resolution-name">${escapeHtml(option.name || option.type)}</div>
+                                    ${option.description ? `
+                                        <div class="resolution-description">${escapeHtml(option.description)}</div>
+                                    ` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function showFactDetail(factId) {
+            // Could implement a modal or expand inline
+            alert(`Fact ID: ${factId}\n\nClick implementation coming soon!`);
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const content = document.getElementById('facts-content');
+            if (view === 'compact') {
+                content.classList.add('compact');
+            } else {
+                content.classList.remove('compact');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,4608 @@
+{
+  "score": {
+    "total_questions": 41,
+    "high_confidence_count": 41,
+    "high_confidence_pct": 1.0,
+    "medium_confidence_count": 41,
+    "medium_confidence_pct": 1.0,
+    "low_confidence_count": 0,
+    "by_question_type": {
+      "onboarding": 0.9720555555555556,
+      "constraint": 0.9695,
+      "implementation": 0.9240624999999999,
+      "debugging": 0.9333333333333332,
+      "unknown": 0.8800000000000001
+    },
+    "weighted_score": 0.9575624999999999,
+    "overall_grade": "A - Excellent"
+  },
+  "results": [
+    {
+      "question": "How do I set up my local development environment?",
+      "answer": "To set up your local development environment for LotJ:\n\n1. **Use Docker Compose exclusively** - Never build or run services directly in your local environment (fact_2). The project uses a multi-service architecture with Docker Compose (fact_74).\n\n2. **Start the services** - Use `docker-compose up` to start the required services. For website services, add the `--profile website` flag (fact_75).\n\n3. **Access the game** - Once running, connect via telnet to port 5656 (fact_6, fact_11). Use test credentials: username 'legend' and password 'password' (fact_7).\n\n4. **Database configuration** - PostgreSQL runs on localhost:5432 with user 'root', password '12345', database 'lotj' (fact_10).\n\n5. **Important workflow notes**:\n   - NEVER use `docker-compose down` in normal development as it forces a database rebuild taking 10+ minutes (fact_8)\n   - To restart after code changes, use `docker-compose restart mud` to restart only the MUD service (fact_9)\n\n6. **Available services** include: mud, db, mosquitto, rpcsidecar, discord2mqtt, lotjwebbuffer, nginx, mysql, wordpress (fact_61)\n\n7. **Key ports**:\n   - Telnet (game): 5656\n   - RPC sidecar: 3000\n   - Web buffer: 3001\n   - MQTT broker: 1883, 9001\n   - Debug/GDB: 4444\n   - Firehose: 5666\n\n8. **Debugging tools** - Enable via environment variables: VALGRIND, FULL_DEBUG, GDBSERVER, ENABLE_LPROGS, FASTBOOT (facts 50-54). GDB debugging is available on port 4444 when enabled (fact_48).\n\n9. **Logs and crashes** - Server logs are in /data/log directory (fact_46), crash information in /backtraces directory (fact_47).",
+      "confidence": 0.925,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_7",
+          "statement": "Default test credentials are username 'legend' and password 'password'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 100-104, Section: Default Test Credentials"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_10",
+          "statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 189, Section: Database Access"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_46",
+          "statement": "Server logs are located in /data/log directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 331, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_47",
+          "statement": "Crash information is stored in /backtraces directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 332, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_48",
+          "statement": "GDB debugging is available on port 4444 when enabled",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 334, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_50",
+          "statement": "VALGRIND environment variable enables Valgrind memory checking",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 340, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_51",
+          "statement": "FULL_DEBUG environment variable enables full debugging",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 341, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_52",
+          "statement": "GDBSERVER environment variable enables GDB server",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 342, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_53",
+          "statement": "ENABLE_LPROGS environment variable enables Lua programs",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 343, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_54",
+          "statement": "FASTBOOT environment variable enables fast boot mode",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 344, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_61",
+          "statement": "Docker services include: mud, db, mosquitto, rpcsidecar, discord2mqtt, lotjwebbuffer, nginx, mysql, wordpress",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 49-58, Section: Docker Services Architecture"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_62",
+          "statement": "RPC sidecar service runs on port 3000",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 196, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_63",
+          "statement": "Web buffer service runs on port 3001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 197, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_64",
+          "statement": "MQTT broker uses ports 1883 and 9001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 198, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_65",
+          "statement": "Firehose port is 5666",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 195, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_66",
+          "statement": "Debug/GDB port is 4444",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 196, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_74",
+          "statement": "Multi-service architecture uses Docker Compose",
+          "type": "design",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 25, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_75",
+          "statement": "Website services require --profile website flag",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 63, Section: Service Profiles"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "First-time setup steps",
+        "How to verify the setup is working",
+        "Initial clone/checkout instructions",
+        "Prerequisites (Docker/Docker Compose installation)"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "design",
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [
+          "First-time setup steps",
+          "How to verify the setup is working",
+          "Initial clone/checkout instructions",
+          "Prerequisites (Docker/Docker Compose installation)"
+        ],
+        "recommendations": [
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "How do I start the MUD server for testing?",
+      "answer": "To start the MUD server for testing:\n\n1. Use Docker Compose exclusively - never build or run services directly in your local environment (fact_2)\n2. Run `docker-compose up` to start all services\n3. The MUD service will start and be accessible on telnet port 5656 (fact_6, fact_11)\n4. You can connect using the test credentials: username 'legend' and password 'password' (fact_7)\n5. For subsequent restarts during development, use `docker-compose restart mud` to restart only the MUD service - this is the recommended workflow (fact_9)\n6. IMPORTANT: Avoid using `docker-compose down` during normal development as it forces a database rebuild that takes 10+ minutes (fact_8)\n\nThe server will connect to PostgreSQL on localhost:5432 (user: 'root', password: '12345', database: 'lotj') (fact_10). Additional services like RPC sidecar (port 3000), web buffer (port 3001), and MQTT broker (ports 1883/9001) will also start as part of the Docker Compose stack (fact_61, fact_62, fact_63, fact_64).",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_7",
+          "statement": "Default test credentials are username 'legend' and password 'password'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 100-104, Section: Default Test Credentials"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_10",
+          "statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 189, Section: Database Access"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_61",
+          "statement": "Docker services include: mud, db, mosquitto, rpcsidecar, discord2mqtt, lotjwebbuffer, nginx, mysql, wordpress",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 49-58, Section: Docker Services Architecture"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_62",
+          "statement": "RPC sidecar service runs on port 3000",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 196, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_63",
+          "statement": "Web buffer service runs on port 3001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 197, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_64",
+          "statement": "MQTT broker uses ports 1883 and 9001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 198, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "How do I connect to the test server?",
+      "answer": "To connect to the test server:\n\n1. Ensure the server is running via Docker Compose (fact_2 states local development uses Docker Compose exclusively)\n2. Connect via Telnet to localhost on port 5656 (fact_6 and fact_11 confirm telnet-based connectivity on port 5656)\n3. Log in with the default test credentials:\n   - Username: legend\n   - Password: password\n\nYou can use any telnet client: `telnet localhost 5656`\n\nNote: The MUD service can be restarted independently using `docker-compose restart mud` if needed (fact_9), and you should avoid `docker-compose down` as it forces a 10+ minute database rebuild (fact_8).",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_7",
+          "statement": "Default test credentials are username 'legend' and password 'password'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 100-104, Section: Default Test Credentials"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "What are the default test credentials?",
+      "answer": "The default test credentials are username 'legend' and password 'password'.",
+      "confidence": 0.8,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.6000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_7",
+          "statement": "Default test credentials are username 'legend' and password 'password'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 100-104, Section: Default Test Credentials"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details"
+        ]
+      }
+    },
+    {
+      "question": "How do I restart the server after code changes?",
+      "answer": "After making code changes, restart only the MUD service using the command: `docker-compose restart mud`. DO NOT use `docker-compose down` as this will force a complete database rebuild that takes 10+ minutes. The recommended workflow is to restart only the mud service, which will pick up your code changes without affecting the database or other services.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details",
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "How do I access the database?",
+      "answer": "To access the PostgreSQL database in the LotJ development environment, connect to localhost:5432 using the following credentials: username 'root', password '12345', database name 'lotj'. You must use Docker Compose for local development - never build or run services directly in your local environment. The database service is one of the Docker services managed by docker-compose.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_10",
+          "statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 189, Section: Database Access"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_61",
+          "statement": "Docker services include: mud, db, mosquitto, rpcsidecar, discord2mqtt, lotjwebbuffer, nginx, mysql, wordpress",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 49-58, Section: Docker Services Architecture"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "requirement_facts"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "requirement"
+        ],
+        "missing_categories": [
+          "requirement_facts"
+        ],
+        "recommendations": [
+          "Extract from README and setup documentation",
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "How do I debug a crash?",
+      "answer": "To debug a crash in LotJ:\n\n1. Check crash information stored in /backtraces directory - this is where crash dumps are automatically saved.\n\n2. Review server logs in /data/log directory to see what happened before the crash.\n\n3. For active debugging, enable GDB server by setting the GDBSERVER environment variable, which will make GDB available on port 4444.\n\n4. For memory-related issues, enable Valgrind by setting the VALGRIND environment variable for memory checking.\n\n5. You can also enable full debugging with the FULL_DEBUG environment variable.\n\n6. All of these debugging tools work within the Docker Compose environment - never build or run services directly. Use 'docker-compose restart mud' to restart the MUD service after changing environment variables.",
+      "confidence": 0.925,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_46",
+          "statement": "Server logs are located in /data/log directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 331, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_47",
+          "statement": "Crash information is stored in /backtraces directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 332, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_48",
+          "statement": "GDB debugging is available on port 4444 when enabled",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 334, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_49",
+          "statement": "Valgrind support is available via environment variables",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 335, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_50",
+          "statement": "VALGRIND environment variable enables Valgrind memory checking",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 340, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_51",
+          "statement": "FULL_DEBUG environment variable enables full debugging",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 341, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_52",
+          "statement": "GDBSERVER environment variable enables GDB server",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 342, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "How do I format my code properly?",
+      "answer": "To format your code properly in this codebase:\n\n1. Use the `make style` command from the src/ directory, which automatically formats all .c and .h files using the astyle tool with ANSI style.\n\n2. Follow these naming conventions:\n   - C functions: snake_case\n   - Global variables: prefix with 'g_'\n   - Constants: ALL_CAPS\n   - Lua functions: camelCase (typically)\n\n3. Ensure your build produces zero compiler warnings - all builds MUST be clean.\n\n4. Follow the established header file structure:\n   - Include mud.h first, then types.h, then other headers as needed\n   - Include functions.h last for function prototypes\n   - Do NOT create new header files\n\nThe easiest approach is to run `make style` which will automatically apply the correct formatting to your code.",
+      "confidence": 0.9734999999999999,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 0.9969999999999999,
+      "supporting_facts": [
+        {
+          "id": "fact_12",
+          "statement": "C function naming convention is snake_case",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 205, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_13",
+          "statement": "Global variables MUST be prefixed with 'g_'",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 206, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_14",
+          "statement": "Constants MUST be named in ALL_CAPS",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 207, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_15",
+          "statement": "No compiler warnings are acceptable - all builds MUST be clean",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 209, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_25",
+          "statement": "functions.h is typically included last for function prototypes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 249, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_42",
+          "statement": "Lua functions typically use camelCase",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 314, Section: Lua Conventions"
+            }
+          ],
+          "confidence": 0.9
+        },
+        {
+          "id": "fact_76",
+          "statement": "Code formatting uses astyle tool with ANSI style",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 67-71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_77",
+          "statement": "make style target formats all .c and .h files",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "requirement_facts"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "requirement"
+        ],
+        "missing_categories": [
+          "requirement_facts"
+        ],
+        "recommendations": [
+          "Extract from README and setup documentation",
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "What port does the game run on?",
+      "answer": "The game runs on port 5656 for telnet-based connectivity.",
+      "confidence": 0.85,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.7,
+      "supporting_facts": [
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "Can I use malloc() directly in C code?",
+      "answer": "No, you must NOT use malloc() directly in C code. The MUD uses a custom memory management system, and raw malloc() is explicitly forbidden. Instead, you must use the CREATE(result, type, number) macro to allocate memory. Similarly, you must use DISPOSE(pointer) to free memory instead of free(), and SET_STRING(pointer, value) for safe string assignment instead of strdup(). The only exception is that raw strdup() should only be used when SET_STRING is unsafe.",
+      "confidence": 0.9974999999999999,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.9949999999999999,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_31",
+          "statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 273-275, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_33",
+          "statement": "Raw strdup() should only be used when SET_STRING is unsafe",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 281, Section: Memory Management"
+            }
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Must I place new structs in types.h?",
+      "answer": "Yes, you MUST place all new struct definitions in types.h. This is an explicit constraint in the codebase. The file types.h contains 5830 lines with ALL struct and type definitions, and there is a specific rule that ALL new struct definitions MUST be placed in types.h. Additionally, you should NOT create new header files - the codebase uses an existing well-established header file structure where types.h serves as the centralized location for all struct definitions.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_19",
+          "statement": "types.h contains 5830 lines with ALL struct and type definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 226-229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_20",
+          "statement": "ALL new struct definitions MUST be placed in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_26",
+          "statement": "Struct definitions MUST go in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 254, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Can I create a new header file?",
+      "answer": "No, you should NOT create a new header file. The codebase has an established header file structure that you must use. Instead of creating new headers, you should place your code in the existing headers according to their purposes: new struct definitions go in types.h, new function prototypes go in functions.h, new constants go in const.h, and global variable declarations go in globals.h. The primary header mud.h contains memory management macros and core definitions. This constraint is explicitly stated to maintain the well-established header organization.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_17",
+          "statement": "mud.h is the primary header with 981 lines containing memory management macros and core definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 217-220, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_18",
+          "statement": "const.h contains 716 lines of constants and defines only, no type definitions or function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 222-224, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_19",
+          "statement": "types.h contains 5830 lines with ALL struct and type definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 226-229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_20",
+          "statement": "ALL new struct definitions MUST be placed in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_21",
+          "statement": "functions.h contains 2437 lines with ALL function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 231-233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_22",
+          "statement": "ALL new function declarations MUST be placed in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_23",
+          "statement": "globals.h contains 668 lines with global variable extern declarations only",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 235-237, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_26",
+          "statement": "Struct definitions MUST go in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 254, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_27",
+          "statement": "Function prototypes MUST go in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 255, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Must function names use snake_case?",
+      "answer": "Yes, C function names MUST use snake_case naming convention. This is explicitly stated as a constraint for the codebase.",
+      "confidence": 0.8,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.6000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_12",
+          "statement": "C function naming convention is snake_case",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 205, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details"
+        ]
+      }
+    },
+    {
+      "question": "Must global variables be prefixed with g_?",
+      "answer": "Yes, global variables MUST be prefixed with 'g_'. This is an explicit constraint in the codebase's coding standards.",
+      "confidence": 0.8,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.6000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_13",
+          "statement": "Global variables MUST be prefixed with 'g_'",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 206, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details"
+        ]
+      }
+    },
+    {
+      "question": "Can I have compiler warnings in my code?",
+      "answer": "No, you cannot have compiler warnings in your code. All builds MUST be clean with no compiler warnings acceptable.",
+      "confidence": 0.8,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.6000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_15",
+          "statement": "No compiler warnings are acceptable - all builds MUST be clean",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 209, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Must I use the CREATE macro for memory allocation?",
+      "answer": "Yes, you MUST use the CREATE macro for memory allocation. The codebase uses a custom memory management system and explicitly prohibits using raw malloc/free functions. The CREATE(result, type, number) macro must be used to allocate memory for a specified number of items of a given type. Similarly, you must use DISPOSE(pointer) to free memory (which also sets the pointer to NULL), and SET_STRING(pointer, value) for safe string assignment. Never use raw malloc(), free(), calloc(), realloc(), or str_dup(). The only exception is that raw strdup() should only be used when SET_STRING is unsafe.",
+      "confidence": 0.9974999999999999,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.9949999999999999,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_31",
+          "statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 273-275, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_33",
+          "statement": "Raw strdup() should only be used when SET_STRING is unsafe",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 281, Section: Memory Management"
+            }
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Can I manually set next/prev pointers in linked lists?",
+      "answer": "No, you must NOT manually set next/prev pointers in linked lists. The codebase explicitly requires using LINK and UNLINK macros for doubly linked list management. These macros automatically maintain the next and previous pointer values along with the head and tail pointers. The custom memory management system (fact_28) and the constraint against creating new header files (fact_16) both support this requirement. Always use LINK/UNLINK macros (fact_36, fact_37, fact_38) or INSERT/INSERT_AFTER macros (fact_39, fact_40) for list operations.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_38",
+          "statement": "UNLINK(node, head, tail, next, prev) removes node from linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 299-301, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_39",
+          "statement": "INSERT(node, other_node, head, next, prev) inserts node before other_node and updates head pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 303-305, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_40",
+          "statement": "INSERT_AFTER(node, other_node, tail, next, prev) inserts node after other_node and updates tail pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 307-309, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_138",
+          "statement": "Following relationships use LINK/UNLINK macros for doubly-linked list management",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3928-3932, add_follower() LINK usage"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Must I use the LINK/UNLINK macros?",
+      "answer": "Yes, you MUST use the LINK/UNLINK macros for managing doubly linked lists. The codebase explicitly requires that you always use LINK/UNLINK macros and never manually manage next and previous pointer values. These macros maintain static pointers to head and tail nodes of linked lists and handle all the pointer management automatically. The MUD uses doubly linked lists extensively, and the LINK/UNLINK system is part of the custom memory management approach (similar to how you must use CREATE/DISPOSE instead of malloc/free). Related macros include INSERT for inserting before a node and INSERT_AFTER for inserting after a node.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_38",
+          "statement": "UNLINK(node, head, tail, next, prev) removes node from linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 299-301, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_39",
+          "statement": "INSERT(node, other_node, head, next, prev) inserts node before other_node and updates head pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 303-305, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_40",
+          "statement": "INSERT_AFTER(node, other_node, tail, next, prev) inserts node after other_node and updates tail pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 307-309, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_138",
+          "statement": "Following relationships use LINK/UNLINK macros for doubly-linked list management",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3928-3932, add_follower() LINK usage"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Can I use docker-compose down during development?",
+      "answer": "No, you should NOT use docker-compose down during normal development. Using docker-compose down forces a database rebuild that takes 10+ minutes. Instead, the recommended development workflow is to restart only the MUD service using 'docker-compose restart mud' when you need to restart services.",
+      "confidence": 0.9,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.8,
+      "supporting_facts": [
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Should I use DISPOSE to free memory?",
+      "answer": "Yes, you MUST use DISPOSE to free memory in this codebase. The MUD uses a custom memory management system and raw free() calls are explicitly forbidden. DISPOSE is the required macro for deallocating memory - it frees the memory AND sets the pointer to NULL for safety. Never use raw malloc(), free(), calloc(), or realloc(). For allocation, use the CREATE macro instead of malloc.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Must I put function prototypes in functions.h?",
+      "answer": "Yes, you MUST put ALL new function prototypes in functions.h. This is an explicit constraint in the codebase. The file functions.h contains 2437 lines with ALL function prototypes, and there is a strict rule that ALL new function declarations MUST be placed in functions.h. Additionally, you should NOT create new header files - you must use the existing well-established header file structure. The typical include order is mud.h first, then types.h, then other headers as needed, with functions.h typically included last for function prototypes.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_21",
+          "statement": "functions.h contains 2437 lines with ALL function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 231-233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_22",
+          "statement": "ALL new function declarations MUST be placed in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_25",
+          "statement": "functions.h is typically included last for function prototypes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 249, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_27",
+          "statement": "Function prototypes MUST go in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 255, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "constraint",
+        "expected_fact_types": [
+          "constraint",
+          "design"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": [
+          "Focus on coding standards, best practices, and constraint documentation"
+        ]
+      }
+    },
+    {
+      "question": "Where are the core header files?",
+      "answer": "The core header files are:\n\n1. **mud.h** - Primary header with 981 lines containing memory management macros and core definitions. Should be included first in most files.\n\n2. **types.h** - Contains 5830 lines with ALL struct and type definitions. ALL new struct definitions MUST be placed here.\n\n3. **const.h** - Contains 716 lines of constants and defines only (no type definitions or function prototypes).\n\n4. **functions.h** - Contains 2437 lines with ALL function prototypes. ALL new function declarations MUST be placed here. Typically included last.\n\n5. **globals.h** - Contains 668 lines with global variable extern declarations only.\n\nThe recommended include order is: mud.h first, then types.h, then other headers as needed, with functions.h typically last.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_17",
+          "statement": "mud.h is the primary header with 981 lines containing memory management macros and core definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 217-220, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_18",
+          "statement": "const.h contains 716 lines of constants and defines only, no type definitions or function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 222-224, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_19",
+          "statement": "types.h contains 5830 lines with ALL struct and type definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 226-229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_20",
+          "statement": "ALL new struct definitions MUST be placed in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_21",
+          "statement": "functions.h contains 2437 lines with ALL function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 231-233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_22",
+          "statement": "ALL new function declarations MUST be placed in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_23",
+          "statement": "globals.h contains 668 lines with global variable extern declarations only",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 235-237, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_25",
+          "statement": "functions.h is typically included last for function prototypes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 249, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_26",
+          "statement": "Struct definitions MUST go in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 254, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_27",
+          "statement": "Function prototypes MUST go in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 255, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "What is in mud.h?",
+      "answer": "mud.h is the primary header file containing 981 lines with memory management macros and core definitions. It includes macros like CREATE() for memory allocation, DISPOSE() for freeing memory, SET_STRING() for safe string assignment, and LINK/UNLINK macros for managing doubly linked lists. This header should typically be included first in most files, before types.h and other headers.",
+      "confidence": 0.925,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_17",
+          "statement": "mud.h is the primary header with 981 lines containing memory management macros and core definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 217-220, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_31",
+          "statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 273-275, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_38",
+          "statement": "UNLINK(node, head, tail, next, prev) removes node from linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 299-301, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "How does the memory management system work?",
+      "answer": "The MUD uses a custom memory management system that completely replaces standard C memory functions. Developers must never use raw malloc(), free(), calloc(), realloc(), or str_dup(). Instead, the system provides three required macros: CREATE(result, type, number) for allocating memory for a specified number of items of a given type, DISPOSE(pointer) for freeing memory and automatically setting the pointer to NULL, and SET_STRING(pointer, value) for safe string assignment that frees the old string and allocates new memory. The only exception is raw strdup() which should only be used when SET_STRING is unsafe. These macros are defined in mud.h (the primary header with 981 lines containing memory management macros), which should typically be included first in source files. This custom system ensures proper memory tracking and prevents common memory management errors.",
+      "confidence": 0.973125,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 0.99625,
+      "supporting_facts": [
+        {
+          "id": "fact_17",
+          "statement": "mud.h is the primary header with 981 lines containing memory management macros and core definitions",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 217-220, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_31",
+          "statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 273-275, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_33",
+          "statement": "Raw strdup() should only be used when SET_STRING is unsafe",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 281, Section: Memory Management"
+            }
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "How do I add an item to a linked list?",
+      "answer": "To add an item to a linked list in this codebase, you MUST use the LINK macro - never manually manage next and previous pointers. The LINK macro syntax is: LINK(node, head, tail, next, prev). This adds the node to the tail end of the linked list and automatically updates the head/tail pointers. The codebase uses doubly linked lists managed exclusively with LINK and UNLINK macros as part of the custom memory management system. If you need to insert at a specific position, use INSERT(node, other_node, head, next, prev) to insert before another node, or INSERT_AFTER(node, other_node, tail, next, prev) to insert after another node.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_39",
+          "statement": "INSERT(node, other_node, head, next, prev) inserts node before other_node and updates head pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 303-305, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_40",
+          "statement": "INSERT_AFTER(node, other_node, tail, next, prev) inserts node after other_node and updates tail pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 307-309, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_138",
+          "statement": "Following relationships use LINK/UNLINK macros for doubly-linked list management",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3928-3932, add_follower() LINK usage"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "requirement_facts"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "requirement"
+        ],
+        "missing_categories": [
+          "requirement_facts"
+        ],
+        "recommendations": [
+          "Extract from README and setup documentation",
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "What is the LINK macro and how do I use it?",
+      "answer": "The LINK macro is used to add nodes to doubly linked lists in the LotJ MUD codebase. It adds a node to the tail end of a linked list and automatically updates the head and tail pointers.\n\nUsage: LINK(node, head, tail, next, prev)\n\nParameters:\n- node: The node you want to add to the list\n- head: Pointer to the head of the list\n- tail: Pointer to the tail of the list\n- next: The name of the 'next' pointer field in your node structure\n- prev: The name of the 'prev' pointer field in your node structure\n\nImportant rules:\n- ALWAYS use LINK/UNLINK macros for doubly linked lists - never manually manage next and previous pointer values (fact_36)\n- This is part of the custom memory management system that must be used instead of raw C functions (fact_28)\n- The macro maintains static pointers to head and tail nodes automatically (fact_35)\n\nExample context: Following relationships use LINK/UNLINK macros for doubly-linked list management (fact_138)",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_138",
+          "statement": "Following relationships use LINK/UNLINK macros for doubly-linked list management",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3928-3932, add_follower() LINK usage"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "requirement_facts"
+      ],
+      "gap_details": {
+        "question_type": "onboarding",
+        "expected_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "requirement"
+        ],
+        "missing_categories": [
+          "requirement_facts"
+        ],
+        "recommendations": [
+          "Extract from README and setup documentation",
+          "Focus on setup guides, quickstart docs, and development workflow"
+        ]
+      }
+    },
+    {
+      "question": "Where are server logs stored?",
+      "answer": "Server logs are located in the /data/log directory. Additionally, channel-specific communications are logged to separate files using the channel's flag name as the filename, and speech in rooms with the ROOM_LOGSPEECH flag is appended to LOG_FILE.",
+      "confidence": 0.9000000000000001,
+      "llm_confidence": 0.9,
+      "secondary_confidence": 0.9000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_46",
+          "statement": "Server logs are located in /data/log directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 331, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_115",
+          "statement": "Communication channels log to separate channel-specific log files using flag_value_name for filename",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 970-974, talk_channel() logging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_140",
+          "statement": "ROOM_LOGSPEECH flag causes all speech in room to be appended to LOG_FILE",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3279-3284, do_say() speech logging"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "How does the Lua integration work?",
+      "answer": "The Lua integration in LotJ works through a 'looms' system where game logic is implemented. Lua scripts are organized in 'looms' that are automatically loaded from the /looms directory. The core game engine is written in C with Lua scripting capabilities built in. Lua functions are triggered as callbacks during speech events, executing in sequence: ch_speech, obj_speech, and room_speech (followed by MUD programs). The Lua integration can be enabled/disabled via the ENABLE_LPROGS environment variable. Lua functions typically use camelCase naming convention and should avoid global functions. The system allows extending game functionality through scripting while maintaining the C core engine.",
+      "confidence": 0.82125,
+      "llm_confidence": 0.65,
+      "secondary_confidence": 0.9924999999999999,
+      "supporting_facts": [
+        {
+          "id": "fact_4",
+          "statement": "Core game engine is written in C with Lua scripting capabilities",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 19-21, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_5",
+          "statement": "Game logic is implemented in Lua via 'looms'",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 22-23, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_41",
+          "statement": "Lua scripts are organized in 'looms'",
+          "type": "design",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 313, Section: Lua Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_42",
+          "statement": "Lua functions typically use camelCase",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 314, Section: Lua Conventions"
+            }
+          ],
+          "confidence": 0.9
+        },
+        {
+          "id": "fact_43",
+          "statement": "Lua global functions should be avoided",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 315, Section: Lua Conventions"
+            }
+          ],
+          "confidence": 0.9
+        },
+        {
+          "id": "fact_44",
+          "statement": "Looms are automatically loaded from /looms directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 316, Section: Lua Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_53",
+          "statement": "ENABLE_LPROGS environment variable enables Lua programs",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 343, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_133",
+          "statement": "Speech triggers Lua and MUD program callbacks in sequence: ch_speech, obj_speech, room_speech, mprog, oprog, rprog",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3288-3308, do_say() trigger sequence"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "Available Lua libraries or APIs exposed to scripts",
+        "Error handling between C and Lua",
+        "How C code calls Lua functions (API details)",
+        "How Lua scripts access game data structures",
+        "How looms are structured internally",
+        "Lua version used",
+        "Memory management between C and Lua boundaries",
+        "Performance considerations",
+        "Registration/initialization process for Lua callbacks"
+      ],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "design",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [
+          "Available Lua libraries or APIs exposed to scripts",
+          "Error handling between C and Lua",
+          "How C code calls Lua functions (API details)",
+          "How Lua scripts access game data structures",
+          "How looms are structured internally",
+          "Lua version used",
+          "Memory management between C and Lua boundaries",
+          "Performance considerations",
+          "Registration/initialization process for Lua callbacks"
+        ],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "What build targets are available?",
+      "answer": "The src/Makefile supports the following build targets:\n\n1. **swreality** - The default target\n2. **sandbox** - Sandbox environment build\n3. **staging** - Staging environment build\n4. **codingport** - Coding port build\n5. **lotjbuild** - LotJ build variant\n6. **clean** - Clean build artifacts\n7. **style** - Format all .c and .h files using astyle tool with ANSI style\n\nThe default target is 'swreality', and the 'style' target specifically formats code using the astyle tool.",
+      "confidence": 1.0,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_45",
+          "statement": "The src/Makefile supports targets: swreality (default), sandbox, staging, codingport, lotjbuild, clean, and style",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 320-327, Section: Build System"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_76",
+          "statement": "Code formatting uses astyle tool with ANSI style",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 67-71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_77",
+          "statement": "make style target formats all .c and .h files",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "How does the testing tool work?",
+      "answer": "The testing tool is a utility located in the /tools/tester/ directory that automates interaction with the LotJ MUD server for testing purposes. It works by: (1) Connecting to the LotJ server via Telnet on port 5656, (2) Logging in using provided credentials (default test credentials are username 'legend' and password 'password'), (3) Executing commands either from a file or interactively, and (4) Capturing and displaying server responses. This allows developers to automate testing scenarios and verify game functionality without manual interaction.",
+      "confidence": 0.925,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_7",
+          "statement": "Default test credentials are username 'legend' and password 'password'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 100-104, Section: Default Test Credentials"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_67",
+          "statement": "Testing tool is located in /tools/tester/ directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 77-78, Section: Testing Tool"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_68",
+          "statement": "Testing tool connects to LotJ server via Telnet",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 80, Section: Testing Tool"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_69",
+          "statement": "Testing tool logs in with provided credentials",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 81, Section: Testing Tool"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_70",
+          "statement": "Testing tool executes commands from a file or interactively",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 82, Section: Testing Tool"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_71",
+          "statement": "Testing tool captures and displays server responses",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 83, Section: Testing Tool"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "Command file format and syntax",
+        "Error handling capabilities",
+        "How to invoke the testing tool",
+        "Output format details",
+        "Whether it supports automated assertions or validation",
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "Command file format and syntax",
+          "Error handling capabilities",
+          "How to invoke the testing tool",
+          "Output format details",
+          "Whether it supports automated assertions or validation",
+          "design_facts"
+        ],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "What is the structure of the Docker services?",
+      "answer": "The Docker services structure consists of multiple services managed via Docker Compose:\n\n**Core Services:**\n- **mud**: The main MUD game server, exposes telnet on port 5656, firehose on port 5666, and optional GDB debugging on port 4444\n- **db**: PostgreSQL database on localhost:5432 (user: 'root', password: '12345', database: 'lotj')\n\n**Communication Services:**\n- **mosquitto**: MQTT broker using ports 1883 and 9001\n- **rpcsidecar**: RPC sidecar service on port 3000\n- **discord2mqtt**: Discord integration service\n- **lotjwebbuffer**: Web buffer service on port 3001\n\n**Website Services (require --profile website flag):**\n- **nginx**: Web server\n- **mysql**: MySQL database for WordPress\n- **wordpress**: WordPress CMS\n\n**Development Workflow:**\n- Must use Docker Compose exclusively for local development\n- Avoid 'docker-compose down' as it forces 10+ minute database rebuild\n- Use 'docker-compose restart mud' for normal development to restart only the MUD service\n\n**Key Directories:**\n- Logs: /data/log\n- Crash info: /backtraces\n- Core code: /src, /looms, /area\n- Tools: /tools/tester\n- Service-specific: /mosquitto, /rpcsidecar, /discord2mqtt, /webbuffer, /www\n\n**Debugging:**\n- Environment variables: VALGRIND, FULL_DEBUG, GDBSERVER, ENABLE_LPROGS, FASTBOOT",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_2",
+          "statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_6",
+          "statement": "Telnet-based connectivity uses port 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 24, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_10",
+          "statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 189, Section: Database Access"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_11",
+          "statement": "Game telnet port is 5656",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 194, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_46",
+          "statement": "Server logs are located in /data/log directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 331, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_47",
+          "statement": "Crash information is stored in /backtraces directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 332, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_48",
+          "statement": "GDB debugging is available on port 4444 when enabled",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 334, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_49",
+          "statement": "Valgrind support is available via environment variables",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 335, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_50",
+          "statement": "VALGRIND environment variable enables Valgrind memory checking",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 340, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_51",
+          "statement": "FULL_DEBUG environment variable enables full debugging",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 341, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_52",
+          "statement": "GDBSERVER environment variable enables GDB server",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 342, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_53",
+          "statement": "ENABLE_LPROGS environment variable enables Lua programs",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 343, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_54",
+          "statement": "FASTBOOT environment variable enables fast boot mode",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 344, Section: Environment Variables"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_61",
+          "statement": "Docker services include: mud, db, mosquitto, rpcsidecar, discord2mqtt, lotjwebbuffer, nginx, mysql, wordpress",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 49-58, Section: Docker Services Architecture"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_62",
+          "statement": "RPC sidecar service runs on port 3000",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 196, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_63",
+          "statement": "Web buffer service runs on port 3001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 197, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_64",
+          "statement": "MQTT broker uses ports 1883 and 9001",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 198, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_65",
+          "statement": "Firehose port is 5666",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 195, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_66",
+          "statement": "Debug/GDB port is 4444",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 196, Section: Network Ports"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_72",
+          "statement": "Core game directories include /src, /looms, /area, /docs, /data, /backtraces, /tools/tester, /migrations, /rocksdbs, /mosquitto, /rpcsidecar, /discord2mqtt, /webbuffer, /www",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 29-43, Section: Important Directories"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_74",
+          "statement": "Multi-service architecture uses Docker Compose",
+          "type": "design",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 25, Section: Codebase Overview"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_75",
+          "statement": "Website services require --profile website flag",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 63, Section: Service Profiles"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "design",
+          "implementation",
+          "requirement"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "Where are crash backtraces stored?",
+      "answer": "Crash backtraces are stored in the /backtraces directory.",
+      "confidence": 0.8,
+      "llm_confidence": 1.0,
+      "secondary_confidence": 0.6000000000000001,
+      "supporting_facts": [
+        {
+          "id": "fact_47",
+          "statement": "Crash information is stored in /backtraces directory",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 332, Section: Debugging"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "How does language translation/scrambling work?",
+      "answer": "Language translation/scrambling in LotJ works through multiple interconnected systems:\n\n1. **Language System**: The game supports 94 distinct languages tracked by bitvector flags (fact_105). Players can learn additional languages up to a limit of (INT/5) + feat bonuses, costing 5 credits each and requiring an ACT_SCHOLAR NPC in the room (fact_106, fact_107).\n\n2. **Scrambling Algorithms**: Different languages use different scrambling algorithms, including LANG_YUBYUB and LANG_BINARY (fact_87). When text is converted, it returns empty string for LANG_BASIC or when an NPC speaks with an empty language vector (fact_128).\n\n3. **Translation Bypass Rules**: Immortals at trust level >= 105 or when not morting bypass language scrambling entirely (fact_95). Translation droids automatically translate speech when in DROID_MODE_TRANSLATION and DROID_STATE_ASSIST (fact_101).\n\n4. **Special Cases**: LORRDIAN is a physical/visual language requiring line of sight or special abilities to understand (fact_119). Speech in quotes within emotes is processed through language translation (fact_99).\n\n5. **Intelligence Restrictions**: Characters with RFLAG_STUPID can only form sentences up to 3 words, while characters with INT < 12 can form sentences up to (INT/3)+2 words (fact_96, fact_97).\n\n6. **Communication Integration**: Language scrambling affects various communication channels including speech, emotes with quoted text, microphone relays (fact_100), and holotransmitters (fact_110). Drunk speech modifies text before language processing (fact_88).",
+      "confidence": 0.925,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_87",
+          "statement": "Text scrambling supports multiple languages with different scrambling algorithms including LANG_YUBYUB and LANG_BINARY",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 393-496, scramble_text() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_95",
+          "statement": "Language scrambling is bypassed for immortals at trust level >= 105 or when not morting",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 1288-1290, do_talk() immortal bypass"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_96",
+          "statement": "Characters with RFLAG_STUPID can only form sentences up to 3 words in length",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Multiple locations including lines 1100-1104, 1146-1149, sentence length checks"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_97",
+          "statement": "Characters with INT < 12 can form sentences up to (INT/3)+2 words in length",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Multiple locations including lines 1105-1109, 1150-1154, INT-based sentence length checks"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_99",
+          "statement": "Speech in quotes within emotes is processed through drunk_speech and language translation",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 2420-2458, process_emote_for_target() quote handling"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_100",
+          "statement": "Microphones relay speech to all comlinks tuned to same channel within same starsystem",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 2810-2870, relay_microphone() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_101",
+          "statement": "Translation droids automatically translate speech when in DROID_MODE_TRANSLATION and DROID_STATE_ASSIST",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 2878-2932, activate_translator_droids() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_105",
+          "statement": "Language system supports 94 distinct languages tracked by bitvector flags",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3476-3567, languages[] flag definitions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_106",
+          "statement": "Players can learn additional languages up to lang_limit which is (INT/5) + feat bonuses",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4525-4538, lang_limit() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_107",
+          "statement": "Learning a language costs 5 credits and requires ACT_SCHOLAR NPC in room",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4016-4070, do_languages() learning logic"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_119",
+          "statement": "LORRDIAN language is physical/visual and requires line of sight or special abilities to understand",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3034-3047, do_say() Lorrdian visibility check"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_128",
+          "statement": "Language conversion returns empty string for LANG_BASIC or when NPC speaking with empty language vector",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4317-4328, lang_convert() basic language handling"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "design_facts"
+      ],
+      "gap_details": {
+        "question_type": "implementation",
+        "expected_fact_types": [
+          "design",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [
+          "design"
+        ],
+        "missing_categories": [
+          "design_facts"
+        ],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "Why did my build fail with warnings?",
+      "answer": "Your build failed with warnings because the codebase has a strict policy that no compiler warnings are acceptable - all builds MUST be clean (fact_15). Any warnings will cause the build to fail. To fix this, you need to identify and resolve all compiler warnings in your code. Common causes include: unused variables, implicit function declarations, type mismatches, or missing return statements. Review the warning messages from the compiler output to identify the specific issues in your code and fix them before attempting to build again.",
+      "confidence": 0.825,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 0.8,
+      "supporting_facts": [
+        {
+          "id": "fact_15",
+          "statement": "No compiler warnings are acceptable - all builds MUST be clean",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 209, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details",
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    },
+    {
+      "question": "Why does restarting take 10+ minutes?",
+      "answer": "Restarting takes 10+ minutes when using 'docker-compose down' because it forces a complete database rebuild. This is why the recommended development workflow is to use 'docker-compose restart mud' instead, which only restarts the MUD service without touching the database, avoiding the lengthy rebuild process.",
+      "confidence": 0.875,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 0.8,
+      "supporting_facts": [
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details"
+        ]
+      }
+    },
+    {
+      "question": "Why am I getting memory corruption?",
+      "answer": "Memory corruption is most likely caused by violating the MUD's custom memory management system. You MUST use CREATE() macro instead of malloc() to allocate memory, DISPOSE() macro instead of free() to deallocate memory, and SET_STRING() macro for string assignment. Never use raw malloc(), free(), calloc(), realloc(), or str_dup(). Additionally, for linked lists, you MUST use LINK/UNLINK macros instead of manually managing next and previous pointers - manual pointer manipulation will corrupt the doubly-linked list structure. The DISPOSE() macro automatically sets pointers to NULL after freeing, preventing use-after-free errors. Check your code for any direct memory function calls or manual list pointer manipulation.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_31",
+          "statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 273-275, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_38",
+          "statement": "UNLINK(node, head, tail, next, prev) removes node from linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 299-301, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "unknown",
+        "expected_fact_types": [
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": []
+      }
+    },
+    {
+      "question": "Why is my linked list code crashing?",
+      "answer": "Your linked list code is likely crashing because you are manually managing next and previous pointer values instead of using the required LINK/UNLINK macros. The MUD uses doubly linked lists that MUST be managed exclusively with LINK and UNLINK macros - never manually manage the pointers. Use LINK(node, head, tail, next, prev) to add nodes to the tail, UNLINK(node, head, tail, next, prev) to remove nodes, INSERT(node, other_node, head, next, prev) to insert before another node, or INSERT_AFTER(node, other_node, tail, next, prev) to insert after another node. These macros properly maintain static pointers to head and tail nodes. Additionally, ensure you're using the custom memory management system: CREATE() for allocation and DISPOSE() for freeing memory - never use raw malloc/free which can also cause crashes.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_34",
+          "statement": "The MUD uses doubly linked lists managed with LINK and UNLINK macros",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 285-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_35",
+          "statement": "LINK and UNLINK macros maintain static pointers to head and tail nodes of linked lists",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 287-288, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_37",
+          "statement": "LINK(node, head, tail, next, prev) adds node to tail end of linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 295-297, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_38",
+          "statement": "UNLINK(node, head, tail, next, prev) removes node from linked list and updates head/tail pointers",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 299-301, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_39",
+          "statement": "INSERT(node, other_node, head, next, prev) inserts node before other_node and updates head pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 303-305, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_40",
+          "statement": "INSERT_AFTER(node, other_node, tail, next, prev) inserts node after other_node and updates tail pointer",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 307-309, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_138",
+          "statement": "Following relationships use LINK/UNLINK macros for doubly-linked list management",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3928-3932, add_follower() LINK usage"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    },
+    {
+      "question": "Why can't I find the function prototype?",
+      "answer": "Function prototypes in this codebase MUST be placed in functions.h, which contains 2437 lines with ALL function prototypes. The codebase uses an established header file structure where you should NOT create new header files. When looking for a function prototype, check functions.h first - it's typically included last in source files. The standard include order is: mud.h first, then types.h, then other headers as needed, with functions.h included last. If you can't find a prototype, it either doesn't exist yet (and needs to be added to functions.h), or you may not have included functions.h in your source file.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_21",
+          "statement": "functions.h contains 2437 lines with ALL function prototypes",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 231-233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_22",
+          "statement": "ALL new function declarations MUST be placed in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_25",
+          "statement": "functions.h is typically included last for function prototypes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 249, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_27",
+          "statement": "Function prototypes MUST go in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 255, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    },
+    {
+      "question": "Why is my code style wrong?",
+      "answer": "Your code style may be wrong for several reasons based on the codebase conventions:\n\n1. **Naming Conventions**: C functions must use snake_case (fact_12), global variables must be prefixed with 'g_' (fact_13), and constants must be in ALL_CAPS (fact_14).\n\n2. **Header File Organization**: You may have created new header files when you should use the existing structure (fact_16). All new struct definitions must go in types.h (fact_20, fact_26), all function prototypes must go in functions.h (fact_22, fact_27), and header inclusion order should be: mud.h first, then types.h, then other headers, with functions.h typically last (fact_24, fact_25).\n\n3. **Memory Management**: You must use CREATE() macro instead of malloc (fact_29), DISPOSE() instead of free (fact_30), and never use raw malloc/free/calloc/realloc/str_dup (fact_32).\n\n4. **List Management**: You must use LINK/UNLINK macros for doubly linked lists, never manually manage next/previous pointers (fact_36).\n\n5. **Compilation Cleanliness**: All builds must be clean with zero compiler warnings (fact_15).\n\n6. **Code Formatting**: The codebase uses astyle tool with ANSI style (fact_76), and you can run 'make style' to automatically format all .c and .h files (fact_77).\n\nTo fix your code style, run 'make style' from the src/ directory to apply automatic formatting, then check the above conventions manually.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_12",
+          "statement": "C function naming convention is snake_case",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 205, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_13",
+          "statement": "Global variables MUST be prefixed with 'g_'",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 206, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_14",
+          "statement": "Constants MUST be named in ALL_CAPS",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 207, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_15",
+          "statement": "No compiler warnings are acceptable - all builds MUST be clean",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 209, Section: C Code Conventions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_16",
+          "statement": "DO NOT create new header files, use existing well-established header file structure",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 213, Section: Header Files - CRITICAL"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_20",
+          "statement": "ALL new struct definitions MUST be placed in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 229, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_22",
+          "statement": "ALL new function declarations MUST be placed in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 233, Section: Core Headers"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_24",
+          "statement": "Most files should include mud.h first, then types.h, then other headers as needed",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 248, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_25",
+          "statement": "functions.h is typically included last for function prototypes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 249, Section: Header Inclusion Rules"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_26",
+          "statement": "Struct definitions MUST go in types.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 254, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_27",
+          "statement": "Function prototypes MUST go in functions.h",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 255, Section: Content Placement Guidelines"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_28",
+          "statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 262, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_29",
+          "statement": "CREATE(result, type, number) macro MUST be used to allocate memory for number items of type",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 264-267, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_30",
+          "statement": "DISPOSE(pointer) macro MUST be used to free memory and set pointer to NULL",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 269-271, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_32",
+          "statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 279, Section: Memory Management"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_36",
+          "statement": "Always use LINK/UNLINK macros for doubly linked lists, never manually manage next and previous pointer values",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 288-290, Section: Linked Lists"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_76",
+          "statement": "Code formatting uses astyle tool with ANSI style",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 67-71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_77",
+          "statement": "make style target formats all .c and .h files",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Line 71, Section: Code Formatting"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    },
+    {
+      "question": "Why did the database reset?",
+      "answer": "The database most likely reset because 'docker-compose down' was executed. This command tears down all Docker containers including the database service, which forces a complete database rebuild that takes 10+ minutes. The recommended development workflow is to use 'docker-compose restart mud' to restart only the MUD service without affecting the database. The 'docker-compose down' command should be avoided in normal development to prevent this time-consuming database rebuild.",
+      "confidence": 0.875,
+      "llm_confidence": 0.85,
+      "secondary_confidence": 0.8999999999999999,
+      "supporting_facts": [
+        {
+          "id": "fact_8",
+          "statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 148-153, Section: Development Workflow - Database Initialization Warning"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_9",
+          "statement": "Recommended development workflow is to restart only the MUD service using 'docker-compose restart mud'",
+          "type": "requirement",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_1",
+              "location": "Lines 157-163, Section: RECOMMENDED - Restart Only MUD Service"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [
+        "implementation_facts"
+      ],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "requirement"
+        ],
+        "missing_fact_types": [
+          "implementation"
+        ],
+        "missing_categories": [
+          "implementation_facts"
+        ],
+        "recommendations": [
+          "Extract from code files to capture implementation details",
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    },
+    {
+      "question": "Why is my speech appearing as gibberish to some players?",
+      "answer": "Your speech is appearing as gibberish because of the language system. LotJ supports 94 distinct languages (fact_105), and when you speak in a language that other players don't know, the text gets scrambled using language-specific algorithms (fact_87). Players can only understand languages they have learned. Each player can learn additional languages up to their lang_limit, which is calculated as (INT/5) + feat bonuses (fact_106), and learning a new language costs 5 credits and requires an ACT_SCHOLAR NPC in the room (fact_107). The game returns empty or scrambled text for non-LANG_BASIC languages when the listener hasn't learned that language (fact_128). Note that immortals at trust level >= 105 bypass language scrambling (fact_95). To fix this, either: 1) Speak in LANG_BASIC (the common language), 2) Have the other players learn your language from a scholar NPC, or 3) Learn the language they understand.",
+      "confidence": 0.975,
+      "llm_confidence": 0.95,
+      "secondary_confidence": 1.0,
+      "supporting_facts": [
+        {
+          "id": "fact_87",
+          "statement": "Text scrambling supports multiple languages with different scrambling algorithms including LANG_YUBYUB and LANG_BINARY",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 393-496, scramble_text() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_95",
+          "statement": "Language scrambling is bypassed for immortals at trust level >= 105 or when not morting",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 1288-1290, do_talk() immortal bypass"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_105",
+          "statement": "Language system supports 94 distinct languages tracked by bitvector flags",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 3476-3567, languages[] flag definitions"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_106",
+          "statement": "Players can learn additional languages up to lang_limit which is (INT/5) + feat bonuses",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4525-4538, lang_limit() function"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_107",
+          "statement": "Learning a language costs 5 credits and requires ACT_SCHOLAR NPC in room",
+          "type": "constraint",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4016-4070, do_languages() learning logic"
+            }
+          ],
+          "confidence": 1.0
+        },
+        {
+          "id": "fact_128",
+          "statement": "Language conversion returns empty string for LANG_BASIC or when NPC speaking with empty language vector",
+          "type": "implementation",
+          "extracted_from": [
+            {
+              "artifact_id": "artifact_78",
+              "location": "Lines 4317-4328, lang_convert() basic language handling"
+            }
+          ],
+          "confidence": 1.0
+        }
+      ],
+      "missing_categories": [],
+      "gap_details": {
+        "question_type": "debugging",
+        "expected_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "available_fact_types": [
+          "constraint",
+          "implementation"
+        ],
+        "missing_fact_types": [],
+        "missing_categories": [],
+        "recommendations": [
+          "Extract error handling patterns and common pitfalls from docs"
+        ]
+      }
+    }
+  ]
+}

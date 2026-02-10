@@ -1,0 +1,473 @@
+[
+  {
+    "id": "conflict_1",
+    "title": "Header Organization Constraint vs Monolithic Implementation",
+    "description": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice.",
+    "severity": "medium",
+    "fact_1_id": "fact_16",
+    "fact_1_statement": "DO NOT create new header files, use existing well-established header file structure",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_19",
+    "fact_2_statement": "types.h contains 5830 lines with ALL struct and type definitions",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_16 from artifact_1",
+        "detail": "Line 213, Section: Header Files - CRITICAL"
+      },
+      {
+        "source": "fact_19 from artifact_1",
+        "detail": "Lines 226-229, Section: Core Headers"
+      },
+      {
+        "source": "Relationship analysis",
+        "detail": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Accept the monolithic design as legacy technical debt and document it",
+        "impact": "No code changes, acknowledges current state",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Refactor large headers into smaller, focused modules over time",
+        "impact": "Large effort but improves maintainability significantly",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update constraints to match actual implementation (monolithic headers accepted)",
+        "impact": "Aligns documentation with reality, accepts status quo",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Medium-severity conflicts reduce code maintainability and can cause developer confusion. They should be addressed to maintain code quality standards.",
+    "confidence": 0.95
+  },
+  {
+    "id": "conflict_2",
+    "title": "Header Organization Constraint vs Monolithic Implementation",
+    "description": "Fact 1 mandates using existing well-established header file structure, but Fact 2 reveals a 2437-line monolithic functions.h containing ALL function prototypes, which violates established best practices for header organization (typically headers should be modular and focused). This creates a conflict: the constraint demands following established structure while the implementation represents a poorly-structured anti-pattern.",
+    "severity": "medium",
+    "fact_1_id": "fact_16",
+    "fact_1_statement": "DO NOT create new header files, use existing well-established header file structure",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_21",
+    "fact_2_statement": "functions.h contains 2437 lines with ALL function prototypes",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_16 from artifact_1",
+        "detail": "Line 213, Section: Header Files - CRITICAL"
+      },
+      {
+        "source": "fact_21 from artifact_1",
+        "detail": "Lines 231-233, Section: Core Headers"
+      },
+      {
+        "source": "Relationship analysis",
+        "detail": "Fact 1 mandates using existing well-established header file structure, but Fact 2 reveals a 2437-line monolithic functions.h containing ALL function prototypes, which violates established best practices for header organization (typically headers should be modular and focused). This creates a conflict: the constraint demands following established structure while the implementation represents a poorly-structured anti-pattern."
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Accept the monolithic design as legacy technical debt and document it",
+        "impact": "No code changes, acknowledges current state",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Refactor large headers into smaller, focused modules over time",
+        "impact": "Large effort but improves maintainability significantly",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update constraints to match actual implementation (monolithic headers accepted)",
+        "impact": "Aligns documentation with reality, accepts status quo",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Medium-severity conflicts reduce code maintainability and can cause developer confusion. They should be addressed to maintain code quality standards.",
+    "confidence": 0.95
+  },
+  {
+    "id": "conflict_3",
+    "title": "Custom Memory Management Constraint vs Direct stdlib Usage",
+    "description": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation.",
+    "severity": "critical",
+    "fact_1_id": "fact_28",
+    "fact_1_statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_31",
+    "fact_2_statement": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_28 from artifact_1",
+        "detail": "Line 262, Section: Memory Management"
+      },
+      {
+        "source": "fact_31 from artifact_1",
+        "detail": "Lines 273-275, Section: Memory Management"
+      },
+      {
+        "source": "Relationship analysis",
+        "detail": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Audit codebase to ensure custom memory management is used consistently",
+        "impact": "Identifies all violations, requires systematic fixes",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update macros to wrap stdlib functions where appropriate",
+        "impact": "Minimal code changes, maintains abstraction layer",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Document exceptions where stdlib functions are acceptable",
+        "impact": "Clarifies rules without code changes",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.95
+  },
+  {
+    "id": "conflict_4",
+    "title": "Docker-First Constraint vs Localhost Configuration",
+    "description": "Fact 1 mandates that all services must run exclusively in Docker Compose, while Fact 2 specifies PostgreSQL runs on localhost:5432, which typically indicates the database is running directly on the local machine rather than in a Docker container. This creates a conflict between the Docker-exclusive constraint and the localhost database configuration.",
+    "severity": "critical",
+    "fact_1_id": "fact_2",
+    "fact_1_statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_10",
+    "fact_2_statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_2 from artifact_1",
+        "detail": "Lines 7-15, Section: IMPORTANT: Docker-First Development"
+      },
+      {
+        "source": "fact_10 from artifact_1",
+        "detail": "Line 189, Section: Database Access"
+      },
+      {
+        "source": "Relationship analysis",
+        "detail": "Fact 1 mandates that all services must run exclusively in Docker Compose, while Fact 2 specifies PostgreSQL runs on localhost:5432, which typically indicates the database is running directly on the local machine rather than in a Docker container. This creates a conflict between the Docker-exclusive constraint and the localhost database configuration."
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Update documentation to clarify that localhost refers to ports mapped from Docker containers",
+        "impact": "Minimal - clarifies intent without code changes",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Change localhost references to use Docker service names instead",
+        "impact": "Requires code changes and testing, improves Docker isolation",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Add explicit port mapping configuration to docker-compose.yml",
+        "impact": "Makes current behavior explicit and maintainable",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.95
+  },
+  {
+    "id": "conflict_5",
+    "title": "Docker-First Constraint vs Localhost Configuration",
+    "description": "Fact 1 specifies localhost:5432 for database access, which typically indicates local development setup. This conflicts with Fact 2's Docker Compose multi-service architecture, where services should communicate via container names/service names rather than localhost. In a proper Docker Compose setup, the database would be accessed via its service name (e.g., 'postgres:5432') not 'localhost:5432', unless port mapping is being used inconsistently across the architecture.",
+    "severity": "critical",
+    "fact_1_id": "fact_10",
+    "fact_1_statement": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+    "fact_1_type": "implementation",
+    "fact_2_id": "fact_74",
+    "fact_2_statement": "Multi-service architecture uses Docker Compose",
+    "fact_2_type": "design",
+    "evidence": [
+      {
+        "source": "fact_10 from artifact_1",
+        "detail": "Line 189, Section: Database Access"
+      },
+      {
+        "source": "fact_74 from artifact_1",
+        "detail": "Line 25, Section: Codebase Overview"
+      },
+      {
+        "source": "Relationship analysis",
+        "detail": "Fact 1 specifies localhost:5432 for database access, which typically indicates local development setup. This conflicts with Fact 2's Docker Compose multi-service architecture, where services should communicate via container names/service names rather than localhost. In a proper Docker Compose setup, the database would be accessed via its service name (e.g., 'postgres:5432') not 'localhost:5432', unless port mapping is being used inconsistently across the architecture."
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Update documentation to clarify that localhost refers to ports mapped from Docker containers",
+        "impact": "Minimal - clarifies intent without code changes",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Change localhost references to use Docker service names instead",
+        "impact": "Requires code changes and testing, improves Docker isolation",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Add explicit port mapping configuration to docker-compose.yml",
+        "impact": "Makes current behavior explicit and maintainable",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.95
+  },
+  {
+    "id": "conflict_6",
+    "title": "Docker-First Constraint vs Localhost Configuration",
+    "description": "The constraint mandates Docker-exclusive development, but the implementation references localhost configuration. This creates ambiguity about whether services run in Docker or directly on the host machine.",
+    "severity": "high",
+    "fact_1_id": "fact_2",
+    "fact_1_statement": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_541",
+    "fact_2_statement": "Tool connects to localhost (127.0.0.1) by default",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_2",
+        "detail": "Mandates Docker-exclusive development"
+      },
+      {
+        "source": "fact_541",
+        "detail": "References localhost configuration"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Update documentation to clarify that localhost refers to ports mapped from Docker containers",
+        "impact": "Minimal - clarifies intent without code changes",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Change localhost references to use Docker service names instead",
+        "impact": "Requires code changes and testing, improves Docker isolation",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Add explicit port mapping configuration to docker-compose.yml",
+        "impact": "Makes current behavior explicit and maintainable",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.8
+  },
+  {
+    "id": "conflict_7",
+    "title": "Docker-First Constraint vs Localhost Configuration",
+    "description": "The constraint mandates Docker-exclusive development, but the implementation references localhost configuration. This creates ambiguity about whether services run in Docker or directly on the host machine.",
+    "severity": "high",
+    "fact_1_id": "fact_8",
+    "fact_1_statement": "Docker-compose down MUST be avoided in normal development as it forces database rebuild taking 10+ minutes",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_541",
+    "fact_2_statement": "Tool connects to localhost (127.0.0.1) by default",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_8",
+        "detail": "Mandates Docker-exclusive development"
+      },
+      {
+        "source": "fact_541",
+        "detail": "References localhost configuration"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Update documentation to clarify that localhost refers to ports mapped from Docker containers",
+        "impact": "Minimal - clarifies intent without code changes",
+        "difficulty": "easy"
+      },
+      {
+        "option": "Change localhost references to use Docker service names instead",
+        "impact": "Requires code changes and testing, improves Docker isolation",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Add explicit port mapping configuration to docker-compose.yml",
+        "impact": "Makes current behavior explicit and maintainable",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.8
+  },
+  {
+    "id": "conflict_8",
+    "title": "Custom Memory Management Constraint vs Direct stdlib Usage",
+    "description": "The constraint prohibits direct use of stdlib memory functions, but the implementation appears to use them directly. This violates the custom memory management architecture.",
+    "severity": "high",
+    "fact_1_id": "fact_28",
+    "fact_1_statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_797",
+    "fact_2_statement": "Character pointer validity checks guard against use-after-free when characters have died or been extracted",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_28",
+        "detail": "Prohibits direct stdlib memory functions"
+      },
+      {
+        "source": "fact_797",
+        "detail": "May use stdlib functions directly"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Audit codebase to ensure custom memory management is used consistently",
+        "impact": "Identifies all violations, requires systematic fixes",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update macros to wrap stdlib functions where appropriate",
+        "impact": "Minimal code changes, maintains abstraction layer",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Document exceptions where stdlib functions are acceptable",
+        "impact": "Clarifies rules without code changes",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.75
+  },
+  {
+    "id": "conflict_9",
+    "title": "Custom Memory Management Constraint vs Direct stdlib Usage",
+    "description": "The constraint prohibits direct use of stdlib memory functions, but the implementation appears to use them directly. This violates the custom memory management architecture.",
+    "severity": "high",
+    "fact_1_id": "fact_28",
+    "fact_1_statement": "The MUD uses a custom memory management system - never use raw malloc/free",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_812",
+    "fact_2_statement": "unsafe_checkrawch validates that characters have not died or been extracted before returning pointer, preventing use-after-free vulnerabilities",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_28",
+        "detail": "Prohibits direct stdlib memory functions"
+      },
+      {
+        "source": "fact_812",
+        "detail": "May use stdlib functions directly"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Audit codebase to ensure custom memory management is used consistently",
+        "impact": "Identifies all violations, requires systematic fixes",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update macros to wrap stdlib functions where appropriate",
+        "impact": "Minimal code changes, maintains abstraction layer",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Document exceptions where stdlib functions are acceptable",
+        "impact": "Clarifies rules without code changes",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.75
+  },
+  {
+    "id": "conflict_10",
+    "title": "Custom Memory Management Constraint vs Direct stdlib Usage",
+    "description": "The constraint prohibits direct use of stdlib memory functions, but the implementation appears to use them directly. This violates the custom memory management architecture.",
+    "severity": "high",
+    "fact_1_id": "fact_32",
+    "fact_1_statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_797",
+    "fact_2_statement": "Character pointer validity checks guard against use-after-free when characters have died or been extracted",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_32",
+        "detail": "Prohibits direct stdlib memory functions"
+      },
+      {
+        "source": "fact_797",
+        "detail": "May use stdlib functions directly"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Audit codebase to ensure custom memory management is used consistently",
+        "impact": "Identifies all violations, requires systematic fixes",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update macros to wrap stdlib functions where appropriate",
+        "impact": "Minimal code changes, maintains abstraction layer",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Document exceptions where stdlib functions are acceptable",
+        "impact": "Clarifies rules without code changes",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.75
+  },
+  {
+    "id": "conflict_11",
+    "title": "Custom Memory Management Constraint vs Direct stdlib Usage",
+    "description": "The constraint prohibits direct use of stdlib memory functions, but the implementation appears to use them directly. This violates the custom memory management architecture.",
+    "severity": "high",
+    "fact_1_id": "fact_32",
+    "fact_1_statement": "Never use raw malloc(), free(), calloc(), realloc(), or str_dup()",
+    "fact_1_type": "constraint",
+    "fact_2_id": "fact_812",
+    "fact_2_statement": "unsafe_checkrawch validates that characters have not died or been extracted before returning pointer, preventing use-after-free vulnerabilities",
+    "fact_2_type": "implementation",
+    "evidence": [
+      {
+        "source": "fact_32",
+        "detail": "Prohibits direct stdlib memory functions"
+      },
+      {
+        "source": "fact_812",
+        "detail": "May use stdlib functions directly"
+      }
+    ],
+    "resolution_options": [
+      {
+        "option": "Audit codebase to ensure custom memory management is used consistently",
+        "impact": "Identifies all violations, requires systematic fixes",
+        "difficulty": "hard"
+      },
+      {
+        "option": "Update macros to wrap stdlib functions where appropriate",
+        "impact": "Minimal code changes, maintains abstraction layer",
+        "difficulty": "medium"
+      },
+      {
+        "option": "Document exceptions where stdlib functions are acceptable",
+        "impact": "Clarifies rules without code changes",
+        "difficulty": "easy"
+      }
+    ],
+    "impact_analysis": "Unresolved critical conflicts can lead to system instability, security vulnerabilities, or complete failure of development workflows. Immediate attention required.",
+    "confidence": 0.75
+  }
+]

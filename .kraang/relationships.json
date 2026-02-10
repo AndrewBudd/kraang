@@ -1,0 +1,667 @@
+[
+  {
+    "fact_id_1": "fact_36",
+    "fact_id_2": "fact_138",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 demonstrates concrete implementation that follows the constraint established in Fact 1. The add_follower() function's use of LINK macros for managing follower relationships is a specific instance of adhering to the general rule that LINK/UNLINK macros must always be used for doubly linked lists rather than manual pointer management."
+  },
+  {
+    "fact_id_1": "fact_28",
+    "fact_id_2": "fact_138",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe components of a custom memory management system in the MUD. Fact 1 establishes the high-level constraint of using custom memory management, while Fact 2 describes a specific implementation detail (LINK/UNLINK macros for linked lists) that would be part of that custom system. The use of specialized macros for list management aligns with avoiding raw malloc/free, as these macros likely handle memory operations through the custom system. They reinforce the same architectural principle of controlled, custom memory management rather than direct system calls."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_138",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts align with maintaining existing code structure. Fact 1 constrains against creating new headers, while Fact 2 shows usage of existing LINK/UNLINK macros from established headers. Using existing macros for list management supports the principle of not creating new header files, as it relies on the well-established header file structure already in place."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_61",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 directly implements and extends Fact 1 by providing the specific Docker services that must be used according to the Docker-first constraint. Fact 1 establishes the mandatory policy, while Fact 2 defines the concrete implementation of that policy by listing the actual Docker Compose services available for local development."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_4",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by providing specific implementation details about how the Star Wars MUD game is technically realized. Fact 1 establishes what the system is (a Star Wars-based MUD), while Fact 2 describes the technical architecture used to build it (C core engine with Lua scripting). The implementation detail directly builds upon and adds specificity to the high-level design description."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_5",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by providing specific implementation details about how the Star Wars MUD game is built. Fact 1 establishes what the system is (a Star Wars MUD), while Fact 2 describes the technical mechanism (Lua with 'looms') used to implement its game logic. This is a clear extends relationship where the second fact builds upon and adds technical depth to the first."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_61",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes the core nature of the system (a Star Wars MUD game), while Fact 2 details the specific technical infrastructure used to implement and run that game. The Docker services list includes 'mud' as the primary service, with supporting services (db, nginx, etc.) that enable the MUD to function. Fact 2 builds upon and implements what Fact 1 describes conceptually."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_72",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by providing the concrete implementation structure of the Star Wars MUD game described in Fact 1. The directory structure shows how the high-level design concept (a Star Wars MUD) is organized at the code level, with game-specific directories like /area for game zones, /src for source code, and integration components like /discord2mqtt that support the multiplayer nature of a MUD."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_73",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 builds upon Fact 1 by providing specific implementation details about how the Star Wars MUD game world is technically defined. Fact 1 establishes the high-level design (a Star Wars-based MUD), while Fact 2 describes a concrete technical mechanism (.are files) used to implement that game world."
+  },
+  {
+    "fact_id_1": "fact_6",
+    "fact_id_2": "fact_74",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Docker Compose manages multi-service architectures by orchestrating containers with network configurations. The specific Telnet port 5656 would be configured within the Docker Compose setup to enable connectivity between services. These facts complement each other as implementation details that work together in the same system architecture."
+  },
+  {
+    "fact_id_1": "fact_7",
+    "fact_id_2": "fact_68",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The default test credentials (Fact 1) are used by the testing tool that connects via Telnet (Fact 2) to authenticate with the LotJ server. The credentials provide the necessary authentication information for the Telnet connection to establish a session, making these facts complementary components of the same testing workflow."
+  },
+  {
+    "fact_id_1": "fact_7",
+    "fact_id_2": "fact_69",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 defines the default credentials that should be used for testing, while Fact 2 describes the testing tool's capability to use provided credentials. These facts align and complement each other - the requirement specifies what credentials exist, and the implementation provides the mechanism to use them. Together they form a coherent testing authentication pattern."
+  },
+  {
+    "fact_id_1": "fact_8",
+    "fact_id_2": "fact_10",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by providing the specific database connection details that enable developers to work with the database directly, thereby allowing them to avoid docker-compose down. The credentials and connection information make it possible to maintain and interact with the database without destroying it, which is the goal of the constraint in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_9",
+    "fact_id_2": "fact_10",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other by establishing a development workflow pattern where the MUD service can be restarted independently while maintaining persistent database connectivity. The database configuration on localhost:5432 remains stable and accessible when only the MUD service is restarted, enabling the recommended workflow without disrupting database connections or requiring full stack restarts."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_17",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 directly supports Fact 1 by demonstrating that a well-established header file structure already exists with mud.h as the primary header containing core definitions. This existing structure reinforces the constraint not to create new headers, as the established system should be used instead."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_18",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 describes an existing header file (const.h) with a well-established structure containing only constants and defines. This supports Fact 1's constraint to use existing header file structures rather than creating new ones. The description of const.h's contents demonstrates the kind of established header file that should be utilized."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_19",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_21",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 mandates using existing well-established header file structure, but Fact 2 reveals a 2437-line monolithic functions.h containing ALL function prototypes, which violates established best practices for header organization (typically headers should be modular and focused). This creates a conflict: the constraint demands following established structure while the implementation represents a poorly-structured anti-pattern."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_23",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 demonstrates adherence to Fact 1's constraint by showing that an existing well-established header file (globals.h) is being used for its intended purpose (global variable declarations). The existence and specific usage of globals.h as a 668-line file dedicated to extern declarations illustrates the established header file structure that Fact 1 mandates should be maintained rather than creating new headers."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_20",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other by establishing a clear separation of concerns: mud.h handles memory management macros and core definitions (Fact 1), while types.h is designated for struct definitions (Fact 2). This architectural division prevents mud.h from becoming even larger and creates a modular structure where type definitions are centralized in one location, complementing mud.h's role as the primary header for other concerns."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_22",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other by establishing a clear separation of concerns in the codebase architecture. Fact 1 identifies mud.h as containing memory management macros and core definitions (non-function declarations), while Fact 2 mandates that function declarations go in functions.h. This creates a complementary division where mud.h handles one category of code elements and functions.h handles another, preventing overlap and maintaining organized header structure."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_24",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 directly supports Fact 1 by establishing a header inclusion rule that prioritizes mud.h first. This reinforces mud.h's role as the primary header containing core definitions and memory management macros - files must include it first because other headers likely depend on these foundational definitions. The constraint validates the architectural importance described in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_25",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts complement each other by describing a logical header inclusion order: mud.h as the primary header provides foundational definitions (memory management, core macros) that other headers depend on, while functions.h comes last to declare function prototypes that rely on types and macros defined earlier. This represents a standard C dependency pattern where definitions precede declarations."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_26",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe a clear separation of concerns in the header file organization. Fact 1 establishes mud.h as containing memory management macros and core definitions, while Fact 2 specifies that struct definitions belong in types.h. This separation is complementary - mud.h handles macros and core definitions while types.h handles struct definitions, creating a logical division of content that supports organized code architecture."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_27",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other by establishing a clear separation of concerns in the codebase architecture. Fact 1 defines mud.h as the primary header for memory management macros and core definitions, while Fact 2 constrains function prototypes to functions.h. This creates a complementary division where mud.h handles definitions/macros and functions.h handles function declarations, preventing overlap and reinforcing organized code structure."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_28",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 describes mud.h as containing memory management macros and core definitions, while Fact 2 mandates using a custom memory management system instead of raw malloc/free. These facts are mutually reinforcing: the primary header provides the infrastructure (macros and definitions) that implements the custom memory management system that developers are required to use. The constraint in Fact 2 is enabled and enforced by the implementation described in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_29",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by providing a specific mandatory implementation detail (the CREATE macro) that is part of the memory management macros mentioned in Fact 1. Fact 1 establishes that mud.h contains memory management macros, and Fact 2 specifies one particular macro that MUST be used, making it a concrete requirement that builds upon the general category described in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_30",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by providing a specific implementation detail (the DISPOSE macro constraint) that is defined within the broader context established by Fact 1 (mud.h containing memory management macros). Fact 1 establishes that mud.h contains memory management macros, and Fact 2 specifies one of those macros and its required usage pattern."
+  },
+  {
+    "fact_id_1": "fact_18",
+    "fact_id_2": "fact_20",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "These facts mutually reinforce a clear separation of concerns: Fact 1 establishes that const.h explicitly excludes type definitions, while Fact 2 mandates that struct definitions belong in types.h. Together they define complementary boundaries that prevent overlap and maintain organizational clarity in the codebase."
+  },
+  {
+    "fact_id_1": "fact_18",
+    "fact_id_2": "fact_22",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Both facts reinforce a clear separation of concerns in the codebase architecture. Fact 1 establishes that const.h is restricted to constants and defines (excluding function prototypes), while Fact 2 mandates that function declarations go in functions.h. Together, they support a consistent organizational pattern where different types of declarations are segregated into specific header files, preventing overlap and maintaining clear boundaries."
+  },
+  {
+    "fact_id_1": "fact_18",
+    "fact_id_2": "fact_25",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other by describing a clear header organization pattern: const.h contains only constants/defines without function prototypes, while functions.h is included last specifically for function prototypes. This separation of concerns (constants vs function declarations) and their ordering (const.h can be included earlier, functions.h last) indicates a complementary design where each header has a distinct role that works together to create a logical inclusion hierarchy."
+  },
+  {
+    "fact_id_1": "fact_18",
+    "fact_id_2": "fact_27",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 describes that const.h excludes function prototypes (among other things), while Fact 2 mandates that function prototypes must go in functions.h. These facts mutually reinforce a clear separation of concerns: const.h is for constants/defines only, and functions.h is the designated location for function prototypes. The constraint in Fact 2 explains why Fact 1's implementation correctly excludes function prototypes from const.h."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_20",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 establishes that types.h is the centralized location containing all struct and type definitions (5830 lines worth). Fact 2 mandates that any new struct definitions must continue to be placed in this same file. These facts reinforce each other by showing both the current state (all definitions are there) and the constraint ensuring future consistency (all new definitions must go there). The constraint in Fact 2 maintains the architectural pattern described in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_22",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Both facts enforce separation of concerns in header organization: Fact 1 establishes types.h as the centralized location for struct/type definitions, while Fact 2 establishes functions.h for function declarations. This parallel structure supports a consistent organizational pattern where different code elements are systematically separated into dedicated headers, making the codebase more maintainable and preventing conflicts."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_24",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 builds upon Fact 1 by establishing how the comprehensive types.h file (containing all struct and type definitions) should be included in other files. The inclusion rule prescribes types.h as the second header after mud.h, which makes sense given that types.h provides foundational type definitions needed by other headers. Fact 1 describes what exists, while Fact 2 prescribes how to use it."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_25",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts align with standard C/C++ header organization principles. Fact 1 establishes that types.h contains all type definitions, which must be declared before use. Fact 2 specifies that functions.h (containing function prototypes) is included last. This ordering is logically consistent because function prototypes typically reference types, so types must be defined first. The facts complement each other by describing different parts of a coherent header inclusion strategy."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_26",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 describes the actual implementation where types.h contains 5830 lines with ALL struct and type definitions. Fact 2 establishes the constraint that struct definitions MUST go in types.h. These facts align perfectly - the implementation (Fact 1) follows and demonstrates compliance with the constraint (Fact 2). The existence of all struct definitions in types.h supports the rule that they must be placed there."
+  },
+  {
+    "fact_id_1": "fact_19",
+    "fact_id_2": "fact_27",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Both facts define a clear separation of concerns in the codebase structure: types.h handles all type/struct definitions while functions.h handles function prototypes. This represents complementary organizational constraints that work together to maintain a clean architecture where different kinds of declarations are systematically separated into dedicated header files."
+  },
+  {
+    "fact_id_1": "fact_20",
+    "fact_id_2": "fact_21",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe a consistent code organization pattern where different code elements (structs vs functions) are separated into dedicated header files (types.h vs functions.h). This separation of concerns supports a modular architecture where type definitions and function declarations are kept distinct, making the codebase more maintainable and following common C/C++ organizational practices."
+  },
+  {
+    "fact_id_1": "fact_20",
+    "fact_id_2": "fact_23",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe a separation of concerns in header file organization: Fact 1 mandates struct definitions go in types.h, while Fact 2 shows globals.h is dedicated solely to extern declarations. This parallel structure supports a consistent architectural pattern where different types of declarations are systematically segregated into specialized header files."
+  },
+  {
+    "fact_id_1": "fact_21",
+    "fact_id_2": "fact_22",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 describes the current state (functions.h contains all function prototypes) while Fact 2 establishes the rule that maintains this state (all new declarations must go there). The constraint in Fact 2 ensures the implementation described in Fact 1 continues to be accurate, creating a mutually reinforcing relationship."
+  },
+  {
+    "fact_id_1": "fact_21",
+    "fact_id_2": "fact_25",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts align logically: Fact 1 establishes that functions.h contains ALL function prototypes (comprehensive), while Fact 2 specifies it should be included last. This makes sense because a file containing all prototypes should be included after other headers to ensure all type definitions and dependencies are already available before declaring the functions. The 'included last' constraint supports the 'all prototypes' implementation by ensuring proper dependency resolution."
+  },
+  {
+    "fact_id_1": "fact_21",
+    "fact_id_2": "fact_26",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe a separation of concerns in header organization: Fact 1 establishes that function prototypes belong in functions.h, while Fact 2 establishes that struct definitions belong in types.h. This represents a complementary partitioning strategy where different code elements are organized into appropriate header files, following a consistent architectural pattern of separating declarations by type."
+  },
+  {
+    "fact_id_1": "fact_21",
+    "fact_id_2": "fact_27",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 describes the actual implementation (functions.h contains all function prototypes), which directly aligns with and demonstrates compliance with Fact 2's constraint (prototypes must go in functions.h). The implementation fulfills the requirement."
+  },
+  {
+    "fact_id_1": "fact_22",
+    "fact_id_2": "fact_23",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Both facts describe a separation of concerns pattern in header file organization: Fact 1 mandates function declarations go in functions.h, while Fact 2 shows global variables are isolated in globals.h. This parallel structure reinforces a consistent organizational principle where different declaration types are segregated into dedicated header files, making them complementary components of the same architectural pattern."
+  },
+  {
+    "fact_id_1": "fact_23",
+    "fact_id_2": "fact_25",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe a systematic organization pattern for header files where different types of declarations are separated into distinct files with specific inclusion order. globals.h handling only extern variable declarations and functions.h being included last for function prototypes demonstrates a complementary separation of concerns that reinforces a structured header organization strategy."
+  },
+  {
+    "fact_id_1": "fact_23",
+    "fact_id_2": "fact_26",
+    "type": "supports",
+    "confidence": 0.92,
+    "reasoning": "Both facts establish clear separation of concerns in header file organization. Fact 1 specifies that globals.h is exclusively for extern variable declarations, while Fact 2 mandates struct definitions go in types.h. This separation prevents mixing of type definitions with variable declarations, creating a complementary organizational structure where each header has a distinct, non-overlapping purpose."
+  },
+  {
+    "fact_id_1": "fact_23",
+    "fact_id_2": "fact_27",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Both facts establish clear separation of concerns in header file organization: Fact 1 specifies that globals.h is exclusively for global variable extern declarations, while Fact 2 mandates that function prototypes belong in functions.h. This creates a complementary, non-overlapping division of responsibilities that reinforces a structured approach to organizing declarations across different header files."
+  },
+  {
+    "fact_id_1": "fact_24",
+    "fact_id_2": "fact_34",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes that mud.h must be included first, followed by types.h. Fact 2 describes that the codebase uses LINK and UNLINK macros for linked lists. These macros would likely be defined in mud.h or types.h (the core headers), and the header inclusion order ensures these fundamental data structure macros are available before other headers that might use them. The constraint supports the implementation by ensuring proper availability of the linked list infrastructure."
+  },
+  {
+    "fact_id_1": "fact_28",
+    "fact_id_2": "fact_31",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+  },
+  {
+    "fact_id_1": "fact_28",
+    "fact_id_2": "fact_34",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The custom memory management system (Fact 1) aligns with the use of specialized macros like LINK and UNLINK for linked list operations (Fact 2). Both facts demonstrate a consistent architectural approach of using custom abstractions rather than standard/raw functions. The LINK/UNLINK macros likely integrate with or depend on the custom memory management system to properly handle node allocation and deallocation without using raw malloc/free."
+  },
+  {
+    "fact_id_1": "fact_28",
+    "fact_id_2": "fact_35",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The custom memory management system (Fact 1) aligns with the LINK/UNLINK macro implementation (Fact 2) as both represent custom, non-standard memory and data structure management approaches typical of MUD codebases. The linked list macros would work with memory allocated through the custom memory management system rather than raw malloc/free, making them complementary components of the same architectural philosophy of controlled resource management."
+  },
+  {
+    "fact_id_1": "fact_29",
+    "fact_id_2": "fact_31",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts describe complementary memory management patterns in the same system. CREATE allocates memory for typed arrays, while SET_STRING handles string-specific allocation/deallocation. They reinforce a consistent approach to safe memory management - CREATE for initial allocation and SET_STRING for string assignment with automatic cleanup. Both serve the broader goal of preventing memory leaks and ensuring proper memory handling."
+  },
+  {
+    "fact_id_1": "fact_29",
+    "fact_id_2": "fact_35",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes the memory allocation mechanism (CREATE macro) that is necessary before items can be organized into data structures. Fact 2 builds upon this by describing how allocated items are managed within linked list structures using LINK/UNLINK macros. The linked list operations depend on having memory already allocated, making this an extension relationship where Fact 2's functionality requires Fact 1's foundation."
+  },
+  {
+    "fact_id_1": "fact_29",
+    "fact_id_2": "fact_37",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 because the LINK macro operates on nodes that must first be allocated using CREATE. The linked list operations (LINK) build upon the memory management foundation (CREATE) - you need to allocate memory for nodes before you can add them to a linked list."
+  },
+  {
+    "fact_id_1": "fact_30",
+    "fact_id_2": "fact_31",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 builds upon Fact 1 by using the DISPOSE macro as part of its implementation. SET_STRING performs 'safe string assignment by freeing old and allocating new', which likely uses DISPOSE to free the old pointer before allocating new memory. This is a higher-level operation that extends the basic memory disposal constraint into a specific string manipulation pattern."
+  },
+  {
+    "fact_id_1": "fact_30",
+    "fact_id_2": "fact_35",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The DISPOSE macro's requirement to set pointers to NULL after freeing memory supports safe linked list management. When UNLINK removes nodes from lists that maintain static head/tail pointers, using DISPOSE ensures those pointers are properly nullified, preventing dangling pointer issues. These practices reinforce each other for safer memory management in linked list operations."
+  },
+  {
+    "fact_id_1": "fact_31",
+    "fact_id_2": "fact_32",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "SET_STRING macro internally handles malloc/free operations, providing a safe wrapper that enforces the constraint of never using raw memory functions directly. The macro implements the abstraction layer that satisfies the constraint, making them mutually reinforcing parts of the same memory safety strategy."
+  },
+  {
+    "fact_id_1": "fact_31",
+    "fact_id_2": "fact_33",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 reinforces Fact 1 by establishing SET_STRING as the preferred/safe method for string assignment, with raw strdup() being relegated to exceptional cases. This creates a clear hierarchy where SET_STRING's safe implementation (Fact 1) is the standard approach, and Fact 2 supports this by restricting alternatives to only when SET_STRING cannot be used."
+  },
+  {
+    "fact_id_1": "fact_31",
+    "fact_id_2": "fact_36",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts enforce the same principle of using safe abstraction macros for memory management rather than manual operations. SET_STRING provides safe string memory handling, while LINK/UNLINK provide safe list pointer management. They represent parallel safety patterns in different data structure contexts, reinforcing a consistent approach to preventing memory errors."
+  },
+  {
+    "fact_id_1": "fact_32",
+    "fact_id_2": "fact_35",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts support each other. The LINK and UNLINK macros for managing linked lists provide a higher-level abstraction for data structure management, which aligns with the constraint of avoiding raw memory allocation functions. By using these macros to maintain list structures, developers can work with managed pointer operations rather than direct malloc/free calls, promoting the safer memory management approach mandated by Fact 1."
+  },
+  {
+    "fact_id_1": "fact_36",
+    "fact_id_2": "fact_38",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 provides the specific implementation details of the UNLINK macro that Fact 1 mandates must be used. Fact 1 establishes the constraint to use macros, while Fact 2 defines what one of those macros actually does, making it a concrete extension of the general rule."
+  },
+  {
+    "fact_id_1": "fact_36",
+    "fact_id_2": "fact_39",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 provides a specific implementation detail (the INSERT macro) that directly fulfills the constraint stated in Fact 1. Fact 1 establishes the general rule to use macros like LINK/UNLINK instead of manual pointer management, while Fact 2 describes one such macro (INSERT) that handles the pointer management internally. Fact 2 is a concrete example of following the principle in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_36",
+    "fact_id_2": "fact_40",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 provides a concrete implementation example (INSERT_AFTER macro) that fulfills the constraint stated in Fact 1. Fact 1 establishes the general principle that macros should be used for linked list management, while Fact 2 demonstrates a specific macro that implements this principle by managing next/prev pointers and tail updates automatically, thus extending the constraint with practical implementation details."
+  },
+  {
+    "fact_id_1": "fact_38",
+    "fact_id_2": "fact_56",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by defining documentation requirements that should be applied to the UNLINK implementation. Fact 1 describes what the implementation does, while Fact 2 specifies how that implementation should be documented (with overview, usage examples, and parameter details). The documentation requirement builds upon the implementation by establishing standards for how to explain it."
+  },
+  {
+    "fact_id_1": "fact_39",
+    "fact_id_2": "fact_56",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by defining the documentation requirements that should be applied to the INSERT implementation described in Fact 1. The documentation standard (Fact 2) prescribes how the implementation detail (Fact 1) should be documented with overview, usage examples, and parameter details."
+  },
+  {
+    "fact_id_1": "fact_41",
+    "fact_id_2": "fact_44",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 builds upon Fact 1 by providing the implementation detail of how the organizational structure (looms) is actually operationalized. Fact 1 establishes the conceptual organization, while Fact 2 specifies the technical mechanism for loading that organization from a specific directory."
+  },
+  {
+    "fact_id_1": "fact_41",
+    "fact_id_2": "fact_53",
+    "type": "extends",
+    "confidence": 0.75,
+    "reasoning": "Fact 2 builds upon Fact 1 by providing the implementation mechanism (environment variable) that enables the Lua programs which are organized according to the design structure (looms) described in Fact 1. The environment variable controls whether the Lua functionality, organized in looms, is activated."
+  },
+  {
+    "fact_id_1": "fact_43",
+    "fact_id_2": "fact_44",
+    "type": "supports",
+    "confidence": 0.75,
+    "reasoning": "The automatic loading of looms from a specific directory (Fact 2) supports the constraint to avoid global functions (Fact 1) by providing a structured module loading mechanism that reduces the need for global function declarations. This pattern encourages modular organization over global namespace pollution."
+  },
+  {
+    "fact_id_1": "fact_61",
+    "fact_id_2": "fact_74",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 establishes that Docker Compose is used for multi-service architecture, while Fact 1 provides the concrete implementation details by listing the specific services (9 services total) that compose this architecture. Fact 1 builds upon and materializes the design principle stated in Fact 2."
+  },
+  {
+    "fact_id_1": "fact_61",
+    "fact_id_2": "fact_75",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by specifying an additional requirement (profile flag) for a subset of the services listed in Fact 1. The website-related services (nginx, mysql, wordpress) from the Docker services list require the --profile website flag to be activated, adding a conditional layer to the basic service architecture."
+  },
+  {
+    "fact_id_1": "fact_85",
+    "fact_id_2": "fact_86",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by adding a specific constraint that limits when the BEEP command can be used. Fact 1 describes the general functionality, while Fact 2 specifies an exception condition (ROOM_SILENCE flag) that restricts this functionality unless the user has RPC privileges. This is a clear case of one fact building upon and refining the other."
+  },
+  {
+    "fact_id_1": "fact_107",
+    "fact_id_2": "fact_114",
+    "type": "supports",
+    "confidence": 0.75,
+    "reasoning": "The SPLIT command provides a mechanism for distributing credits among group members, which complements the language learning requirement of 5 credits. This allows players to pool resources to help group members afford the credit cost of learning languages from ACT_SCHOLAR NPCs. The facts align as part of a cooperative gameplay economy."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_10",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 mandates that all services must run exclusively in Docker Compose, while Fact 2 specifies PostgreSQL runs on localhost:5432, which typically indicates the database is running directly on the local machine rather than in a Docker container. This creates a conflict between the Docker-exclusive constraint and the localhost database configuration."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_62",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 mandates Docker Compose for local development, which requires services to run in containers with defined port mappings. Fact 2 specifies the port configuration for the RPC sidecar service, which would be part of the Docker Compose setup. The port specification supports the Docker-first constraint by providing necessary configuration details for containerized deployment."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_63",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 provides specific implementation details (port configuration) that are necessary for Fact 1's Docker Compose setup to work properly. Docker Compose requires port mappings to be defined, and knowing the service runs on port 3001 directly supports the configuration needed for the Docker-first development constraint. They align in that the port specification would be used within the Docker Compose configuration."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_64",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 provides specific port configuration details that are necessary for implementing Fact 1's Docker Compose requirement. The MQTT broker port specifications would be declared in the docker-compose.yml file to enable the Docker-first development approach, making them complementary implementation details that reinforce the same architecture."
+  },
+  {
+    "fact_id_1": "fact_2",
+    "fact_id_2": "fact_66",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 defines a specific debug port (4444) which supports Fact 1's Docker Compose requirement by providing the necessary port configuration for debugging containerized services. The explicit port definition enables debugging within the Docker-first development constraint, making them complementary rather than conflicting."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_11",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by providing the specific technical implementation detail (telnet port 5656) needed to connect to the MUD game described in Fact 1. MUD games traditionally use telnet protocol, so the port specification is a concrete implementation of the general MUD design concept."
+  },
+  {
+    "fact_id_1": "fact_3",
+    "fact_id_2": "fact_17",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes that LotJ is a MUD game, while Fact 2 provides implementation details about the core header file (mud.h) that supports this MUD architecture. The header file's name and purpose directly correspond to the MUD game type mentioned in Fact 1, with Fact 2 building on Fact 1 by describing a key technical component that implements the MUD design."
+  },
+  {
+    "fact_id_1": "fact_4",
+    "fact_id_2": "fact_9",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The C/Lua architecture supports the recommended restart workflow because Lua scripting provides hot-reload capabilities that allow gameplay changes without full recompilation. Restarting only the MUD service is efficient for a system where core C engine is stable and Lua scripts handle most development iterations, making selective service restart a practical workflow that aligns with the implementation architecture."
+  },
+  {
+    "fact_id_1": "fact_5",
+    "fact_id_2": "fact_9",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "These facts complement each other in a development workflow context. Since game logic is implemented in Lua via looms (Fact 1), and looms are part of the MUD service, the recommended practice of restarting only the MUD service (Fact 2) provides an efficient way to reload Lua changes without restarting the entire stack. This creates a faster iteration cycle for game logic development."
+  },
+  {
+    "fact_id_1": "fact_8",
+    "fact_id_2": "fact_54",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both facts align toward the same goal of reducing development workflow time. Fact 1 identifies the problem (avoiding slow database rebuilds), while Fact 2 provides a solution mechanism (FASTBOOT mode) that would help achieve faster initialization, thereby supporting the constraint to avoid time-consuming operations."
+  },
+  {
+    "fact_id_1": "fact_8",
+    "fact_id_2": "fact_61",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 provides the implementation context that explains why Fact 1's constraint exists. The presence of 'db' and 'mysql' services in the Docker architecture clarifies which specific services cause the 10+ minute rebuild when docker-compose down is used. Fact 1 establishes the constraint, while Fact 2 identifies the underlying services affected by it."
+  },
+  {
+    "fact_id_1": "fact_9",
+    "fact_id_2": "fact_54",
+    "type": "supports",
+    "confidence": 0.75,
+    "reasoning": "Both facts align with optimizing development workflow efficiency. The recommended practice of restarting only the MUD service (rather than all services) enables faster iteration, while FASTBOOT mode further accelerates this by enabling fast boot. Together they create a complementary approach to reducing development cycle time, though they operate at different levels (service isolation vs. boot optimization)."
+  },
+  {
+    "fact_id_1": "fact_9",
+    "fact_id_2": "fact_61",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 recommends restarting specifically the 'mud' service, which is validated by Fact 2 that confirms 'mud' exists as one of the defined Docker services in the architecture. The recommendation is feasible because the mud service is actually present in the system's service composition."
+  },
+  {
+    "fact_id_1": "fact_9",
+    "fact_id_2": "fact_72",
+    "type": "supports",
+    "confidence": 0.75,
+    "reasoning": "The recommended workflow to restart only the MUD service (Fact 1) aligns with the modular directory structure (Fact 2) which separates concerns across multiple directories. This separation allows for targeted service restarts without affecting other components like mosquitto, discord2mqtt, or webbuffer services, making the selective restart approach practical and efficient."
+  },
+  {
+    "fact_id_1": "fact_10",
+    "fact_id_2": "fact_74",
+    "type": "contradicts",
+    "confidence": 0.75,
+    "reasoning": "Fact 1 specifies localhost:5432 for database access, which typically indicates local development setup. This conflicts with Fact 2's Docker Compose multi-service architecture, where services should communicate via container names/service names rather than localhost. In a proper Docker Compose setup, the database would be accessed via its service name (e.g., 'postgres:5432') not 'localhost:5432', unless port mapping is being used inconsistently across the architecture."
+  },
+  {
+    "fact_id_1": "fact_11",
+    "fact_id_2": "fact_74",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Docker Compose is commonly used to orchestrate multi-service architectures where each service runs on different ports. The specific telnet port 5656 assignment is a concrete implementation detail that aligns with the multi-service Docker Compose architecture pattern, where services need distinct port configurations for network communication and isolation."
+  },
+  {
+    "fact_id_1": "fact_15",
+    "fact_id_2": "fact_45",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "The build system (Fact 2) provides the infrastructure to enforce the zero-warnings constraint (Fact 1). The multiple build targets enable compilation under different configurations, all of which must meet the clean build requirement. The 'style' target further suggests code quality enforcement, aligning with the strict standards in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_16",
+    "fact_id_2": "fact_34",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Fact 1's constraint to use existing header file structure supports Fact 2's implementation detail because doubly linked lists with LINK/UNLINK macros are a well-established pattern in legacy MUD codebases. The macros are likely already defined in existing headers (such as merc.h or mud.h), so using them aligns with the directive to avoid creating new headers and instead leverage the existing structure."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_32",
+    "type": "supports",
+    "confidence": 0.95,
+    "reasoning": "Fact 1 establishes that mud.h contains memory management macros, and Fact 2 prohibits raw memory allocation functions. These facts support each other because the memory management macros in mud.h are likely the approved abstraction layer that should be used instead of the prohibited raw functions. The header provides the sanctioned alternatives to the forbidden raw allocations."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_33",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by providing a specific constraint about memory management practices. Fact 1 establishes that mud.h contains memory management macros (like SET_STRING), while Fact 2 defines when to use an alternative approach (raw strdup) instead of those macros. This is a refinement that builds upon the general memory management infrastructure described in Fact 1."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_36",
+    "type": "extends",
+    "confidence": 0.95,
+    "reasoning": "Fact 2 extends Fact 1 by specifying a concrete implementation constraint (using LINK/UNLINK macros) that relies on the memory management macros defined in the primary header described in Fact 1. The constraint is a specific application of the core definitions mentioned in the header."
+  },
+  {
+    "fact_id_1": "fact_17",
+    "fact_id_2": "fact_56",
+    "type": "extends",
+    "confidence": 0.85,
+    "reasoning": "Fact 2 extends Fact 1 by establishing documentation requirements that should be applied to the primary header described in Fact 1. The large 981-line header with memory management macros and core definitions would need the documentation standards (overview, usage examples, parameter details) to be properly understood and used. Fact 2 provides the 'how to document' guidance that complements the 'what exists' description in Fact 1."
+  }
+]

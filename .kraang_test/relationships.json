@@ -1,0 +1,44 @@
+[
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Test"
+  },
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both are memory management constraints"
+  },
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Test"
+  },
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both are memory management constraints"
+  },
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "contradicts",
+    "confidence": 0.85,
+    "reasoning": "Test"
+  },
+  {
+    "fact_id_1": "fact_1",
+    "fact_id_2": "fact_2",
+    "type": "supports",
+    "confidence": 0.85,
+    "reasoning": "Both are memory management constraints"
+  }
+]

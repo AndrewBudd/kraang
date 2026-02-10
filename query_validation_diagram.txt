@@ -1,0 +1,313 @@
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    QUERY-DRIVEN VALIDATION SYSTEM                           │
+│                    Testing Fact Completeness                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          DEVELOPER QUESTION TAXONOMY                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐
+  │   ONBOARDING    │  │   CONSTRAINT    │  │ IMPLEMENTATION  │  │  DEBUGGING  │
+  │  "How do I..."  │  │ "Can I/Must I..." │ │"Where/What/How" │  │   "Why..."  │
+  ├─────────────────┤  ├─────────────────┤  ├─────────────────┤  ├─────────────┤
+  │ Setup & config  │  │ Rules & limits  │  │ Code navigation │  │ Troubleshoot│
+  │ Running tests   │  │ Conventions     │  │ Architecture    │  │ Root causes │
+  │ Basic workflow  │  │ Must/Must not   │  │ Mechanisms      │  │ Pitfalls    │
+  │ Tool usage      │  │ Standards       │  │ Locations       │  │ Errors      │
+  └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────┘
+        30%                  40%                  20%                  10%
+     (Critical)           (Critical)           (Important)         (Nice-to-have)
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                           VALIDATION ALGORITHM                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  Input: Question + Extracted Facts + Relationships
+
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ Step 1: Query Phase                                                │
+  ├────────────────────────────────────────────────────────────────────┤
+  │                                                                     │
+  │   Question: "Can I use malloc() directly?"                         │
+  │   Facts: [fact_28, fact_29, fact_32, ...]                         │
+  │                                                                     │
+  │   ┌─────────────────────────────────────────────────────┐         │
+  │   │  Send to Claude LLM                                 │         │
+  │   │  ↓                                                  │         │
+  │   │  Prompt: Answer question using ONLY provided facts │         │
+  │   │  ↓                                                  │         │
+  │   │  Response: {                                        │         │
+  │   │    "answer": "No, you cannot...",                  │         │
+  │   │    "confidence": 0.95,                             │         │
+  │   │    "supporting_facts": ["fact_28", "fact_32"],     │         │
+  │   │    "missing_info": []                              │         │
+  │   │  }                                                  │         │
+  │   └─────────────────────────────────────────────────────┘         │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ Step 2: Dual Confidence Scoring                                    │
+  ├────────────────────────────────────────────────────────────────────┤
+  │                                                                     │
+  │   LLM Confidence:        0.95  (Self-reported)                    │
+  │                                                                     │
+  │   Secondary Confidence:  0.90  (Calculated from facts)            │
+  │     ├─ Fact count:       +0.4  (3 supporting facts)               │
+  │     ├─ Answer length:    +0.3  (detailed answer)                  │
+  │     └─ Fact quality:     +0.2  (high confidence facts)            │
+  │                                                                     │
+  │   Final Confidence:      0.925 (Average)                          │
+  │                          ✓ Above threshold (0.7)                   │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ Step 3: Gap Analysis (if confidence < 0.7)                         │
+  ├────────────────────────────────────────────────────────────────────┤
+  │                                                                     │
+  │   Question Type:         CONSTRAINT                                │
+  │   Expected Facts:        [constraint, design]                      │
+  │   Available Facts:       [constraint]                              │
+  │   Missing Fact Types:    [design]                                  │
+  │                                                                     │
+  │   Missing Categories:    ["design_patterns", "examples"]           │
+  │                                                                     │
+  │   Recommendations:                                                  │
+  │     • Extract from coding standards documentation                  │
+  │     • Focus on constraint and best practice files                  │
+  └────────────────────────────────────────────────────────────────────┘
+
+  Output: ValidationResult {
+    question, answer, confidence, supporting_facts,
+    missing_categories, gap_analysis
+  }
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        COMPLETENESS CALCULATION                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  41 Questions × Validation Algorithm = 41 ValidationResults
+
+  ┌───────────────────────────────────────────────────────────────┐
+  │ Aggregate Metrics                                             │
+  ├───────────────────────────────────────────────────────────────┤
+  │                                                               │
+  │  High Confidence (≥ 0.7):  37/41  (90%)  ✓                  │
+  │  Medium Confidence (≥ 0.5): 39/41  (95%)  ✓                  │
+  │  Low Confidence (< 0.5):     2/41   (5%)  ⚠                  │
+  │                                                               │
+  │  By Category:                                                 │
+  │    Onboarding:      0.91  (9 questions)   ✓                  │
+  │    Constraint:      0.94  (12 questions)  ✓                  │
+  │    Implementation:  0.79  (12 questions)  ✓                  │
+  │    Debugging:       0.68  (8 questions)   ✗                  │
+  │                                                               │
+  │  Weighted Score:                                              │
+  │    (0.91 × 0.30) + (0.94 × 0.40) +                          │
+  │    (0.79 × 0.20) + (0.68 × 0.10) = 0.857                    │
+  │                                                               │
+  │  Overall Grade:     B - Good                                  │
+  │                     (Production Ready)                        │
+  └───────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                            GRADING SCALE                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  Score   Grade   Status              Meaning
+  ──────────────────────────────────────────────────────────────────────
+  0.90+     A     Excellent          Comprehensive, gold standard
+  0.80-0.89 B     Good               Production ready, minor gaps
+  0.70-0.79 C     Acceptable         Minimum viable, needs work
+  0.60-0.69 D     Needs Work         Significant gaps
+  < 0.60    F     Insufficient       Major extraction needed
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        ITERATIVE IMPROVEMENT LOOP                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────┐
+  │   Validate   │  ./kraang.py validate-queries
+  │  (Score: 0.7)│
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────────────┐
+  │  Identify Gaps       │  Missing: error_handling, debugging_patterns
+  │  • Low conf questions│
+  │  • Missing categories│
+  └──────┬───────────────┘
+         │
+         ▼
+  ┌──────────────────────┐
+  │  Extract More Facts  │  ./kraang.py add docs/ERROR_HANDLING.md
+  │  • Target gap areas  │  ./kraang.py extract artifact_N
+  │  • Use recommendations│
+  └──────┬───────────────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  Re-validate │  ./kraang.py validate-queries
+  │  (Score: 0.78)│
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────────┐
+  │  Repeat until    │  Target: Score ≥ 0.80 (Grade B)
+  │  Acceptable      │
+  └──────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          EXAMPLE: LOTJ MUD CODEBASE                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │ Question: "Can I use malloc() directly in C code?"              │
+  ├─────────────────────────────────────────────────────────────────┤
+  │                                                                  │
+  │ Supporting Facts:                                                │
+  │   [fact_28] The MUD uses a custom memory management system -    │
+  │             never use raw malloc/free                            │
+  │   [fact_29] CREATE(result, type, number) macro MUST be used     │
+  │   [fact_32] Never use raw malloc(), free(), calloc(), etc.      │
+  │                                                                  │
+  │ Answer:                                                          │
+  │   "No, you cannot use malloc() directly. The MUD uses a custom  │
+  │    memory management system with CREATE and DISPOSE macros.     │
+  │    Raw malloc/free/calloc/realloc are forbidden."               │
+  │                                                                  │
+  │ Confidence: 0.95  ✓                                             │
+  │   LLM:       0.95                                               │
+  │   Secondary: 0.95                                               │
+  │   Final:     0.95                                               │
+  │                                                                  │
+  │ Status: ✓ High confidence - excellent fact coverage             │
+  └─────────────────────────────────────────────────────────────────┘
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │ Question: "Why am I getting memory corruption?"                 │
+  ├─────────────────────────────────────────────────────────────────┤
+  │                                                                  │
+  │ Supporting Facts:                                                │
+  │   [fact_28] Custom memory management system                     │
+  │   [fact_29] CREATE macro usage                                  │
+  │                                                                  │
+  │ Answer:                                                          │
+  │   "Memory corruption likely occurs from incorrect memory        │
+  │    management. Use CREATE/DISPOSE macros. However, I cannot     │
+  │    provide specific debugging steps without more information."  │
+  │                                                                  │
+  │ Confidence: 0.62  ✗                                             │
+  │   LLM:       0.65                                               │
+  │   Secondary: 0.59                                               │
+  │   Final:     0.62                                               │
+  │                                                                  │
+  │ Missing Categories:                                              │
+  │   • error_handling                                              │
+  │   • debugging_patterns                                          │
+  │   • common_pitfalls                                             │
+  │                                                                  │
+  │ Recommendations:                                                 │
+  │   • Extract from debugging guides                               │
+  │   • Extract error handling documentation                        │
+  │                                                                  │
+  │ Status: ✗ Low confidence - needs more debugging facts           │
+  └─────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          KEY ADVANTAGES                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ✓ Objective Measurement
+    Clear numeric scores (0.0-1.0), not subjective assessment
+
+  ✓ Practical Focus
+    Tests real developer needs, not abstract coverage metrics
+
+  ✓ Gap Identification
+    Pinpoints exactly what's missing and why
+
+  ✓ Prioritization
+    Weights critical questions (constraints) higher than nice-to-have (debugging)
+
+  ✓ Actionable Feedback
+    "Extract from error handling docs" not "coverage is low"
+
+  ✓ Continuous Improvement
+    Run iteratively, track progress, converge to acceptable score
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          SYSTEM ARCHITECTURE                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ┌───────────────────────────────────────────────────────────────┐
+  │                      KraangCLI                                │
+  │                 ./kraang.py validate-queries                  │
+  └────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+  ┌───────────────────────────────────────────────────────────────┐
+  │                   QueryValidator                              │
+  │  • Loads question sets (41 questions for LotJ)               │
+  │  • Runs validation on each question                          │
+  │  • Aggregates results into CompletenessScore                 │
+  │  • Prints report and saves to JSON                           │
+  └────────────────────────┬──────────────────────────────────────┘
+                           │
+           ┌───────────────┼───────────────┐
+           ▼               ▼               ▼
+  ┌────────────┐  ┌────────────┐  ┌────────────┐
+  │ KraangStore│  │ LLM Client │  │ Gap Analyzer│
+  │ (Load facts)│  │ (Query AI) │  │(Find gaps) │
+  └────────────┘  └────────────┘  └────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          FILES CREATED                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  QUERY_VALIDATION_SYSTEM.md (34 KB)
+    • Complete design document
+    • Full taxonomy definition
+    • 41 LotJ example questions
+    • Detailed algorithm with pseudocode
+    • Acceptance criteria
+
+  query_validator.py (25 KB)
+    • Full Python implementation
+    • All data classes
+    • Complete validation algorithm
+    • Gap analysis logic
+    • CLI integration
+
+  QUERY_VALIDATION_EXAMPLE.md (15 KB)
+    • Usage tutorial
+    • Example output
+    • Score interpretation
+    • Troubleshooting guide
+    • Best practices
+
+  QUERY_VALIDATION_SUMMARY.md (9.6 KB)
+    • Quick reference
+    • TL;DR overview
+    • Key concepts
+    • When to use
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          BOTTOM LINE                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  Facts are "complete enough" when they can confidently answer
+  the questions developers actually ask.
+
+  Not "How many facts?" but "Can developers use them?"
+
+  Query-driven validation = Objective + Practical + Actionable

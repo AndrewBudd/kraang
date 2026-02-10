@@ -1,0 +1,526 @@
+================================================================================
+KRAANG CONFLICT RATIONALIZATION DEMO
+================================================================================
+
+Mission: Prove that Kraang can rationalize conflicting constraints
+Dataset: Legends of the Jedi (LotJ) MUD Game Codebase
+================================================================================
+
+================================================================================
+PHASE 1: LOAD DATA
+================================================================================
+Loading data from Kraang store...
+  Loaded 3234 facts
+  Loaded 95 relationships
+
+================================================================================
+PHASE 2: DETECT CONFLICTS
+================================================================================
+
+Detecting conflicts...
+  Found 5 conflicts
+
+--------------------------------------------------------------------------------
+CONFLICTS DETECTED:
+--------------------------------------------------------------------------------
+
+conflict_1:
+  Fact 1: DO NOT create new header files, use existing well-established header f...
+  Fact 2: types.h contains 5830 lines with ALL struct and type definitions...
+  Confidence: 85%
+
+conflict_2:
+  Fact 1: DO NOT create new header files, use existing well-established header f...
+  Fact 2: functions.h contains 2437 lines with ALL function prototypes...
+  Confidence: 85%
+
+conflict_3:
+  Fact 1: The MUD uses a custom memory management system - never use raw malloc/...
+  Fact 2: SET_STRING(pointer, value) macro performs safe string assignment by fr...
+  Confidence: 85%
+
+conflict_4:
+  Fact 1: Local development MUST use Docker Compose exclusively, never build or ...
+  Fact 2: PostgreSQL database runs on localhost:5432 with user 'root', password ...
+  Confidence: 85%
+
+conflict_5:
+  Fact 1: PostgreSQL database runs on localhost:5432 with user 'root', password ...
+  Fact 2: Multi-service architecture uses Docker Compose...
+  Confidence: 75%
+
+================================================================================
+PHASE 3: ANALYZE IMPACT
+================================================================================
+
+Analyzing impact of conflict_1...
+
+conflict_1:
+  Root Cause: Monolithic header files violate modular design principles while constr...
+  Severity: high
+  Priority: high
+  Technical Debt Score: 6.8/10
+
+Analyzing impact of conflict_2...
+
+conflict_2:
+  Root Cause: Monolithic header files violate modular design principles while constr...
+  Severity: high
+  Priority: high
+  Technical Debt Score: 6.8/10
+
+Analyzing impact of conflict_3...
+
+conflict_3:
+  Root Cause: SET_STRING macro uses raw malloc/free instead of custom memory managem...
+  Severity: critical
+  Priority: critical
+  Technical Debt Score: 8.5/10
+
+Analyzing impact of conflict_4...
+
+conflict_4:
+  Root Cause: localhost:5432 database configuration conflicts with Docker Compose se...
+  Severity: medium
+  Priority: medium
+  Technical Debt Score: 4.2/10
+
+Analyzing impact of conflict_5...
+
+conflict_5:
+  Root Cause: localhost:5432 database configuration conflicts with Docker Compose se...
+  Severity: medium
+  Priority: medium
+  Technical Debt Score: 3.8/10
+
+================================================================================
+PHASE 4: RECOMMENDATIONS
+================================================================================
+
+================================================================================
+conflict_3 - PRIORITY: CRITICAL
+================================================================================
+
+Recommended Strategy: REFACTOR
+Description: Reimplement SET_STRING to use custom memory management (CREATE/DESTROY)
+
+Effort: low
+Risk: low
+Technical Debt if not fixed: 8.5/10
+
+Benefits:
+  + Consistent memory management throughout codebase
+  + Better memory leak detection
+  + Aligns with system constraints
+  + Single point of truth for memory ops
+
+Drawbacks:
+  - Need to test all SET_STRING usages
+  - Potential subtle behavior changes
+
+Action Items:
+  1. Audit SET_STRING macro implementation
+  2. Replace malloc/free with CREATE/DESTROY
+  3. Run full test suite to verify behavior
+  4. Update documentation
+  5. Add regression test
+
+Alternative Strategies:
+  - KEEP_FACT2: Document SET_STRING as approved exception to memory management rule
+
+================================================================================
+conflict_1 - PRIORITY: HIGH
+================================================================================
+
+Recommended Strategy: REFACTOR
+Description: Gradually split monolithic headers into focused modules while maintaining backward compatibility
+
+Effort: high
+Risk: medium
+Technical Debt if not fixed: 6.8/10
+
+Benefits:
+  + Improved maintainability and readability
+  + Faster compilation (reduced dependencies)
+  + Better modularity and encapsulation
+  + Easier to find and modify specific definitions
+
+Drawbacks:
+  - Significant upfront effort
+  - Risk of breaking existing includes
+  - Requires careful migration plan
+
+Action Items:
+  1. Create header organization design document
+  2. Identify natural module boundaries (e.g., types_player.h, types_ship.h)
+  3. Implement backward-compatible wrapper headers
+  4. Migrate files incrementally, one module at a time
+  5. Update build system to handle new structure
+
+Alternative Strategies:
+  - KEEP_FACT1: Accept technical debt, document monolithic structure as legacy
+
+================================================================================
+conflict_2 - PRIORITY: HIGH
+================================================================================
+
+Recommended Strategy: REFACTOR
+Description: Gradually split monolithic headers into focused modules while maintaining backward compatibility
+
+Effort: high
+Risk: medium
+Technical Debt if not fixed: 6.8/10
+
+Benefits:
+  + Improved maintainability and readability
+  + Faster compilation (reduced dependencies)
+  + Better modularity and encapsulation
+  + Easier to find and modify specific definitions
+
+Drawbacks:
+  - Significant upfront effort
+  - Risk of breaking existing includes
+  - Requires careful migration plan
+
+Action Items:
+  1. Create header organization design document
+  2. Identify natural module boundaries (e.g., types_player.h, types_ship.h)
+  3. Implement backward-compatible wrapper headers
+  4. Migrate files incrementally, one module at a time
+  5. Update build system to handle new structure
+
+Alternative Strategies:
+  - KEEP_FACT1: Accept technical debt, document monolithic structure as legacy
+
+================================================================================
+conflict_4 - PRIORITY: MEDIUM
+================================================================================
+
+Recommended Strategy: MERGE
+Description: Document port mapping pattern: services use container names internally, localhost for external tools
+
+Effort: low
+Risk: low
+Technical Debt if not fixed: 4.2/10
+
+Benefits:
+  + Clarifies intentional design
+  + Allows external DB tools
+  + Minimal code changes
+
+Drawbacks:
+  - Slightly confusing for new developers
+  - Two patterns to remember
+
+Action Items:
+  1. Document port mapping strategy in CLAUDE.md
+  2. Add comment to docker-compose.yml explaining port 5432
+  3. Clarify when to use 'localhost' vs 'postgres' in connection strings
+  4. Consider environment variables for flexibility
+
+Alternative Strategies:
+  - REFACTOR: Update connection strings to use Docker service names, expose ports for debugging only
+
+================================================================================
+conflict_5 - PRIORITY: MEDIUM
+================================================================================
+
+Recommended Strategy: MERGE
+Description: Document port mapping pattern: services use container names internally, localhost for external tools
+
+Effort: low
+Risk: low
+Technical Debt if not fixed: 3.8/10
+
+Benefits:
+  + Clarifies intentional design
+  + Allows external DB tools
+  + Minimal code changes
+
+Drawbacks:
+  - Slightly confusing for new developers
+  - Two patterns to remember
+
+Action Items:
+  1. Document port mapping strategy in CLAUDE.md
+  2. Add comment to docker-compose.yml explaining port 5432
+  3. Clarify when to use 'localhost' vs 'postgres' in connection strings
+  4. Consider environment variables for flexibility
+
+Alternative Strategies:
+  - REFACTOR: Update connection strings to use Docker service names, expose ports for debugging only
+
+================================================================================
+PHASE 5: GENERATE REPORT
+================================================================================
+
+  Saved detailed results to: rationalization_results.json
+
+================================================================================
+VISUALIZATIONS
+================================================================================
+
+================================================================================
+CONFLICT GRAPH
+================================================================================
+
+Conflict #1: conflict_1
+  [fact_16]
+  "DO NOT create new header files, use existing well-..."
+       |
+       | CONTRADICTS
+       | (confidence: 85%)
+       |
+  [fact_19]
+  "types.h contains 5830 lines with ALL struct and ty..."
+
+  ----------------------------------------------------------------------
+
+Conflict #2: conflict_2
+  [fact_16]
+  "DO NOT create new header files, use existing well-..."
+       |
+       | CONTRADICTS
+       | (confidence: 85%)
+       |
+  [fact_21]
+  "functions.h contains 2437 lines with ALL function ..."
+
+  ----------------------------------------------------------------------
+
+Conflict #3: conflict_3
+  [fact_28]
+  "The MUD uses a custom memory management system - n..."
+       |
+       | CONTRADICTS
+       | (confidence: 85%)
+       |
+  [fact_31]
+  "SET_STRING(pointer, value) macro performs safe str..."
+
+  ----------------------------------------------------------------------
+
+Conflict #4: conflict_4
+  [fact_2]
+  "Local development MUST use Docker Compose exclusiv..."
+       |
+       | CONTRADICTS
+       | (confidence: 85%)
+       |
+  [fact_10]
+  "PostgreSQL database runs on localhost:5432 with us..."
+
+  ----------------------------------------------------------------------
+
+Conflict #5: conflict_5
+  [fact_10]
+  "PostgreSQL database runs on localhost:5432 with us..."
+       |
+       | CONTRADICTS
+       | (confidence: 75%)
+       |
+  [fact_74]
+  "Multi-service architecture uses Docker Compose"
+
+  ----------------------------------------------------------------------
+
+
+================================================================================
+IMPACT RADIUS ANALYSIS
+================================================================================
+
+conflict_3 - CRITICAL
+  Strategy: refactor
+  Artifacts Affected: 2
+  Facts Affected: 2
+  Effort: low
+  Risk: low
+  Technical Debt: 8.5/10
+
+  Impact: [████████░░] 8.5/10
+
+  ----------------------------------------------------------------------
+
+conflict_1 - HIGH
+  Strategy: refactor
+  Artifacts Affected: 3
+  Facts Affected: 2
+  Effort: high
+  Risk: medium
+  Technical Debt: 6.8/10
+
+  Impact: [██████░░░░] 6.8/10
+
+  ----------------------------------------------------------------------
+
+conflict_2 - HIGH
+  Strategy: refactor
+  Artifacts Affected: 3
+  Facts Affected: 2
+  Effort: high
+  Risk: medium
+  Technical Debt: 6.8/10
+
+  Impact: [██████░░░░] 6.8/10
+
+  ----------------------------------------------------------------------
+
+conflict_4 - MEDIUM
+  Strategy: merge
+  Artifacts Affected: 2
+  Facts Affected: 2
+  Effort: low
+  Risk: low
+  Technical Debt: 4.2/10
+
+  Impact: [████░░░░░░] 4.2/10
+
+  ----------------------------------------------------------------------
+
+conflict_5 - MEDIUM
+  Strategy: merge
+  Artifacts Affected: 2
+  Facts Affected: 2
+  Effort: low
+  Risk: low
+  Technical Debt: 3.8/10
+
+  Impact: [███░░░░░░░] 3.8/10
+
+  ----------------------------------------------------------------------
+
+
+================================================================================
+PRIORITY MATRIX (Impact vs Effort)
+================================================================================
+
+     Impact
+       ^
+       |
+  HIGH |
+       |  [CRITICAL] conflict_3
+       |  [HIGH]     conflict_1, conflict_2
+       |
+   MED |
+       |  [MEDIUM]   conflict_4, conflict_5
+       |
+   LOW |
+       |
+       +-----------------------------------------> Effort
+       LOW                                      HIGH
+
+
+================================================================================
+RESOLUTION DECISION TREE
+================================================================================
+
+conflict_3
+  |
+  +-- Priority: CRITICAL
+  |
+  +-- Recommended: REFACTOR
+  |   |
+  |   +-- Effort: low
+  |   +-- Risk: low
+  |   |
+  |   +-- Benefits:
+  |       - Consistent memory management throughout codebase
+  |       - Better memory leak detection
+  |       - Aligns with system constraints
+  |
+  +-- Alternatives:
+      +-- KEEP_FACT2 (effort: low, risk: medium)
+
+conflict_1
+  |
+  +-- Priority: HIGH
+  |
+  +-- Recommended: REFACTOR
+  |   |
+  |   +-- Effort: high
+  |   +-- Risk: medium
+  |   |
+  |   +-- Benefits:
+  |       - Improved maintainability and readability
+  |       - Faster compilation (reduced dependencies)
+  |       - Better modularity and encapsulation
+  |
+  +-- Alternatives:
+      +-- KEEP_FACT1 (effort: low, risk: low)
+
+conflict_2
+  |
+  +-- Priority: HIGH
+  |
+  +-- Recommended: REFACTOR
+  |   |
+  |   +-- Effort: high
+  |   +-- Risk: medium
+  |   |
+  |   +-- Benefits:
+  |       - Improved maintainability and readability
+  |       - Faster compilation (reduced dependencies)
+  |       - Better modularity and encapsulation
+  |
+  +-- Alternatives:
+      +-- KEEP_FACT1 (effort: low, risk: low)
+
+conflict_4
+  |
+  +-- Priority: MEDIUM
+  |
+  +-- Recommended: MERGE
+  |   |
+  |   +-- Effort: low
+  |   +-- Risk: low
+  |   |
+  |   +-- Benefits:
+  |       - Clarifies intentional design
+  |       - Allows external DB tools
+  |       - Minimal code changes
+  |
+  +-- Alternatives:
+      +-- REFACTOR (effort: low, risk: low)
+
+conflict_5
+  |
+  +-- Priority: MEDIUM
+  |
+  +-- Recommended: MERGE
+  |   |
+  |   +-- Effort: low
+  |   +-- Risk: low
+  |   |
+  |   +-- Benefits:
+  |       - Clarifies intentional design
+  |       - Allows external DB tools
+  |       - Minimal code changes
+  |
+  +-- Alternatives:
+      +-- REFACTOR (effort: low, risk: low)
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+  Total Facts Analyzed: 3,234
+  Total Relationships: 95
+  Conflicts Found: 5
+  Resolutions Generated: 5
+  Total Technical Debt: 30.1/50
+
+  Priority Breakdown:
+    Critical: 1
+    High:     2
+    Medium:   2
+    Low:      0
+
+================================================================================
+✓ THESIS VALIDATED
+================================================================================
+
+Kraang successfully rationalized conflicting constraints!
+The system detected real conflicts in LotJ, analyzed their impact,
+and proposed concrete resolution strategies with action plans.
+================================================================================

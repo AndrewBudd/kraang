@@ -1,0 +1,625 @@
+{
+  "conflict": {
+    "fact_a_id": "fact_16",
+    "fact_b_id": "fact_19",
+    "conflict_type": "contradiction",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+  },
+  "analyses": [
+    {
+      "conflict": {
+        "fact_a_id": "fact_16",
+        "fact_b_id": "fact_19",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      },
+      "resolution": {
+        "resolution_type": "accept_both",
+        "description": "Document both as valid and explain the apparent contradiction",
+        "target_facts": [],
+        "new_constraint": null
+      },
+      "affected_facts": [],
+      "affected_files": [],
+      "broken_constraints": [],
+      "total_loc_estimate": 0,
+      "total_files_affected": 0,
+      "overall_risk": "low",
+      "effort_estimate": "1-2 hours",
+      "recommendation_score": 10.0
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_16",
+        "fact_b_id": "fact_19",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      },
+      "resolution": {
+        "resolution_type": "add_constraint",
+        "description": "Add a scoping constraint that allows both to be valid in different contexts",
+        "target_facts": [
+          "fact_16",
+          "fact_19"
+        ],
+        "new_constraint": "Context-dependent constraint to be defined"
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_16",
+          "change_required": "Add context to scope this constraint",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_32",
+            "fact_19",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        },
+        {
+          "fact_id": "fact_19",
+          "change_required": "Add context to scope this constraint",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_16",
+            "fact_32",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 264-267, Section: Memory Management",
+            "Lines 307-309, Section: Linked Lists",
+            "Line 255, Section: Content Placement Guidelines",
+            "Lines 295-297, Section: Linked Lists",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 231-233, Section: Core Headers",
+            "Line 248, Section: Header Inclusion Rules",
+            "Line 249, Section: Header Inclusion Rules",
+            "Line 229, Section: Core Headers",
+            "Lines 222-224, Section: Core Headers",
+            "Line 213, Section: Header Files - CRITICAL",
+            "Line 279, Section: Memory Management",
+            "Lines 226-229, Section: Core Headers",
+            "Lines 288-290, Section: Linked Lists",
+            "Lines 217-220, Section: Core Headers",
+            "Line 262, Section: Memory Management",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Lines 303-305, Section: Linked Lists",
+            "Line 254, Section: Content Placement Guidelines",
+            "Lines 269-271, Section: Memory Management",
+            "Lines 299-301, Section: Linked Lists",
+            "Lines 235-237, Section: Core Headers",
+            "Line 233, Section: Core Headers"
+          ],
+          "estimated_loc_changed": 390,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_29",
+        "fact_27",
+        "fact_24",
+        "fact_25",
+        "fact_20",
+        "fact_32",
+        "fact_36",
+        "fact_28",
+        "fact_33",
+        "fact_26",
+        "fact_30",
+        "fact_22"
+      ],
+      "total_loc_estimate": 400,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "1 week+ (plus extensive testing)",
+      "recommendation_score": 3.5999999999999996
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_16",
+        "fact_b_id": "fact_19",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      },
+      "resolution": {
+        "resolution_type": "change_a",
+        "description": "Change 'DO NOT create new header files, use existing well-...' to align with fact B",
+        "target_facts": [
+          "fact_16"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_16",
+          "change_required": "Modify to align with fact_19",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_32",
+            "fact_19",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 264-267, Section: Memory Management",
+            "Lines 307-309, Section: Linked Lists",
+            "Lines 217-220, Section: Core Headers",
+            "Line 255, Section: Content Placement Guidelines",
+            "Lines 295-297, Section: Linked Lists",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 231-233, Section: Core Headers",
+            "Line 262, Section: Memory Management",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 248, Section: Header Inclusion Rules",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Line 249, Section: Header Inclusion Rules",
+            "Line 229, Section: Core Headers",
+            "Lines 303-305, Section: Linked Lists",
+            "Line 254, Section: Content Placement Guidelines",
+            "Lines 222-224, Section: Core Headers",
+            "Line 213, Section: Header Files - CRITICAL",
+            "Lines 269-271, Section: Memory Management",
+            "Lines 299-301, Section: Linked Lists",
+            "Lines 235-237, Section: Core Headers",
+            "Line 233, Section: Core Headers",
+            "Line 279, Section: Memory Management",
+            "Lines 226-229, Section: Core Headers",
+            "Lines 288-290, Section: Linked Lists"
+          ],
+          "estimated_loc_changed": 390,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_29",
+        "fact_27",
+        "fact_28",
+        "fact_24",
+        "fact_33",
+        "fact_25",
+        "fact_20",
+        "fact_26",
+        "fact_30",
+        "fact_22",
+        "fact_32",
+        "fact_36"
+      ],
+      "total_loc_estimate": 400,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "1 week+ (plus extensive testing)",
+      "recommendation_score": 2.5999999999999996
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_16",
+        "fact_b_id": "fact_19",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      },
+      "resolution": {
+        "resolution_type": "change_b",
+        "description": "Change 'types.h contains 5830 lines with ALL struct and ty...' to align with fact A",
+        "target_facts": [
+          "fact_19"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_19",
+          "change_required": "Modify to align with fact_16",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_16",
+            "fact_32",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 264-267, Section: Memory Management",
+            "Lines 307-309, Section: Linked Lists",
+            "Lines 217-220, Section: Core Headers",
+            "Line 255, Section: Content Placement Guidelines",
+            "Lines 295-297, Section: Linked Lists",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 231-233, Section: Core Headers",
+            "Line 262, Section: Memory Management",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 248, Section: Header Inclusion Rules",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Line 249, Section: Header Inclusion Rules",
+            "Line 229, Section: Core Headers",
+            "Lines 303-305, Section: Linked Lists",
+            "Line 254, Section: Content Placement Guidelines",
+            "Lines 222-224, Section: Core Headers",
+            "Line 213, Section: Header Files - CRITICAL",
+            "Lines 269-271, Section: Memory Management",
+            "Lines 299-301, Section: Linked Lists",
+            "Lines 235-237, Section: Core Headers",
+            "Line 233, Section: Core Headers",
+            "Line 279, Section: Memory Management",
+            "Lines 226-229, Section: Core Headers",
+            "Lines 288-290, Section: Linked Lists"
+          ],
+          "estimated_loc_changed": 390,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_29",
+        "fact_27",
+        "fact_28",
+        "fact_24",
+        "fact_33",
+        "fact_25",
+        "fact_20",
+        "fact_26",
+        "fact_16",
+        "fact_30",
+        "fact_22",
+        "fact_32",
+        "fact_36"
+      ],
+      "total_loc_estimate": 400,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "1 week+ (plus extensive testing)",
+      "recommendation_score": 2.5999999999999996
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_16",
+        "fact_b_id": "fact_19",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+      },
+      "resolution": {
+        "resolution_type": "change_both",
+        "description": "Refactor both facts to a new unified constraint",
+        "target_facts": [
+          "fact_16",
+          "fact_19"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_16",
+          "change_required": "Modify to align with new unified constraint",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_32",
+            "fact_19",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        },
+        {
+          "fact_id": "fact_19",
+          "change_required": "Modify to align with new unified constraint",
+          "dependent_facts": [
+            "fact_29",
+            "fact_40",
+            "fact_27",
+            "fact_37",
+            "fact_31",
+            "fact_34",
+            "fact_21",
+            "fact_24",
+            "fact_138",
+            "fact_25",
+            "fact_20",
+            "fact_18",
+            "fact_16",
+            "fact_32",
+            "fact_36",
+            "fact_17",
+            "fact_28",
+            "fact_35",
+            "fact_56",
+            "fact_33",
+            "fact_39",
+            "fact_26",
+            "fact_30",
+            "fact_38",
+            "fact_23",
+            "fact_22"
+          ],
+          "dependent_count": 26,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 264-267, Section: Memory Management",
+            "Lines 307-309, Section: Linked Lists",
+            "Line 255, Section: Content Placement Guidelines",
+            "Lines 295-297, Section: Linked Lists",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 231-233, Section: Core Headers",
+            "Line 248, Section: Header Inclusion Rules",
+            "Line 249, Section: Header Inclusion Rules",
+            "Line 229, Section: Core Headers",
+            "Lines 222-224, Section: Core Headers",
+            "Line 213, Section: Header Files - CRITICAL",
+            "Line 279, Section: Memory Management",
+            "Lines 226-229, Section: Core Headers",
+            "Lines 288-290, Section: Linked Lists",
+            "Lines 217-220, Section: Core Headers",
+            "Line 262, Section: Memory Management",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Lines 303-305, Section: Linked Lists",
+            "Line 254, Section: Content Placement Guidelines",
+            "Lines 269-271, Section: Memory Management",
+            "Lines 299-301, Section: Linked Lists",
+            "Lines 235-237, Section: Core Headers",
+            "Line 233, Section: Core Headers"
+          ],
+          "estimated_loc_changed": 390,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_29",
+        "fact_27",
+        "fact_24",
+        "fact_25",
+        "fact_20",
+        "fact_32",
+        "fact_36",
+        "fact_28",
+        "fact_33",
+        "fact_26",
+        "fact_30",
+        "fact_22"
+      ],
+      "total_loc_estimate": 400,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "1 week+ (plus extensive testing)",
+      "recommendation_score": 2.5999999999999996
+    }
+  ],
+  "recommended": {
+    "conflict": {
+      "fact_a_id": "fact_16",
+      "fact_b_id": "fact_19",
+      "conflict_type": "contradiction",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+    },
+    "resolution": {
+      "resolution_type": "accept_both",
+      "description": "Document both as valid and explain the apparent contradiction",
+      "target_facts": [],
+      "new_constraint": null
+    },
+    "affected_facts": [],
+    "affected_files": [],
+    "broken_constraints": [],
+    "total_loc_estimate": 0,
+    "total_files_affected": 0,
+    "overall_risk": "low",
+    "effort_estimate": "1-2 hours",
+    "recommendation_score": 10.0
+  },
+  "summary": "RECOMMENDED: accept_both\n  Score: 10.0/10\n  Risk: low\n  Effort: 1-2 hours\n  Files: 0\n  LOC: ~0\n\nAlternatives considered: 4\n  1. add_constraint (score: 3.6, risk: critical)\n  2. change_a (score: 2.6, risk: critical)\n  3. change_b (score: 2.6, risk: critical)\n  4. change_both (score: 2.6, risk: critical)\n"
+}

@@ -1,0 +1,146 @@
+================================================================================
+LOTJ RELATIONSHIP GRAPH - FINAL COMPREHENSIVE REPORT
+================================================================================
+Generated: 2026-02-10 17:08:25
+================================================================================
+
+================================================================================
+1. PROCESSING SUMMARY
+================================================================================
+  Candidate pairs analyzed: 1,000
+  Relationships discovered: 69
+  Analysis completion:      6.9%
+  Total facts in system:    1,174
+
+================================================================================
+2. RELATIONSHIP STATISTICS
+================================================================================
+
+  2a. Relationship Types:
+      Supports    :   46 ( 66.7%)
+      Contradicts :    3 (  4.3%)
+      Extends     :   20 ( 29.0%)
+
+  2b. Confidence Distribution:
+      0.95-1.00 :   28 ( 40.6%)
+      0.90-0.94 :    1 (  1.4%)
+      0.85-0.89 :   38 ( 55.1%)
+      0.80-0.84 :    0 (  0.0%)
+      <0.80     :    2 (  2.9%)
+
+================================================================================
+3. RELATIONSHIP DENSITY ANALYSIS
+================================================================================
+  Total facts:               1,174
+  Facts with relationships:  46
+  Orphaned facts:            1,128
+  Relationship density:      3.9%
+  Avg rels per connected fact: 3.00
+
+  Assessment:
+    ✗ POOR: Very low relationship density (<30%)
+
+================================================================================
+4. CONSTRAINT VALIDATION SUMMARY
+================================================================================
+  Total constraints:         227
+  Validated (with rels):     16
+  Orphaned (no rels):        211
+  Validation rate:           7.0%
+
+  Assessment:
+    ✗ POOR: Low validation (<40%)
+
+  Sample orphaned constraints (first 5):
+    1. fact_12: C function naming convention is snake_case...
+    2. fact_13: Global variables MUST be prefixed with 'g_'...
+    3. fact_14: Constants MUST be named in ALL_CAPS...
+    4. fact_15: No compiler warnings are acceptable - all builds MUST be clean...
+    5. fact_42: Lua functions typically use camelCase...
+
+================================================================================
+5. CONTRADICTIONS FOUND
+================================================================================
+  ⚠ Found 3 contradiction(s):
+
+  1. fact_16 ↔ fact_19
+     Confidence: 0.85
+     Fact 1 (constraint): DO NOT create new header files, use existing well-established hea...
+     Fact 2 (implementation): types.h contains 5830 lines with ALL struct and type definitions...
+     Reasoning: Fact 1 constrains against creating new header files and mandates using existing structure, while Fac...
+
+  2. fact_16 ↔ fact_21
+     Confidence: 0.85
+     Fact 1 (constraint): DO NOT create new header files, use existing well-established hea...
+     Fact 2 (implementation): functions.h contains 2437 lines with ALL function prototypes...
+     Reasoning: Fact 1 mandates using existing well-established header file structure, but Fact 2 reveals a 2437-lin...
+
+  3. fact_28 ↔ fact_31
+     Confidence: 0.85
+     Fact 1 (constraint): The MUD uses a custom memory management system - never use raw ma...
+     Fact 2 (implementation): SET_STRING(pointer, value) macro performs safe string assignment ...
+     Reasoning: Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memor...
+
+
+================================================================================
+6. MOST CONNECTED FACTS (Top 15)
+================================================================================
+   1. fact_17      (10 rels, implementation )
+      mud.h is the primary header with 981 lines containing memory managemen...
+   2. fact_19      ( 7 rels, implementation )
+      types.h contains 5830 lines with ALL struct and type definitions...
+   3. fact_16      ( 6 rels, constraint     )
+      DO NOT create new header files, use existing well-established header f...
+   4. fact_21      ( 6 rels, implementation )
+      functions.h contains 2437 lines with ALL function prototypes...
+   5. fact_23      ( 6 rels, implementation )
+      globals.h contains 668 lines with global variable extern declarations ...
+   6. fact_31      ( 6 rels, implementation )
+      SET_STRING(pointer, value) macro performs safe string assignment by fr...
+   7. fact_36      ( 5 rels, constraint     )
+      Always use LINK/UNLINK macros for doubly linked lists, never manually ...
+   8. fact_28      ( 5 rels, constraint     )
+      The MUD uses a custom memory management system - never use raw malloc/...
+   9. fact_3       ( 5 rels, design         )
+      LotJ is a MUD (Multi-User Dungeon) game based on Star Wars...
+  10. fact_18      ( 5 rels, implementation )
+      const.h contains 716 lines of constants and defines only, no type defi...
+  11. fact_20      ( 5 rels, constraint     )
+      ALL new struct definitions MUST be placed in types.h...
+  12. fact_22      ( 5 rels, constraint     )
+      ALL new function declarations MUST be placed in functions.h...
+  13. fact_25      ( 5 rels, constraint     )
+      functions.h is typically included last for function prototypes...
+  14. fact_27      ( 5 rels, constraint     )
+      Function prototypes MUST go in functions.h...
+  15. fact_26      ( 4 rels, constraint     )
+      Struct definitions MUST go in types.h...
+
+================================================================================
+7. FACT TYPE PAIR ANALYSIS
+================================================================================
+
+  Most common fact type combinations:
+    constraint      ↔ implementation :  56 (81.2%)
+    design          ↔ implementation :   8 (11.6%)
+    implementation  ↔ requirement    :   5 ( 7.2%)
+
+================================================================================
+8. KEY FINDINGS & CRITICAL ISSUES
+================================================================================
+  ⚠ WARNING: 1128 orphaned facts (>50% of total)
+  ✓ POSITIVE: High 'supports' ratio (67%)
+
+================================================================================
+9. RECOMMENDATIONS
+================================================================================
+  • Review orphaned facts for potential relationships
+  • Investigate orphaned constraints for missing implementations
+  • Resolve all documented contradictions
+  • Consider additional relationship discovery passes
+  • Improve constraint validation coverage
+  • Complete processing of remaining 931 candidate pairs
+
+================================================================================
+END OF REPORT
+================================================================================

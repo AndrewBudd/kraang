@@ -1,0 +1,439 @@
+{
+  "conflict": {
+    "fact_a_id": "fact_28",
+    "fact_b_id": "fact_31",
+    "conflict_type": "contradiction",
+    "confidence": 0.85,
+    "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+  },
+  "analyses": [
+    {
+      "conflict": {
+        "fact_a_id": "fact_28",
+        "fact_b_id": "fact_31",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      },
+      "resolution": {
+        "resolution_type": "accept_both",
+        "description": "Document both as valid and explain the apparent contradiction",
+        "target_facts": [],
+        "new_constraint": null
+      },
+      "affected_facts": [],
+      "affected_files": [],
+      "broken_constraints": [],
+      "total_loc_estimate": 0,
+      "total_files_affected": 0,
+      "overall_risk": "low",
+      "effort_estimate": "1-2 hours",
+      "recommendation_score": 10.0
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_28",
+        "fact_b_id": "fact_31",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      },
+      "resolution": {
+        "resolution_type": "add_constraint",
+        "description": "Add a scoping constraint that allows both to be valid in different contexts",
+        "target_facts": [
+          "fact_28",
+          "fact_31"
+        ],
+        "new_constraint": "Context-dependent constraint to be defined"
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_28",
+          "change_required": "Add context to scope this constraint",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_31",
+            "fact_34",
+            "fact_56",
+            "fact_35",
+            "fact_32",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        },
+        {
+          "fact_id": "fact_31",
+          "change_required": "Add context to scope this constraint",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_28",
+            "fact_34",
+            "fact_56",
+            "fact_32",
+            "fact_35",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 307-309, Section: Linked Lists",
+            "Line 262, Section: Memory Management",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Lines 303-305, Section: Linked Lists",
+            "Lines 299-301, Section: Linked Lists",
+            "Line 279, Section: Memory Management",
+            "Lines 288-290, Section: Linked Lists"
+          ],
+          "estimated_loc_changed": 165,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_33",
+        "fact_32",
+        "fact_36"
+      ],
+      "total_loc_estimate": 175,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "2-3 days (plus extensive testing)",
+      "recommendation_score": 4.1
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_28",
+        "fact_b_id": "fact_31",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      },
+      "resolution": {
+        "resolution_type": "change_a",
+        "description": "Change 'The MUD uses a custom memory management system - n...' to align with fact B",
+        "target_facts": [
+          "fact_28"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_28",
+          "change_required": "Modify to align with fact_31",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_31",
+            "fact_34",
+            "fact_56",
+            "fact_35",
+            "fact_32",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 307-309, Section: Linked Lists",
+            "Lines 303-305, Section: Linked Lists",
+            "Lines 299-301, Section: Linked Lists",
+            "Line 262, Section: Memory Management",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 279, Section: Memory Management",
+            "Lines 288-290, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management"
+          ],
+          "estimated_loc_changed": 165,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_32",
+        "fact_36",
+        "fact_33"
+      ],
+      "total_loc_estimate": 175,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "2-3 days (plus extensive testing)",
+      "recommendation_score": 3.0999999999999996
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_28",
+        "fact_b_id": "fact_31",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      },
+      "resolution": {
+        "resolution_type": "change_both",
+        "description": "Refactor both facts to a new unified constraint",
+        "target_facts": [
+          "fact_28",
+          "fact_31"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_28",
+          "change_required": "Modify to align with new unified constraint",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_31",
+            "fact_34",
+            "fact_56",
+            "fact_35",
+            "fact_32",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        },
+        {
+          "fact_id": "fact_31",
+          "change_required": "Modify to align with new unified constraint",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_28",
+            "fact_34",
+            "fact_56",
+            "fact_32",
+            "fact_35",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 307-309, Section: Linked Lists",
+            "Line 262, Section: Memory Management",
+            "Lines 273-275, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Lines 287-288, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management",
+            "Lines 303-305, Section: Linked Lists",
+            "Lines 299-301, Section: Linked Lists",
+            "Line 279, Section: Memory Management",
+            "Lines 288-290, Section: Linked Lists"
+          ],
+          "estimated_loc_changed": 165,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_33",
+        "fact_32",
+        "fact_36"
+      ],
+      "total_loc_estimate": 175,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "2-3 days (plus extensive testing)",
+      "recommendation_score": 3.0999999999999996
+    },
+    {
+      "conflict": {
+        "fact_a_id": "fact_28",
+        "fact_b_id": "fact_31",
+        "conflict_type": "contradiction",
+        "confidence": 0.85,
+        "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+      },
+      "resolution": {
+        "resolution_type": "change_b",
+        "description": "Change 'SET_STRING(pointer, value) macro performs safe str...' to align with fact A",
+        "target_facts": [
+          "fact_31"
+        ],
+        "new_constraint": null
+      },
+      "affected_facts": [
+        {
+          "fact_id": "fact_31",
+          "change_required": "Modify to align with fact_28",
+          "dependent_facts": [
+            "fact_40",
+            "fact_39",
+            "fact_38",
+            "fact_28",
+            "fact_34",
+            "fact_56",
+            "fact_32",
+            "fact_35",
+            "fact_36",
+            "fact_138",
+            "fact_33"
+          ],
+          "dependent_count": 11,
+          "risk_level": "critical"
+        }
+      ],
+      "affected_files": [
+        {
+          "file_path": "/home/budda/Code/LotJ/CLAUDE.md",
+          "artifact_id": "artifact_1",
+          "affected_locations": [
+            "Lines 307-309, Section: Linked Lists",
+            "Lines 303-305, Section: Linked Lists",
+            "Lines 299-301, Section: Linked Lists",
+            "Lines 273-275, Section: Memory Management",
+            "Line 262, Section: Memory Management",
+            "Lines 285-288, Section: Linked Lists",
+            "Line 279, Section: Memory Management",
+            "Lines 287-288, Section: Linked Lists",
+            "Lines 288-290, Section: Linked Lists",
+            "Line 351, Section: Documentation Standards",
+            "Line 281, Section: Memory Management"
+          ],
+          "estimated_loc_changed": 165,
+          "complexity": "complex",
+          "risk_factors": [
+            "Standard risk - normal development workflow"
+          ]
+        },
+        {
+          "file_path": "/home/budda/Code/LotJ/src/act_comm.c",
+          "artifact_id": "artifact_78",
+          "affected_locations": [
+            "Lines 3928-3932, add_follower() LINK usage"
+          ],
+          "estimated_loc_changed": 10,
+          "complexity": "trivial",
+          "risk_factors": [
+            "Code changes require testing and compilation",
+            "C implementation - potential memory/pointer issues"
+          ]
+        }
+      ],
+      "broken_constraints": [
+        "fact_28",
+        "fact_32",
+        "fact_36",
+        "fact_33"
+      ],
+      "total_loc_estimate": 175,
+      "total_files_affected": 2,
+      "overall_risk": "critical",
+      "effort_estimate": "2-3 days (plus extensive testing)",
+      "recommendation_score": 2.5999999999999996
+    }
+  ],
+  "recommended": {
+    "conflict": {
+      "fact_a_id": "fact_28",
+      "fact_b_id": "fact_31",
+      "conflict_type": "contradiction",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+    },
+    "resolution": {
+      "resolution_type": "accept_both",
+      "description": "Document both as valid and explain the apparent contradiction",
+      "target_facts": [],
+      "new_constraint": null
+    },
+    "affected_facts": [],
+    "affected_files": [],
+    "broken_constraints": [],
+    "total_loc_estimate": 0,
+    "total_files_affected": 0,
+    "overall_risk": "low",
+    "effort_estimate": "1-2 hours",
+    "recommendation_score": 10.0
+  },
+  "summary": "RECOMMENDED: accept_both\n  Score: 10.0/10\n  Risk: low\n  Effort: 1-2 hours\n  Files: 0\n  LOC: ~0\n\nAlternatives considered: 4\n  1. add_constraint (score: 4.1, risk: critical)\n  2. change_a (score: 3.1, risk: critical)\n  3. change_both (score: 3.1, risk: critical)\n  4. change_b (score: 2.6, risk: critical)\n"
+}

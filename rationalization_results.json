@@ -1,0 +1,581 @@
+{
+  "summary": {
+    "total_facts": 3234,
+    "total_conflicts": 5,
+    "critical": 1,
+    "high": 2,
+    "medium": 2,
+    "low": 0,
+    "total_debt_score": 30.1
+  },
+  "conflicts": [
+    {
+      "id": "conflict_1",
+      "fact1": "DO NOT create new header files, use existing well-established header file structure",
+      "fact2": "types.h contains 5830 lines with ALL struct and type definitions",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 constrains against creating new header files and mandates using existing structure, while Fact 2 describes a monolithic 5830-line types.h file containing ALL type definitions. This massive single-file approach violates good header file structure principles that Fact 1 aims to preserve. A well-established header structure would typically distribute definitions across multiple focused headers rather than concentrating everything in one enormous file, making these facts incompatible in practice."
+    },
+    {
+      "id": "conflict_2",
+      "fact1": "DO NOT create new header files, use existing well-established header file structure",
+      "fact2": "functions.h contains 2437 lines with ALL function prototypes",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 mandates using existing well-established header file structure, but Fact 2 reveals a 2437-line monolithic functions.h containing ALL function prototypes, which violates established best practices for header organization (typically headers should be modular and focused). This creates a conflict: the constraint demands following established structure while the implementation represents a poorly-structured anti-pattern."
+    },
+    {
+      "id": "conflict_3",
+      "fact1": "The MUD uses a custom memory management system - never use raw malloc/free",
+      "fact2": "SET_STRING(pointer, value) macro performs safe string assignment by freeing old and allocating new",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 establishes a constraint that raw malloc/free should never be used in favor of a custom memory management system. However, Fact 2 describes SET_STRING macro as 'freeing old and allocating new', which implies it uses the forbidden raw free/malloc functions rather than the required custom memory management system. This creates a direct conflict between the stated constraint and the implementation."
+    },
+    {
+      "id": "conflict_4",
+      "fact1": "Local development MUST use Docker Compose exclusively, never build or run services directly in local environment",
+      "fact2": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+      "confidence": 0.85,
+      "reasoning": "Fact 1 mandates that all services must run exclusively in Docker Compose, while Fact 2 specifies PostgreSQL runs on localhost:5432, which typically indicates the database is running directly on the local machine rather than in a Docker container. This creates a conflict between the Docker-exclusive constraint and the localhost database configuration."
+    },
+    {
+      "id": "conflict_5",
+      "fact1": "PostgreSQL database runs on localhost:5432 with user 'root', password '12345', database 'lotj'",
+      "fact2": "Multi-service architecture uses Docker Compose",
+      "confidence": 0.75,
+      "reasoning": "Fact 1 specifies localhost:5432 for database access, which typically indicates local development setup. This conflicts with Fact 2's Docker Compose multi-service architecture, where services should communicate via container names/service names rather than localhost. In a proper Docker Compose setup, the database would be accessed via its service name (e.g., 'postgres:5432') not 'localhost:5432', unless port mapping is being used inconsistently across the architecture."
+    }
+  ],
+  "resolutions": [
+    {
+      "conflict_id": "conflict_3",
+      "priority": "critical",
+      "recommended_strategy": "refactor",
+      "recommended_description": "Reimplement SET_STRING to use custom memory management (CREATE/DESTROY)",
+      "effort": "low",
+      "risk": "low",
+      "benefits": [
+        "Consistent memory management throughout codebase",
+        "Better memory leak detection",
+        "Aligns with system constraints",
+        "Single point of truth for memory ops"
+      ],
+      "drawbacks": [
+        "Need to test all SET_STRING usages",
+        "Potential subtle behavior changes"
+      ],
+      "action_items": [
+        "Audit SET_STRING macro implementation",
+        "Replace malloc/free with CREATE/DESTROY",
+        "Run full test suite to verify behavior",
+        "Update documentation",
+        "Add regression test"
+      ],
+      "technical_debt_score": 8.5,
+      "affected_artifacts": [
+        "mud.h",
+        "SET_STRING macro definition"
+      ]
+    },
+    {
+      "conflict_id": "conflict_1",
+      "priority": "high",
+      "recommended_strategy": "refactor",
+      "recommended_description": "Gradually split monolithic headers into focused modules while maintaining backward compatibility",
+      "effort": "high",
+      "risk": "medium",
+      "benefits": [
+        "Improved maintainability and readability",
+        "Faster compilation (reduced dependencies)",
+        "Better modularity and encapsulation",
+        "Easier to find and modify specific definitions"
+      ],
+      "drawbacks": [
+        "Significant upfront effort",
+        "Risk of breaking existing includes",
+        "Requires careful migration plan"
+      ],
+      "action_items": [
+        "Create header organization design document",
+        "Identify natural module boundaries (e.g., types_player.h, types_ship.h)",
+        "Implement backward-compatible wrapper headers",
+        "Migrate files incrementally, one module at a time",
+        "Update build system to handle new structure"
+      ],
+      "technical_debt_score": 6.8,
+      "affected_artifacts": [
+        "types.h",
+        "functions.h",
+        "all C files"
+      ]
+    },
+    {
+      "conflict_id": "conflict_2",
+      "priority": "high",
+      "recommended_strategy": "refactor",
+      "recommended_description": "Gradually split monolithic headers into focused modules while maintaining backward compatibility",
+      "effort": "high",
+      "risk": "medium",
+      "benefits": [
+        "Improved maintainability and readability",
+        "Faster compilation (reduced dependencies)",
+        "Better modularity and encapsulation",
+        "Easier to find and modify specific definitions"
+      ],
+      "drawbacks": [
+        "Significant upfront effort",
+        "Risk of breaking existing includes",
+        "Requires careful migration plan"
+      ],
+      "action_items": [
+        "Create header organization design document",
+        "Identify natural module boundaries (e.g., types_player.h, types_ship.h)",
+        "Implement backward-compatible wrapper headers",
+        "Migrate files incrementally, one module at a time",
+        "Update build system to handle new structure"
+      ],
+      "technical_debt_score": 6.8,
+      "affected_artifacts": [
+        "types.h",
+        "functions.h",
+        "all C files"
+      ]
+    },
+    {
+      "conflict_id": "conflict_4",
+      "priority": "medium",
+      "recommended_strategy": "merge",
+      "recommended_description": "Document port mapping pattern: services use container names internally, localhost for external tools",
+      "effort": "low",
+      "risk": "low",
+      "benefits": [
+        "Clarifies intentional design",
+        "Allows external DB tools",
+        "Minimal code changes"
+      ],
+      "drawbacks": [
+        "Slightly confusing for new developers",
+        "Two patterns to remember"
+      ],
+      "action_items": [
+        "Document port mapping strategy in CLAUDE.md",
+        "Add comment to docker-compose.yml explaining port 5432",
+        "Clarify when to use 'localhost' vs 'postgres' in connection strings",
+        "Consider environment variables for flexibility"
+      ],
+      "technical_debt_score": 4.25,
+      "affected_artifacts": [
+        "documentation",
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "conflict_id": "conflict_5",
+      "priority": "medium",
+      "recommended_strategy": "merge",
+      "recommended_description": "Document port mapping pattern: services use container names internally, localhost for external tools",
+      "effort": "low",
+      "risk": "low",
+      "benefits": [
+        "Clarifies intentional design",
+        "Allows external DB tools",
+        "Minimal code changes"
+      ],
+      "drawbacks": [
+        "Slightly confusing for new developers",
+        "Two patterns to remember"
+      ],
+      "action_items": [
+        "Document port mapping strategy in CLAUDE.md",
+        "Add comment to docker-compose.yml explaining port 5432",
+        "Clarify when to use 'localhost' vs 'postgres' in connection strings",
+        "Consider environment variables for flexibility"
+      ],
+      "technical_debt_score": 3.75,
+      "affected_artifacts": [
+        "documentation",
+        "docker-compose.yml"
+      ]
+    }
+  ],
+  "analyses": {
+    "conflict_1": {
+      "root_cause": "Monolithic header files violate modular design principles while constraint mandates using existing structure",
+      "impact_radius": {
+        "artifacts": [
+          "types.h",
+          "functions.h",
+          "mud.h"
+        ],
+        "systems": [
+          "type system",
+          "function declarations",
+          "compilation units"
+        ],
+        "severity": "high"
+      },
+      "resolution_options": [
+        {
+          "strategy": "refactor",
+          "description": "Gradually split monolithic headers into focused modules while maintaining backward compatibility",
+          "effort": "high",
+          "risk": "medium",
+          "benefits": [
+            "Improved maintainability and readability",
+            "Faster compilation (reduced dependencies)",
+            "Better modularity and encapsulation",
+            "Easier to find and modify specific definitions"
+          ],
+          "drawbacks": [
+            "Significant upfront effort",
+            "Risk of breaking existing includes",
+            "Requires careful migration plan"
+          ],
+          "affected_artifacts": [
+            "types.h",
+            "functions.h",
+            "all C files"
+          ],
+          "affected_facts": [
+            "fact_16",
+            "fact_19"
+          ]
+        },
+        {
+          "strategy": "keep_fact1",
+          "description": "Accept technical debt, document monolithic structure as legacy",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "No immediate work required",
+            "Avoids breaking changes"
+          ],
+          "drawbacks": [
+            "Continues poor design pattern",
+            "Compilation times remain slow",
+            "Technical debt accumulates"
+          ],
+          "affected_artifacts": [
+            "documentation"
+          ],
+          "affected_facts": [
+            "fact_16"
+          ]
+        }
+      ],
+      "recommendation": {
+        "preferred_option": 0,
+        "priority": "high",
+        "rationale": "Monolithic headers significantly impact maintainability and compilation time. Incremental refactoring is worthwhile.",
+        "action_items": [
+          "Create header organization design document",
+          "Identify natural module boundaries (e.g., types_player.h, types_ship.h)",
+          "Implement backward-compatible wrapper headers",
+          "Migrate files incrementally, one module at a time",
+          "Update build system to handle new structure"
+        ]
+      }
+    },
+    "conflict_2": {
+      "root_cause": "Monolithic header files violate modular design principles while constraint mandates using existing structure",
+      "impact_radius": {
+        "artifacts": [
+          "types.h",
+          "functions.h",
+          "mud.h"
+        ],
+        "systems": [
+          "type system",
+          "function declarations",
+          "compilation units"
+        ],
+        "severity": "high"
+      },
+      "resolution_options": [
+        {
+          "strategy": "refactor",
+          "description": "Gradually split monolithic headers into focused modules while maintaining backward compatibility",
+          "effort": "high",
+          "risk": "medium",
+          "benefits": [
+            "Improved maintainability and readability",
+            "Faster compilation (reduced dependencies)",
+            "Better modularity and encapsulation",
+            "Easier to find and modify specific definitions"
+          ],
+          "drawbacks": [
+            "Significant upfront effort",
+            "Risk of breaking existing includes",
+            "Requires careful migration plan"
+          ],
+          "affected_artifacts": [
+            "types.h",
+            "functions.h",
+            "all C files"
+          ],
+          "affected_facts": [
+            "fact_16",
+            "fact_21"
+          ]
+        },
+        {
+          "strategy": "keep_fact1",
+          "description": "Accept technical debt, document monolithic structure as legacy",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "No immediate work required",
+            "Avoids breaking changes"
+          ],
+          "drawbacks": [
+            "Continues poor design pattern",
+            "Compilation times remain slow",
+            "Technical debt accumulates"
+          ],
+          "affected_artifacts": [
+            "documentation"
+          ],
+          "affected_facts": [
+            "fact_16"
+          ]
+        }
+      ],
+      "recommendation": {
+        "preferred_option": 0,
+        "priority": "high",
+        "rationale": "Monolithic headers significantly impact maintainability and compilation time. Incremental refactoring is worthwhile.",
+        "action_items": [
+          "Create header organization design document",
+          "Identify natural module boundaries (e.g., types_player.h, types_ship.h)",
+          "Implement backward-compatible wrapper headers",
+          "Migrate files incrementally, one module at a time",
+          "Update build system to handle new structure"
+        ]
+      }
+    },
+    "conflict_3": {
+      "root_cause": "SET_STRING macro uses raw malloc/free instead of custom memory management system",
+      "impact_radius": {
+        "artifacts": [
+          "mud.h",
+          "all files using SET_STRING"
+        ],
+        "systems": [
+          "memory management",
+          "string handling"
+        ],
+        "severity": "critical"
+      },
+      "resolution_options": [
+        {
+          "strategy": "refactor",
+          "description": "Reimplement SET_STRING to use custom memory management (CREATE/DESTROY)",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "Consistent memory management throughout codebase",
+            "Better memory leak detection",
+            "Aligns with system constraints",
+            "Single point of truth for memory ops"
+          ],
+          "drawbacks": [
+            "Need to test all SET_STRING usages",
+            "Potential subtle behavior changes"
+          ],
+          "affected_artifacts": [
+            "mud.h",
+            "SET_STRING macro definition"
+          ],
+          "affected_facts": [
+            "fact_28",
+            "fact_31"
+          ]
+        },
+        {
+          "strategy": "keep_fact2",
+          "description": "Document SET_STRING as approved exception to memory management rule",
+          "effort": "low",
+          "risk": "medium",
+          "benefits": [
+            "No code changes needed",
+            "Preserves existing behavior"
+          ],
+          "drawbacks": [
+            "Inconsistent memory management",
+            "Makes constraint less absolute",
+            "Sets bad precedent"
+          ],
+          "affected_artifacts": [
+            "documentation"
+          ],
+          "affected_facts": [
+            "fact_28"
+          ]
+        }
+      ],
+      "recommendation": {
+        "preferred_option": 0,
+        "priority": "critical",
+        "rationale": "Memory management consistency is critical for debugging and maintaining a complex MUD. Fixing this is low-effort, high-value.",
+        "action_items": [
+          "Audit SET_STRING macro implementation",
+          "Replace malloc/free with CREATE/DESTROY",
+          "Run full test suite to verify behavior",
+          "Update documentation",
+          "Add regression test"
+        ]
+      }
+    },
+    "conflict_4": {
+      "root_cause": "localhost:5432 database configuration conflicts with Docker Compose service isolation",
+      "impact_radius": {
+        "artifacts": [
+          "docker-compose.yml",
+          "database config",
+          "connection strings"
+        ],
+        "systems": [
+          "development environment",
+          "database access"
+        ],
+        "severity": "medium"
+      },
+      "resolution_options": [
+        {
+          "strategy": "refactor",
+          "description": "Update connection strings to use Docker service names, expose ports for debugging only",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "Proper service isolation",
+            "Consistent with Docker best practices",
+            "Easier multi-service orchestration",
+            "Better production/dev parity"
+          ],
+          "drawbacks": [
+            "Requires updating all connection strings",
+            "May need environment-specific configs"
+          ],
+          "affected_artifacts": [
+            "docker-compose.yml",
+            "config files",
+            "connection string constants"
+          ],
+          "affected_facts": [
+            "fact_2",
+            "fact_10"
+          ]
+        },
+        {
+          "strategy": "merge",
+          "description": "Document port mapping pattern: services use container names internally, localhost for external tools",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "Clarifies intentional design",
+            "Allows external DB tools",
+            "Minimal code changes"
+          ],
+          "drawbacks": [
+            "Slightly confusing for new developers",
+            "Two patterns to remember"
+          ],
+          "affected_artifacts": [
+            "documentation",
+            "docker-compose.yml"
+          ],
+          "affected_facts": [
+            "fact_2",
+            "fact_10"
+          ]
+        }
+      ],
+      "recommendation": {
+        "preferred_option": 1,
+        "priority": "medium",
+        "rationale": "This appears to be intentional for local development (port mapping for debugging). Document the pattern rather than force pure isolation.",
+        "action_items": [
+          "Document port mapping strategy in CLAUDE.md",
+          "Add comment to docker-compose.yml explaining port 5432",
+          "Clarify when to use 'localhost' vs 'postgres' in connection strings",
+          "Consider environment variables for flexibility"
+        ]
+      }
+    },
+    "conflict_5": {
+      "root_cause": "localhost:5432 database configuration conflicts with Docker Compose service isolation",
+      "impact_radius": {
+        "artifacts": [
+          "docker-compose.yml",
+          "database config",
+          "connection strings"
+        ],
+        "systems": [
+          "development environment",
+          "database access"
+        ],
+        "severity": "medium"
+      },
+      "resolution_options": [
+        {
+          "strategy": "refactor",
+          "description": "Update connection strings to use Docker service names, expose ports for debugging only",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "Proper service isolation",
+            "Consistent with Docker best practices",
+            "Easier multi-service orchestration",
+            "Better production/dev parity"
+          ],
+          "drawbacks": [
+            "Requires updating all connection strings",
+            "May need environment-specific configs"
+          ],
+          "affected_artifacts": [
+            "docker-compose.yml",
+            "config files",
+            "connection string constants"
+          ],
+          "affected_facts": [
+            "fact_10",
+            "fact_74"
+          ]
+        },
+        {
+          "strategy": "merge",
+          "description": "Document port mapping pattern: services use container names internally, localhost for external tools",
+          "effort": "low",
+          "risk": "low",
+          "benefits": [
+            "Clarifies intentional design",
+            "Allows external DB tools",
+            "Minimal code changes"
+          ],
+          "drawbacks": [
+            "Slightly confusing for new developers",
+            "Two patterns to remember"
+          ],
+          "affected_artifacts": [
+            "documentation",
+            "docker-compose.yml"
+          ],
+          "affected_facts": [
+            "fact_10",
+            "fact_74"
+          ]
+        }
+      ],
+      "recommendation": {
+        "preferred_option": 1,
+        "priority": "medium",
+        "rationale": "This appears to be intentional for local development (port mapping for debugging). Document the pattern rather than force pure isolation.",
+        "action_items": [
+          "Document port mapping strategy in CLAUDE.md",
+          "Add comment to docker-compose.yml explaining port 5432",
+          "Clarify when to use 'localhost' vs 'postgres' in connection strings",
+          "Consider environment variables for flexibility"
+        ]
+      }
+    }
+  }
+}
