@@ -1046,8 +1046,9 @@ class MultiPassExtractor:
             )
 
             # Filter passes to only selected ones
-            selected_pass_types = {pr.pass_type for pr in pass_relevances}
-            all_passes = [p for p in all_passes if p.pass_type in selected_pass_types]
+            # Compare by enum value (string) since PassType enums are different objects
+            selected_pass_values = {pr.pass_type.value for pr in pass_relevances}
+            all_passes = [p for p in all_passes if p.pass_type.value in selected_pass_values]
 
             print(f"Smart Selection: {len(all_passes)}/{len(ExtractionPromptLibrary.get_all_passes())} passes")
             if len(all_passes) < 7:
