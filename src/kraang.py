@@ -428,7 +428,7 @@ class KraangCLI:
         max_passes: int = 7,
         budget: int = None,
         enable_diminishing_returns: bool = True,
-        model: str = "claude-sonnet-4-5-20250929"
+        model: str = "claude-haiku-4-5-20251001"
     ):
         """Extract facts using multi-pass strategy"""
         if not MULTI_PASS_AVAILABLE:
@@ -804,7 +804,7 @@ class KraangCLI:
                 max_passes = 7
                 budget = None
                 enable_dr = True
-                model = "claude-sonnet-4-5-20250929"  # Default to Sonnet
+                model = "claude-haiku-4-5-20251001"  # Default to Haiku (cheapest/fastest)
 
                 # Model shorthand mapping
                 model_shortcuts = {
@@ -900,9 +900,9 @@ Multi-Pass Extraction Options:
   kraang extract-multi <artifact_id> --budget N
                               Limit API calls to N (default: unlimited)
   kraang extract-multi <artifact_id> --model MODEL
-                              Choose Claude model (default: claude-sonnet-4-5-20250929)
-                              Options: haiku (cheapest/fastest)
-                                      sonnet (balanced, default)
+                              Choose Claude model (default: haiku)
+                              Options: haiku (cheapest/fastest, default)
+                                      sonnet (balanced)
                                       opus (most capable)
                               Or use full model ID:
                               - claude-haiku-4-5-20251001

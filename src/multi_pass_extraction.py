@@ -754,7 +754,7 @@ class MultiPassExtractor:
         chunk_size_lines: int = 80,
         chunk_overlap_pct: float = 0.20,
         # Model selection
-        model: str = "claude-sonnet-4-5-20250929"
+        model: str = "claude-haiku-4-5-20251001"
     ):
         """
         Initialize multi-pass extractor.
@@ -769,8 +769,8 @@ class MultiPassExtractor:
             enable_prompt_caching: Use Claude prompt caching API (default: True)
             chunk_size_lines: Target lines per chunk (default: 80)
             chunk_overlap_pct: Overlap percentage between chunks (default: 0.20)
-            model: Claude model to use (default: claude-sonnet-4-5-20250929)
-                   Options: claude-haiku-4-5-20251001 (cheapest/fastest)
+            model: Claude model to use (default: claude-haiku-4-5-20251001)
+                   Options: claude-haiku-4-5-20251001 (cheapest/fastest, default)
                            claude-sonnet-4-5-20250929 (balanced)
                            claude-opus-4-6 (most capable)
         """

@@ -269,8 +269,8 @@ Go to Plans & Billing to add credits.
 
 ## Summary
 
-**Default**: Sonnet 4.5 (balanced)
-**Recommended**: Haiku 4.5 (3-5x cheaper, faster, excellent for structured tasks)
+**Default**: Haiku 4.5 (cheapest/fastest, excellent for fact extraction)
+**Balanced**: Sonnet 4.5 (if you need more nuanced analysis)
 **High-accuracy**: Opus 4.6 (most expensive, only when needed)
 
 **Typical Workflow**:
