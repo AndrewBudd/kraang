@@ -1,0 +1,17 @@
+{
+  "cache_key": "da12f98f4c12f758:general:full",
+  "facts": [
+    {
+      "statement": "Test fact",
+      "type": "test",
+      "location": "line 1",
+      "confidence": 1.0
+    }
+  ],
+  "metadata": {
+    "test": true
+  },
+  "timestamp": "2026-02-11T09:37:34.963451",
+  "file_hash": "da12f98f4c12f758",
+  "pass_type": "general"
+}

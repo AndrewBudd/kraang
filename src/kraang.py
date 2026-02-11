@@ -427,7 +427,8 @@ class KraangCLI:
         artifact_id: str,
         max_passes: int = 7,
         budget: int = None,
-        enable_diminishing_returns: bool = True
+        enable_diminishing_returns: bool = True,
+        model: str = "claude-sonnet-4-5-20250929"
     ):
         """Extract facts using multi-pass strategy"""
         if not MULTI_PASS_AVAILABLE:
@@ -440,6 +441,7 @@ class KraangCLI:
             return
 
         print(f"Multi-pass extraction from {artifact.path}...")
+        print(f"  Model: {model}")
         print(f"  Max passes: {max_passes}")
         if budget:
             print(f"  Budget: {budget} API calls")
@@ -450,7 +452,8 @@ class KraangCLI:
         extractor = MultiPassExtractor(
             max_passes=max_passes,
             enable_diminishing_returns=enable_diminishing_returns,
-            budget_api_calls=budget
+            budget_api_calls=budget,
+            model=model
         )
 
         # Run extraction
@@ -794,13 +797,21 @@ class KraangCLI:
                 self.cmd_extract(args[1])
             elif command == "extract-multi":
                 if len(args) < 2:
-                    print("Usage: kraang extract-multi <artifact_id> [--max-passes N] [--budget N] [--no-diminishing-returns]")
+                    print("Usage: kraang extract-multi <artifact_id> [--max-passes N] [--budget N] [--model MODEL] [--no-diminishing-returns]")
                     return
 
                 artifact_id = args[1]
                 max_passes = 7
                 budget = None
                 enable_dr = True
+                model = "claude-sonnet-4-5-20250929"  # Default to Sonnet
+
+                # Model shorthand mapping
+                model_shortcuts = {
+                    "haiku": "claude-haiku-4-5-20251001",
+                    "sonnet": "claude-sonnet-4-5-20250929",
+                    "opus": "claude-opus-4-6"
+                }
 
                 # Parse optional args
                 i = 2
@@ -811,6 +822,11 @@ class KraangCLI:
                     elif args[i] == "--budget" and i + 1 < len(args):
                         budget = int(args[i + 1])
                         i += 2
+                    elif args[i] == "--model" and i + 1 < len(args):
+                        model_arg = args[i + 1]
+                        # Resolve shortcut if used
+                        model = model_shortcuts.get(model_arg, model_arg)
+                        i += 2
                     elif args[i] == "--no-diminishing-returns":
                         enable_dr = False
                         i += 1
@@ -818,7 +834,7 @@ class KraangCLI:
                         print(f"Unknown option: {args[i]}")
                         return
 
-                self.cmd_extract_multi(artifact_id, max_passes, budget, enable_dr)
+                self.cmd_extract_multi(artifact_id, max_passes, budget, enable_dr, model)
             elif command == "relate":
                 if len(args) == 3:
                     self.cmd_relate(args[1], args[2])
@@ -883,6 +899,15 @@ Multi-Pass Extraction Options:
                               Limit number of passes to N (default: 7)
   kraang extract-multi <artifact_id> --budget N
                               Limit API calls to N (default: unlimited)
+  kraang extract-multi <artifact_id> --model MODEL
+                              Choose Claude model (default: claude-sonnet-4-5-20250929)
+                              Options: haiku (cheapest/fastest)
+                                      sonnet (balanced, default)
+                                      opus (most capable)
+                              Or use full model ID:
+                              - claude-haiku-4-5-20251001
+                              - claude-sonnet-4-5-20250929
+                              - claude-opus-4-6
   kraang extract-multi <artifact_id> --no-diminishing-returns
                               Run all passes without early stopping
 

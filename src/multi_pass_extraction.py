@@ -752,7 +752,9 @@ class MultiPassExtractor:
         enable_chunking: bool = True,
         enable_prompt_caching: bool = True,
         chunk_size_lines: int = 80,
-        chunk_overlap_pct: float = 0.20
+        chunk_overlap_pct: float = 0.20,
+        # Model selection
+        model: str = "claude-sonnet-4-5-20250929"
     ):
         """
         Initialize multi-pass extractor.
@@ -767,12 +769,17 @@ class MultiPassExtractor:
             enable_prompt_caching: Use Claude prompt caching API (default: True)
             chunk_size_lines: Target lines per chunk (default: 80)
             chunk_overlap_pct: Overlap percentage between chunks (default: 0.20)
+            model: Claude model to use (default: claude-sonnet-4-5-20250929)
+                   Options: claude-haiku-4-5-20251001 (cheapest/fastest)
+                           claude-sonnet-4-5-20250929 (balanced)
+                           claude-opus-4-6 (most capable)
         """
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY not set")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
+        self.model = model
         self.max_passes = max_passes
         self.enable_diminishing_returns = enable_diminishing_returns
         self.budget_api_calls = budget_api_calls
@@ -872,7 +879,7 @@ class MultiPassExtractor:
             system_instructions = "You are a fact extraction expert specializing in software constraints and requirements."
 
             message = self.client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model=self.model,
                 max_tokens=8192,
                 system=[{
                     "type": "text",
@@ -897,7 +904,7 @@ class MultiPassExtractor:
         else:
             # Standard non-cached call
             message = self.client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model=self.model,
                 max_tokens=8192,
                 messages=[{"role": "user", "content": formatted_prompt}]
             )
