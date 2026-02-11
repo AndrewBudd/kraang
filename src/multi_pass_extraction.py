@@ -19,6 +19,21 @@ from pathlib import Path
 import hashlib
 import difflib
 
+# Import new enhancement modules
+try:
+    from chunking_engine import ChunkingEngine, Chunk
+    CHUNKING_AVAILABLE = True
+except ImportError:
+    CHUNKING_AVAILABLE = False
+    print("Warning: chunking_engine not available, large file chunking disabled")
+
+try:
+    from cache_manager import CacheManager, CacheConfig, PromptCacheHelper
+    CACHING_AVAILABLE = True
+except ImportError:
+    CACHING_AVAILABLE = False
+    print("Warning: cache_manager not available, caching disabled")
+
 
 class PassType(Enum):
     """Types of extraction passes with different focus areas"""
@@ -724,7 +739,13 @@ class MultiPassExtractor:
         api_key: Optional[str] = None,
         max_passes: int = 7,
         enable_diminishing_returns: bool = True,
-        budget_api_calls: Optional[int] = None
+        budget_api_calls: Optional[int] = None,
+        # NEW: Enhancement parameters
+        enable_caching: bool = True,
+        enable_chunking: bool = True,
+        enable_prompt_caching: bool = True,
+        chunk_size_lines: int = 80,
+        chunk_overlap_pct: float = 0.20
     ):
         """
         Initialize multi-pass extractor.
@@ -734,6 +755,11 @@ class MultiPassExtractor:
             max_passes: Maximum number of passes to run
             enable_diminishing_returns: Stop early if returns diminish
             budget_api_calls: Maximum API calls to make (None = unlimited)
+            enable_caching: Enable result caching (default: True)
+            enable_chunking: Enable large file chunking (default: True)
+            enable_prompt_caching: Use Claude prompt caching API (default: True)
+            chunk_size_lines: Target lines per chunk (default: 80)
+            chunk_overlap_pct: Overlap percentage between chunks (default: 0.20)
         """
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -753,31 +779,113 @@ class MultiPassExtractor:
         self.total_api_calls = 0
         self.total_tokens_used = 0
 
+        # NEW: Enhancement features
+        self.enable_caching = enable_caching and CACHING_AVAILABLE
+        self.enable_chunking = enable_chunking and CHUNKING_AVAILABLE
+        self.enable_prompt_caching = enable_prompt_caching and CACHING_AVAILABLE
+
+        # Initialize cache manager
+        if self.enable_caching:
+            self.cache_manager = CacheManager(CacheConfig())
+            self.prompt_helper = PromptCacheHelper()
+            print("✓ Caching enabled (result + prompt caching)")
+        else:
+            self.cache_manager = None
+            self.prompt_helper = None
+
+        # Initialize chunking engine
+        if self.enable_chunking:
+            self.chunking_engine = ChunkingEngine(
+                target_lines=chunk_size_lines,
+                overlap_pct=chunk_overlap_pct
+            )
+            print(f"✓ Chunking enabled (target: {chunk_size_lines} lines, overlap: {chunk_overlap_pct:.0%})")
+        else:
+            self.chunking_engine = None
+
+        # Track cache statistics
+        self.cache_hits = 0
+        self.cache_misses = 0
+
     def extract_single_pass(
         self,
         artifact_type: str,
         artifact_path: str,
         artifact_content: str,
-        extraction_pass: ExtractionPass
+        extraction_pass: ExtractionPass,
+        chunk_id: Optional[str] = None
     ) -> List[ExtractedFact]:
         """
         Run a single extraction pass with a specialized prompt.
 
         Returns list of extracted facts (before deduplication).
         """
+        # NEW: Check result cache first
+        if self.cache_manager:
+            cache_key = self.cache_manager.result_cache.get_cache_key(
+                artifact_content,
+                extraction_pass.pass_type.value,
+                chunk_id
+            )
+            cached_facts = self.cache_manager.result_cache.get_cached_results(cache_key)
+
+            if cached_facts:
+                self.cache_hits += 1
+                # Convert cached dicts back to ExtractedFact objects
+                return [
+                    ExtractedFact(
+                        statement=f['statement'],
+                        type=f['type'],
+                        location=f['location'],
+                        confidence=f['confidence'],
+                        pass_type=extraction_pass.pass_type
+                    )
+                    for f in cached_facts
+                ]
+
+        self.cache_misses += 1
+
         # Format prompt
-        prompt = extraction_pass.prompt_template.format(
+        formatted_prompt = extraction_pass.prompt_template.format(
             artifact_type=artifact_type,
             artifact_path=artifact_path,
             artifact_content=artifact_content
         )
 
-        # Call API
-        message = self.client.messages.create(
-            model="claude-sonnet-4-5-20250929",
-            max_tokens=8192,
-            messages=[{"role": "user", "content": prompt}]
-        )
+        # NEW: Use prompt caching if enabled
+        if self.enable_prompt_caching and self.prompt_helper:
+            system_instructions = "You are a fact extraction expert specializing in software constraints and requirements."
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-5-20250929",
+                max_tokens=8192,
+                system=[{
+                    "type": "text",
+                    "text": system_instructions,
+                    "cache_control": {"type": "ephemeral"}
+                }],
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": artifact_content,
+                            "cache_control": {"type": "ephemeral"}
+                        },
+                        {
+                            "type": "text",
+                            "text": formatted_prompt
+                        }
+                    ]
+                }]
+            )
+        else:
+            # Standard non-cached call
+            message = self.client.messages.create(
+                model="claude-sonnet-4-5-20250929",
+                max_tokens=8192,
+                messages=[{"role": "user", "content": formatted_prompt}]
+            )
 
         self.total_api_calls += 1
         self.total_tokens_used += message.usage.input_tokens + message.usage.output_tokens
@@ -825,6 +933,33 @@ class MultiPassExtractor:
                 pass_type=extraction_pass.pass_type
             )
             extracted_facts.append(fact)
+
+        # NEW: Cache the results
+        if self.cache_manager:
+            cache_key = self.cache_manager.result_cache.get_cache_key(
+                artifact_content,
+                extraction_pass.pass_type.value,
+                chunk_id
+            )
+            # Convert facts to dicts for caching
+            facts_dicts = [
+                {
+                    'statement': f.statement,
+                    'type': f.type,
+                    'location': f.location,
+                    'confidence': f.confidence
+                }
+                for f in extracted_facts
+            ]
+            self.cache_manager.result_cache.cache_results(
+                cache_key,
+                facts_dicts,
+                {
+                    'pass_type': extraction_pass.pass_type.value,
+                    'artifact_path': artifact_path,
+                    'chunk_id': chunk_id
+                }
+            )
 
         return extracted_facts
 
@@ -907,13 +1042,35 @@ class MultiPassExtractor:
 
             # Extract facts
             print(f"  Extracting...")
-            raw_facts = self.extract_single_pass(
-                artifact_type,
-                artifact_path,
-                artifact_content,
-                extraction_pass
-            )
-            print(f"  ✓ Extracted {len(raw_facts)} raw facts")
+
+            # NEW: Check if chunking is needed
+            if self.chunking_engine and self.chunking_engine.needs_chunking(artifact_content):
+                print(f"  ℹ File size requires chunking...")
+                chunks = self.chunking_engine.get_chunks(artifact_content, artifact_path)
+                print(f"  ✓ Split into {len(chunks)} chunks")
+
+                # Extract from each chunk
+                raw_facts = []
+                for chunk in chunks:
+                    chunk_facts = self.extract_single_pass(
+                        artifact_type,
+                        artifact_path,
+                        chunk.content,
+                        extraction_pass,
+                        chunk_id=chunk.chunk_id
+                    )
+                    raw_facts.extend(chunk_facts)
+
+                print(f"  ✓ Extracted {len(raw_facts)} raw facts from {len(chunks)} chunks")
+            else:
+                # Standard single-file extraction
+                raw_facts = self.extract_single_pass(
+                    artifact_type,
+                    artifact_path,
+                    artifact_content,
+                    extraction_pass
+                )
+                print(f"  ✓ Extracted {len(raw_facts)} raw facts")
 
             # Deduplicate
             print(f"  Deduplicating...")
@@ -961,6 +1118,15 @@ class MultiPassExtractor:
         print(f"Total Facts Extracted: {len(self.all_facts)}")
         print(f"API Calls: {self.total_api_calls}")
         print(f"Tokens Used: {self.total_tokens_used:,}")
+
+        # NEW: Cache statistics
+        if self.cache_manager:
+            total_checks = self.cache_hits + self.cache_misses
+            hit_rate = (self.cache_hits / total_checks * 100) if total_checks > 0 else 0
+            print(f"\nCache Statistics:")
+            print(f"  Hits: {self.cache_hits}/{total_checks} ({hit_rate:.1f}%)")
+            if self.cache_hits > 0:
+                print(f"  Estimated savings: ~${self.cache_hits * 0.10:.2f}")
 
         # Per-pass breakdown
         print(f"\nPer-Pass Breakdown:")
