@@ -34,6 +34,13 @@ except ImportError:
     CACHING_AVAILABLE = False
     print("Warning: cache_manager not available, caching disabled")
 
+try:
+    from pass_selector import PassSelector
+    PASS_SELECTION_AVAILABLE = True
+except ImportError:
+    PASS_SELECTION_AVAILABLE = False
+    print("Warning: pass_selector not available, smart pass selection disabled")
+
 
 class PassType(Enum):
     """Types of extraction passes with different focus areas"""
@@ -783,6 +790,7 @@ class MultiPassExtractor:
         self.enable_caching = enable_caching and CACHING_AVAILABLE
         self.enable_chunking = enable_chunking and CHUNKING_AVAILABLE
         self.enable_prompt_caching = enable_prompt_caching and CACHING_AVAILABLE
+        self.enable_smart_passes = True  # Always enable if available
 
         # Initialize cache manager
         if self.enable_caching:
@@ -802,6 +810,13 @@ class MultiPassExtractor:
             print(f"✓ Chunking enabled (target: {chunk_size_lines} lines, overlap: {chunk_overlap_pct:.0%})")
         else:
             self.chunking_engine = None
+
+        # Initialize pass selector
+        if self.enable_smart_passes and PASS_SELECTION_AVAILABLE:
+            self.pass_selector = PassSelector(min_relevance=0.3)
+            print("✓ Smart pass selection enabled (skips irrelevant passes)")
+        else:
+            self.pass_selector = None
 
         # Track cache statistics
         self.cache_hits = 0
@@ -1020,6 +1035,25 @@ class MultiPassExtractor:
 
         # Get all configured passes
         all_passes = ExtractionPromptLibrary.get_all_passes()
+
+        # NEW: Smart pass selection
+        if self.pass_selector:
+            # Analyze file and select relevant passes
+            pass_relevances = self.pass_selector.select_passes(
+                artifact_path,
+                artifact_content,
+                artifact_type
+            )
+
+            # Filter passes to only selected ones
+            selected_pass_types = {pr.pass_type for pr in pass_relevances}
+            all_passes = [p for p in all_passes if p.pass_type in selected_pass_types]
+
+            print(f"Smart Selection: {len(all_passes)}/{len(ExtractionPromptLibrary.get_all_passes())} passes")
+            if len(all_passes) < 7:
+                skipped = 7 - len(all_passes)
+                print(f"  ℹ Skipping {skipped} low-relevance passes (saves ~${skipped * 0.10:.2f})")
+
         all_passes.sort(key=lambda p: p.priority)
 
         # Track categories seen
